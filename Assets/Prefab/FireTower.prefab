@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6322052359892602225}
   - component: {fileID: 203084732374096788}
+  - component: {fileID: 6576108741006379509}
   - component: {fileID: 7446120922021192311}
+  - component: {fileID: 633707187701836195}
   m_Layer: 0
   m_Name: FireTower
   m_TagString: Tower
@@ -80,6 +82,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &6576108741006379509
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7384857151459926726}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!114 &7446120922021192311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,3 +113,16 @@ MonoBehaviour:
   attack: 1
   range: 100
   delayTime: 0
+  tier: 1
+--- !u!114 &633707187701836195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7384857151459926726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12c329b00b4dd7a4eb2afb6db6ee2379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

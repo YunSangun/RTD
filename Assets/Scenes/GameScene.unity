@@ -223,7 +223,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2988755b2050cb047b292256a5221f4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tower: {fileID: 1699036210101489607, guid: ed65012f69059874c8f42ee81bc36628, type: 3}
   btnTexture: {fileID: 0}
   towers:
   - {fileID: 7446120922021192311, guid: 9d1c0d0c7fe285841b8be7f4d8896d1d, type: 3}
