@@ -224,6 +224,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tower: {fileID: 1699036210101489607, guid: ed65012f69059874c8f42ee81bc36628, type: 3}
+  btnTexture: {fileID: 0}
+  towers:
+  - {fileID: 7446120922021192311, guid: 9d1c0d0c7fe285841b8be7f4d8896d1d, type: 3}
+  - {fileID: 5071441563257700460, guid: 8b004c444efea4e4abbf598b29a77181, type: 3}
+  - {fileID: 683612451543291174, guid: 51def8db76391654e91a6e4272961707, type: 3}
+  - {fileID: 7583203716604418343, guid: 890b8270dbcd65b4096b380ef4af95a1, type: 3}
+  - {fileID: 2655779669433057948, guid: 6b2c256910fc1e24b9ee4e6c8dff0a80, type: 3}
 --- !u!4 &1192713662
 Transform:
   m_ObjectHideFlags: 0

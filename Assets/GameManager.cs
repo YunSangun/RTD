@@ -21,8 +21,8 @@ public class GameBoard
 
 public class GameManager : MonoBehaviour
 {
-    public TowerManager tower;
     public Texture btnTexture;
+    public TowerManager []towers;
 
     void Start()
     {
@@ -47,13 +47,13 @@ public class GameManager : MonoBehaviour
         //}
         if (GUI.Button(new Rect(0, 0, 100, 100), "Add Tower"))
         {
-            addTower();
+            AddRandomTower();
         }
     }
 
-    void addTower()
+    void AddRandomTower()
     {
-        TowerManager tw = Instantiate(tower) as TowerManager;
+        TowerManager tw = Instantiate(towers[Random.Range(0, 5)]) as TowerManager;
         tw.transform.localPosition = new Vector2(0, 0);
     }
 }

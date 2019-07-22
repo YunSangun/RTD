@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1410601474210852559}
   - component: {fileID: 7552197705910051594}
+  - component: {fileID: 683612451543291174}
   m_Layer: 0
   m_Name: IronTower
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,3 +80,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &683612451543291174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3800538825824357579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb2b4f579ae4d234da17f88d00c077bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack: 1
+  range: 100
+  delayTime: 0

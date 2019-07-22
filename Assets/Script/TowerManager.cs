@@ -8,6 +8,8 @@ public class TowerManager : MonoBehaviour
     public float range = 100;
     public float delayTime = 0.0f;
 
+    public int tier = 1;
+
     void Start()
     {
         
