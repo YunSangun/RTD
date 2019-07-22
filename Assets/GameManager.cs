@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviour
 {
     public Texture btnTexture;
     public TowerManager []towers;
-    public GameObject defTower;
 
     void Start()
     {
@@ -52,7 +51,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AddRandomTower(int tier)
+    public void AddRandomTower(int tier, float x = 0, float y = 0)
     {
         int beg = 0, end = 0;
 
@@ -64,11 +63,16 @@ public class GameManager : MonoBehaviour
         else if (tier == 1)
         {
             beg = 5;
-            end = 6;
+            end = 10;
+        }
+        else if (tier == 2)
+        {
+            beg = 10;
+            end = 15;
         }
 
         TowerManager tw = Instantiate(towers[Random.Range(beg, end)]) as TowerManager;
+        tw.transform.localPosition = new Vector2(x, y);
         //tw.transform.localPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-        tw.transform.localPosition = new Vector2(0, 0);
     }
 }

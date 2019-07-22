@@ -45,15 +45,18 @@ public class TowerManager : MonoBehaviour
 
         if (rayHit.collider != null && (this.tier == rayHit.collider.gameObject.GetComponent<TowerManager>().tier))
         {
+            float x = this.transform.position.x;
+            float y = this.transform.position.y;
+
             Debug.Log(rayHit.collider.gameObject.name);
             Destroy(rayHit.collider.gameObject);
             Destroy(this.gameObject);
 
-            GameObject.Find("GameManager").GetComponent<GameManager>().AddRandomTower(tier);
+            GameObject.Find("GameManager").GetComponent<GameManager>().AddRandomTower(tier, x, y);
         }
         else
         {
-            this.transform.position = firstPosition;
+            //this.transform.position = firstPosition;
         }
     }
 
@@ -69,7 +72,7 @@ public class TowerManager : MonoBehaviour
 
     void OnOffCollider()
     {
-        if(tier == 1)
+        if(tier == 1 || tier == 3)
         {
             this.gameObject.GetComponent<CircleCollider2D>().enabled ^= true;
         }
