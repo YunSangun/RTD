@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5925636418083922410}
   - component: {fileID: 5233187936475568760}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FireTile
   m_TagString: Tile
   m_Icon: {fileID: 0}

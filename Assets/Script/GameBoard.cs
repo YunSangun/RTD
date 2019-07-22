@@ -10,8 +10,8 @@ using Random = UnityEngine.Random;
 public class GameBoard
 {
     private TILE_TYPE[,] board;
-    private readonly List<Point> path;
-    private readonly List<Point> entry;
+    private List<Point>[] path;
+    private List<Point> entry;
     public TILE_TYPE this[int x, int y]
     {
         get
@@ -19,37 +19,69 @@ public class GameBoard
             return board[x, y];
         }
     }
-    public List<Point> Path
+    public List<Point>[] DefaultPath
     {
         get
         {
-            return this.path;
+            var tmp = new List<Point>[4];
+            for (int i = 0; i < 4; ++i)
+                tmp[i] = new List<Point>(path[i]);
+            return path;
         }
     }
-    public List<Point> Entry
-    {
-        get
-        {
-            return this.path;
-        }
-    }
-    public GameBoard(List<Point> path, List<Point> entry)
+    public GameBoard(List<Point>[] path)
     {
         this.board = new TILE_TYPE[9, 9];
-        this.path = new List<Point>(path);
-        this.entry = new List<Point>(entry);
-        foreach (var p in path)
-            this.board[p.x, p.y] = TILE_TYPE.ROAD;
+        this.path = new List<Point>[4];
+        this.entry = new List<Point>();
+        for (int i = 0; i < 4; ++i) {
+            this.entry.Add(path[i][0]);
+            this.entry.Add(path[i][path[i].Count-1]);
+            this.path[i] = new List<Point>(path[i]);
+            foreach (var p in path[i])
+                this.board[p.x, p.y] = TILE_TYPE.ROAD;
+        }
         for (int i = 0; i < 9; ++i)
             for (int j = 0; j < 9; ++j)
                 if (this.board[i, j] == TILE_TYPE.NONE)
                     this.board[i, j] = (TILE_TYPE)Random.Range(1, 6);
 
     }
-    public GameBoard(TILE_TYPE[,] board, List<Point> path, List<Point> entry)
+    public GameBoard(TILE_TYPE[,] board, List<Point>[] path)
     {
         this.board = (TILE_TYPE[,])board.Clone();
-        this.path = new List<Point>(path);
-        this.entry = new List<Point>(entry);
+        this.path = new List<Point>[4];
+        for (int i = 0; i < 4; ++i)
+            this.path[i] = new List<Point>(path[i]);
+    }
+    public int EntryIndexOf(Point p)
+    {
+        return this.entry.FindIndex(e=>e.Equals(p));
+    }
+    public Point EntryAt(int n)
+    {
+        if (n > 7)
+            return new Point(-1, -1);
+        return this.entry[n];
+    }
+    public List<Point>[] PathAt(int n)
+        //n번째 entry에서 출발한 경로를 반환, n이 8이상이면 empty
+    {
+        var tmp = new List<Point>[4];
+        if (n > 7)
+            return tmp;
+        if (n % 2 == 0)
+        {
+            for(int i = 0; i < 4; ++i)
+                tmp[i]=new List<Point>(path[(n/2 + i) % 4]);
+            return tmp;
+        }
+        for(int i = 0; i < 4; ++i)
+        {
+            var r = new List<Point>(path[(4+ n / 2 - i) % 4]);
+            r.Reverse();
+            tmp[i] = r;
+        }
+        return tmp;
     }
 }

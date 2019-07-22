@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5062899113851145363
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5062899113851145361}
+  - component: {fileID: 5062899113851145362}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5062899113851145361
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5062899113851145363}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5062899113851145362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5062899113851145363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2988755b2050cb047b292256a5221f4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tiles:
+  - {fileID: 3415797936730248248, guid: eb4f1291df4d4ff42b9ba0c8cbae2cac, type: 3}
+  - {fileID: 2419619200456740624, guid: 6004b1ec636a4da4eb924b6e3894ca82, type: 3}
+  - {fileID: 662391064817834300, guid: 03304ea6a3eaaa345807717ee53eb440, type: 3}
+  - {fileID: 7535368416155034631, guid: b1a4497de537c7a45af51afac5076504, type: 3}
+  - {fileID: 806023304142417726, guid: f53cf7a3d4f6b934894bd307971f4dff, type: 3}
+  - {fileID: 7508999832791559619, guid: 44a3e520a59a7b346a384ed71b0c8b35, type: 3}
+  RoadTiles:
+  - {fileID: 5515592635105500615, guid: 9e71c1ab470bf184ca045ccc18effee1, type: 3}
+  - {fileID: 2510556734087825473, guid: 9ae901aefa689bc4bb4078b22caa6819, type: 3}
+  - {fileID: 5461616414517535471, guid: d64c8ad5db23bb04e8e296024f2acb1c, type: 3}
+  Monsters: []
