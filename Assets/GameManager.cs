@@ -52,13 +52,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //void AddRandomTower()
-    //{
-    //    defTower.GetComponent<TowerManager>();
-    //    //TowerManager tw = Instantiate(towers[Random.Range(0, 5)]) as TowerManager;
-    //    //tw.transform.localPosition = new Vector2(0, 0);
-    //}
-
     public void AddRandomTower(int tier)
     {
         int beg = 0, end = 0;

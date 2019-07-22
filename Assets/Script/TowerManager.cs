@@ -78,22 +78,4 @@ public class TowerManager : MonoBehaviour
             this.gameObject.GetComponent<BoxCollider2D>().enabled ^= true;
         }
     }
-
-    //void AddRandomTower(int tier)
-    //{
-    //    int beg = 0, end = 0;
-
-    //    if (tier == 0) {
-    //        beg = 1;
-    //        end = 5;
-    //    }
-    //    else if(tier == 1)
-    //    {
-    //        beg = 6;
-    //        end = 6;
-    //    }
-
-    //    TowerManager tw = Instantiate(towers[Random.Range(beg, end)]) as TowerManager;
-    //    tw.transform.localPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-    //}
 }
