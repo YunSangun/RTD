@@ -230,6 +230,8 @@ MonoBehaviour:
   - {fileID: 683612451543291174, guid: 51def8db76391654e91a6e4272961707, type: 3}
   - {fileID: 7583203716604418343, guid: 890b8270dbcd65b4096b380ef4af95a1, type: 3}
   - {fileID: 2655779669433057948, guid: 6b2c256910fc1e24b9ee4e6c8dff0a80, type: 3}
+  - {fileID: 5453084190167347071, guid: cc70808b22150c24e8b47dac7434940a, type: 3}
+  defTower: {fileID: 0}
 --- !u!4 &1192713662
 Transform:
   m_ObjectHideFlags: 0

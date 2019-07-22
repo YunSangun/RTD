@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8995437127786877596}
   - component: {fileID: 7422277751250312065}
   - component: {fileID: 2655779669433057948}
-  - component: {fileID: 2188444122653591740}
   m_Layer: 0
   m_Name: WindTower
   m_TagString: Tower
@@ -114,15 +113,3 @@ MonoBehaviour:
   range: 100
   delayTime: 0
   tier: 1
---- !u!114 &2188444122653591740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2540088867073671262}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12c329b00b4dd7a4eb2afb6db6ee2379, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

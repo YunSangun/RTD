@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 {
     public Texture btnTexture;
     public TowerManager []towers;
+    public GameObject defTower;
 
     void Start()
     {
@@ -47,13 +48,34 @@ public class GameManager : MonoBehaviour
         //}
         if (GUI.Button(new Rect(0, 0, 100, 100), "Add Tower"))
         {
-            AddRandomTower();
+            AddRandomTower(0);
         }
     }
 
-    void AddRandomTower()
+    //void AddRandomTower()
+    //{
+    //    defTower.GetComponent<TowerManager>();
+    //    //TowerManager tw = Instantiate(towers[Random.Range(0, 5)]) as TowerManager;
+    //    //tw.transform.localPosition = new Vector2(0, 0);
+    //}
+
+    public void AddRandomTower(int tier)
     {
-        TowerManager tw = Instantiate(towers[Random.Range(0, 5)]) as TowerManager;
+        int beg = 0, end = 0;
+
+        if (tier == 0)
+        {
+            beg = 0;
+            end = 5;
+        }
+        else if (tier == 1)
+        {
+            beg = 5;
+            end = 6;
+        }
+
+        TowerManager tw = Instantiate(towers[Random.Range(beg, end)]) as TowerManager;
+        //tw.transform.localPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         tw.transform.localPosition = new Vector2(0, 0);
     }
 }

@@ -17,7 +17,7 @@ public class DragDrop : MonoBehaviour
     {
         Debug.Log("OnMouseUp");
 
-        this.transform.position = firstPosition;
+            this.transform.position = firstPosition;
     }
 
     private void OnMouseDrag()
