@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 01153ae41f8a6c246b492cb3fc42840b
+=======
+guid: 8ac40ea686849384ab6552867824ce8f
+>>>>>>> feature/tower
 TextureImporter:
   fileIDToRecycleName: {}
   externalObjects: {}
@@ -331,7 +335,11 @@ TextureImporter:
       - {x: 0.1960288, y: 1.99037}
       - {x: 0.09812956, y: 1.9975911}
     bones: []
+<<<<<<< HEAD
     spriteID: a71353519ce65b8419d9cd87008fa92e
+=======
+    spriteID: e35c21328cc382c43b30572dc34da355
+>>>>>>> feature/tower
     vertices: []
     indices: 
     edges: []
