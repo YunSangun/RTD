@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Windows;
 using Random = UnityEngine.Random;
 
 public enum MONSTER_TYPE
@@ -34,7 +36,8 @@ public enum ROAD_TYPE
     TURN,
     CROSS
 }
-public struct Point :ICloneable
+
+[Serializable]public struct Point :ICloneable
 {
     public int x;
     public int y;
@@ -102,6 +105,7 @@ public class GameManager : MonoBehaviour
 
     public static readonly Vector2 START_POINT = new Vector2(-1.3f, 0);
     public static readonly Vector2 REVISE = new Vector2(-4f, -4f) + START_POINT;
+    public static readonly string PATH = "/Json/MapPath0.json";
 
     private GameBoard GameMap;
     private int Stage;
@@ -109,7 +113,7 @@ public class GameManager : MonoBehaviour
     private int BuiltTower;
     private List<GameObject> LiveMonsters=new List<GameObject>();
 
-    private void MakeGameMap()
+    private void MakeGameMap()//don't use
     {
         var path = new List<Point>[4];
         for (int i = 0; i < 4; ++i)
@@ -121,11 +125,13 @@ public class GameManager : MonoBehaviour
         path[0].Add(new Point(5, 1));
         path[0].Add(new Point(6, 1));
         path[0].Add(new Point(6, 0));
+
         path[1].Add(new Point(6, 8));
         path[1].Add(new Point(6, 7));
         path[1].Add(new Point(6, 6));
         path[1].Add(new Point(7, 6));
         path[1].Add(new Point(8, 6));
+
         path[2].Add(new Point(0, 6));
         path[2].Add(new Point(1, 6));
         path[2].Add(new Point(2, 6));
@@ -139,6 +145,7 @@ public class GameManager : MonoBehaviour
         path[2].Add(new Point(7, 3));
         path[2].Add(new Point(7, 2));
         path[2].Add(new Point(8, 2));
+
         path[3].Add(new Point(0, 2));
         path[3].Add(new Point(1, 2));
         path[3].Add(new Point(2, 2));
@@ -148,6 +155,30 @@ public class GameManager : MonoBehaviour
         path[3].Add(new Point(2, 6));
         path[3].Add(new Point(2, 7));
         path[3].Add(new Point(2, 8));
+        var info = new MapInfo();
+        info.path0 = path[0].ToArray();
+        info.path1 = path[1].ToArray();
+        info.path2 = path[2].ToArray();
+        info.path3 = path[3].ToArray();
+        var jsonstr = JsonUtility.ToJson(info);
+        var file = new FileStream(Application.dataPath + PATH,FileMode.OpenOrCreate);
+        var sw = new StreamWriter(file);
+        sw.Write(jsonstr);
+        sw.Close();
+        GameMap = new GameBoard(path);
+    }
+    private void LoadMap()
+    {
+        var file = new FileStream(Application.dataPath + PATH, FileMode.Open);
+        var sr = new StreamReader(file);
+        var jsonstr = sr.ReadToEnd();
+        sr.Close();
+        var info = JsonUtility.FromJson<MapInfo>(jsonstr);
+        var path = new List<Point>[4];
+        path[0] = new List<Point>(info.path0);
+        path[1] = new List<Point>(info.path1);
+        path[2] = new List<Point>(info.path2);
+        path[3] = new List<Point>(info.path3);
         GameMap = new GameBoard(path);
     }
     private void MakeMap()
@@ -245,7 +276,7 @@ public class GameManager : MonoBehaviour
         Stage = 1;
         Gold = 10;
         BuiltTower = 0;
-        MakeGameMap();
+        LoadMap();
         MakeMap();
     }
 

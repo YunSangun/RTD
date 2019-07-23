@@ -7,11 +7,18 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Random = UnityEngine.Random;
 
 [Serializable]
+public class MapInfo
+{
+    public Point[] path0;
+    public Point[] path1;
+    public Point[] path2;
+    public Point[] path3;
+}
 public class GameBoard
 {
-    private TILE_TYPE[,] board;
-    private List<Point>[] path;
-    private List<Point> entry;
+    public TILE_TYPE[,] board;
+    public List<Point>[] path;
+    public List<Point> entry;
     public TILE_TYPE this[int x, int y]
     {
         get
