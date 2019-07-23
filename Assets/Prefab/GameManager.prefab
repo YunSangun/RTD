@@ -40,9 +40,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 5062899113851145363}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2988755b2050cb047b292256a5221f4b, type: 3}
+  m_Script: {fileID: 11500000, guid: ba3a67011e1f2624eb4b2e76e34f873a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  btnTexture: {fileID: 0}
+  towers:
+  - {fileID: 7446120922021192311, guid: 9d1c0d0c7fe285841b8be7f4d8896d1d, type: 3}
+  - {fileID: 5071441563257700460, guid: 8b004c444efea4e4abbf598b29a77181, type: 3}
+  - {fileID: 683612451543291174, guid: 51def8db76391654e91a6e4272961707, type: 3}
+  - {fileID: 7583203716604418343, guid: 890b8270dbcd65b4096b380ef4af95a1, type: 3}
+  - {fileID: 2655779669433057948, guid: 6b2c256910fc1e24b9ee4e6c8dff0a80, type: 3}
+  - {fileID: 861305506565271307, guid: 91134298e67638d4a9254ca5708559e6, type: 3}
+  - {fileID: 4556053970958884440, guid: 6b57016d6e6e7df4dbed9dc1eddb2508, type: 3}
+  - {fileID: 6732602350063019064, guid: 11a567ed296b7484086695d83377fe92, type: 3}
+  - {fileID: 6945518737450668454, guid: f45eacc10ba4e844ebe2ecd72b1bec0d, type: 3}
+  - {fileID: 8466152673937853065, guid: ea944d325d12f2843b446f07a7b6aa84, type: 3}
+  - {fileID: 5898966310284488548, guid: 9438ffda0ddcbac41ad72a98382d0bd6, type: 3}
+  - {fileID: 2839664155601097307, guid: 5824428188a718d438ccf54de836132e, type: 3}
+  - {fileID: 5707257783773034397, guid: cc908556f0a94b542af61ead21113d89, type: 3}
+  - {fileID: 1491373240887824757, guid: f70f46971b23b7d498386c6b546ae872, type: 3}
+  - {fileID: 5084976175235540411, guid: b41a8eb26079ab345a4c574fd8a06785, type: 3}
   Tiles:
   - {fileID: 3415797936730248248, guid: eb4f1291df4d4ff42b9ba0c8cbae2cac, type: 3}
   - {fileID: 2419619200456740624, guid: 6004b1ec636a4da4eb924b6e3894ca82, type: 3}
@@ -54,4 +71,5 @@ MonoBehaviour:
   - {fileID: 5515592635105500615, guid: 9e71c1ab470bf184ca045ccc18effee1, type: 3}
   - {fileID: 2510556734087825473, guid: 9ae901aefa689bc4bb4078b22caa6819, type: 3}
   - {fileID: 5461616414517535471, guid: d64c8ad5db23bb04e8e296024f2acb1c, type: 3}
-  Monsters: []
+  Monsters:
+  - {fileID: 5133096474699078530, guid: 6dbb3da7576b57c4d98aad2ce0f51ece, type: 3}

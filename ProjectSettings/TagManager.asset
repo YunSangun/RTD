@@ -4,13 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-<<<<<<< HEAD
   - Tile
+  - Tower
   - Monster
   - Bullet
-=======
->>>>>>> feature/tower
-  - Tower
   layers:
   - Default
   - TransparentFX
@@ -20,10 +17,10 @@ TagManager:
   - UI
   - 
   - 
-  - Monster
-  - Bullet
-  - Tower
   - Tile
+  - Monster
+  - Tower
+  - Bullet
   - 
   - 
   - 
@@ -48,15 +45,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Map
-    uniqueID: 1169099059
+  - name: Tile
+    uniqueID: 4122168557
     locked: 0
   - name: Monster
-    uniqueID: 2192371969
+    uniqueID: 4294553983
     locked: 0
   - name: Tower
-    uniqueID: 2131167931
+    uniqueID: 1676783627
+    locked: 0
+  - name: Bullet
+    uniqueID: 4057171111
     locked: 0
   - name: UI
-    uniqueID: 2386480311
+    uniqueID: 656354371
     locked: 0

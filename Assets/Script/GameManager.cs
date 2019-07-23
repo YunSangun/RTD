@@ -1,6 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+using Random = UnityEngine.Random;
+
+public enum MONSTER_TYPE
+{
+    COMMON
+}
 public enum ELEMENT_TYPE
 {
     NONE,
@@ -87,10 +94,11 @@ public struct Point :ICloneable
 
 public class GameManager : MonoBehaviour
 {
-    public List<GameObject> Tiles = new List<GameObject>();
-    public List<GameObject> RoadTiles = new List<GameObject>();
-    public List<GameObject> Monsters = new List<GameObject>();
-    public GameObject TestMon;
+    public Texture btnTexture;
+    public TowerManager[] towers;
+    public GameObject[] Tiles;
+    public GameObject[] RoadTiles;
+    public GameObject[] Monsters;
 
     public static readonly Vector2 START_POINT = new Vector2(-1.3f, 0);
     public static readonly Vector2 REVISE = new Vector2(-4f, -4f) + START_POINT;
@@ -239,19 +247,54 @@ public class GameManager : MonoBehaviour
         BuiltTower = 0;
         MakeGameMap();
         MakeMap();
-        var moncon = TestMon.GetComponent<MonsterController>();
-        var start = GameMap.EntryAt(0).ToVector3();
-        start.x -= 5.3f;
-        start.y -= 4f;
-        TestMon.transform.position = start;
-        moncon.MovePath=GameMap.DefaultPath;
-        moncon.StartCoroutine(moncon.coroutine());
-        //coroutine으로 몬스터 스폰 시작
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    void OnGUI()
+    {
+        //if (!btnTexture)
+        //{
+        //    Debug.Log("Check btnTexture");
+        //    return;
+        //}
+
+        //if (GUI.Button(new Rect(100, 100, 100, 100), btnTexture, "Add Tower"))
+        //{
+        //    addTower();
+        //}
+        if (GUI.Button(new Rect(0, 0, 100, 100), "Add Tower"))
+        {
+            AddRandomTower(0);
+        }
+    }
+
+    public void AddRandomTower(int tier, float x = 0, float y = 0)
+    {
+        int beg = 0, end = 0;
+
+        if (tier == 0)
+        {
+            beg = 0;
+            end = 5;
+        }
+        else if (tier == 1)
+        {
+            beg = 5;
+            end = 10;
+        }
+        else if (tier == 2)
+        {
+            beg = 10;
+            end = 15;
+        }
+
+        TowerManager tw = Instantiate(towers[Random.Range(beg, end)]) as TowerManager;
+        tw.transform.localPosition = new Vector2(x, y);
+        //tw.transform.localPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
     }
 }
