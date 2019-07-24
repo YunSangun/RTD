@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] RoadTiles;
     public GameObject[] Monsters;
 
-    public static readonly Vector2 START_POINT = new Vector2(-1.3f, 0);
+    public static readonly Vector2 START_POINT = new Vector2(-3f, -0.5f);
     public static readonly Vector2 REVISE = new Vector2(-4f, -4f) + START_POINT;
     public static readonly string PATH = "/Json/MapPath0.json";
 
