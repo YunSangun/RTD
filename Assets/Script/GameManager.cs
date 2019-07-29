@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Windows;
@@ -97,20 +98,28 @@ public enum ROAD_TYPE
 
 public class GameManager : MonoBehaviour
 {
+    public UIManager GameUI;
+    public GameObject BoardArea;
     public Texture btnTexture;
     public TowerManager[] towers;
     public GameObject[] Tiles;
     public GameObject[] RoadTiles;
     public GameObject[] Monsters;
 
-    public static readonly Vector2 START_POINT = new Vector2(-3f, -0.5f);
-    public static readonly Vector2 REVISE = new Vector2(-4f, -4f) + START_POINT;
+    public static Vector2 START_POINT;
+    public static Vector2 REVISE;
     public static readonly string PATH = "/Json/MapPath0.json";
 
     private GameBoard GameMap;
-    private int Stage;
-    private int Gold;
+    private GameObject Board;
+    private GameObject TowerList;
+    private GameObject MonsterList;
+    private int PlayerHP = 50;
+    private int Stage=1;
+    private int Gold=10;
     private int BuiltTower;
+    private int RemainMonster;
+    private bool beStarted=false;
     private List<GameObject> LiveMonsters=new List<GameObject>();
 
     private void MakeGameMap()//don't use
@@ -181,7 +190,7 @@ public class GameManager : MonoBehaviour
         path[3] = new List<Point>(info.path3);
         GameMap = new GameBoard(path);
     }
-    private void MakeMap()
+    private void MakeBoard()
     {
         Point prev = new Point();
         Point cur = new Point();
@@ -198,9 +207,9 @@ public class GameManager : MonoBehaviour
             if (prev.x == 0 && prev.y == 0)
             {
                 if (cur.x - next.x == 0)
-                    Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], location, Quaternion.Euler(0, 0, 0));
+                    Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], location, Quaternion.Euler(0, 0, 0),Board.transform);
                 else
-                    Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], location, Quaternion.Euler(0, 0, 90f));
+                    Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], location, Quaternion.Euler(0, 0, 90f), Board.transform);
                 continue;
             }
             var delta = next - prev;
@@ -209,17 +218,17 @@ public class GameManager : MonoBehaviour
             {
                 if (same.Count > 1)
                 {
-                    Instantiate(RoadTiles[(int)ROAD_TYPE.CROSS], location, Quaternion.Euler(0, 0, 0));
+                    Instantiate(RoadTiles[(int)ROAD_TYPE.CROSS], location, Quaternion.Euler(0, 0, 0), Board.transform);
                     continue;
                 }
-                Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], location, Quaternion.Euler(0, 0, 0));
+                Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], location, Quaternion.Euler(0, 0, 0), Board.transform);
                 continue;
             }
             if (delta.y == 0)
             {
                 if (same.Count > 1)
                     continue;
-                Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], location, Quaternion.Euler(0, 0, 90f));
+                Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], location, Quaternion.Euler(0, 0, 90f), Board.transform);
                 continue;
             }
             var before = cur - prev;
@@ -227,59 +236,84 @@ public class GameManager : MonoBehaviour
             if (before.x == 1)
             {
                 if (after.y == 1)
-                    Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 0));
+                    Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 0), Board.transform);
                 else
-                    Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 90f));
+                    Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 90f), Board.transform);
             }
             else if (before.x == -1)
             {
                 if (after.y == 1)
-                    Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 270f));
+                    Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 270f), Board.transform);
                 else
-                    Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 180f));
+                    Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 180f), Board.transform);
             }
             else
             {
                 if (before.y == 1)
                 {
                     if (after.x == 1)
-                        Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 180f));
+                        Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 180f), Board.transform);
                     else
-                        Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 90f));
+                        Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 90f), Board.transform);
                 }
                 else
                 {
                     if (after.x == 1)
-                        Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 270f));
+                        Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 270f), Board.transform);
                     else
-                        Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 0));
+                        Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 0), Board.transform);
                 }
             }
         }
         if ((cur - next).x == 0)
-            Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], next.ToVector() + REVISE, Quaternion.Euler(0, 0, 0));
+            Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], next.ToVector() + REVISE, Quaternion.Euler(0, 0, 0), Board.transform);
         else
-            Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], next.ToVector() + REVISE, Quaternion.Euler(0, 0, 90f));
+            Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], next.ToVector() + REVISE, Quaternion.Euler(0, 0, 90f), Board.transform);
         for (int i = 0; i < 9; ++i)
         {
             for (int j = 0; j < 9; ++j)
             {
                 if (GameMap[i, j] != TILE_TYPE.ROAD)
                 {
-                    Instantiate(Tiles[(int)GameMap[i, j]], new Vector2(i,j) + REVISE, Quaternion.Euler(0, 0, 0));
+                    Instantiate(Tiles[(int)GameMap[i, j]], new Vector2(i,j) + REVISE, Quaternion.Euler(0, 0, 0), Board.transform);
                 }
             }
         }
     }
     void Start()
     {
-        Stage = 1;
-        Gold = 10;
-        BuiltTower = 0;
+        START_POINT = BoardArea.transform.position;
+        REVISE = START_POINT - new Vector2(4f,4f);
+        Destroy(BoardArea);
+        Board = new GameObject() { name = "Tiles" };
+        TowerList = new GameObject() { name = "Towers" };
+        MonsterList = new GameObject() { name = "Monsters" };
         LoadMap();
-        MakeMap();
+        MakeBoard();
+        GameUI.StartButton.onClick.AddListener(RoundStart);
     }
-
+    public void RoundStart()
+    {
+        if (beStarted)
+            return;
+        beStarted = true;
+        int count = 10;
+        RemainMonster = count;
+        StartCoroutine(SpanMonster(count));
+    }
+    public IEnumerator SpanMonster(int count)
+    {
+        yield return new WaitForSeconds(0.2f);
+        for(int i = 0; i < count; ++i)
+        {
+            var monster = Instantiate<GameObject>(Monsters[(int)MONSTER_TYPE.COMMON], GameMap.EntryAt(0).ToVector3() + (Vector3)REVISE, Quaternion.Euler(0, 0, 0), MonsterList.transform);
+            var monsterController = monster.GetComponent<CommonMonsterController>();
+            monsterController.SetStatus(100, 3, 1, GameMap.DefaultPath);
+            monsterController.manager = this;
+            StartCoroutine(monsterController.Move());
+            yield return new WaitForSeconds(0.3f);
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -304,6 +338,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void MonsterArrive(int attack)
+    {
+        PlayerHP -= attack;
+        GameUI.LifeText.text = $"{PlayerHP}";
+        if (--RemainMonster == 0)
+            RoundEnd();
+    }
+    public void RoundEnd()
+    {
+        beStarted = false;
+        ++Stage;
+        GameUI.RoundText.text = $"ROUND {Stage:D3}";
+
+    }
     public void AddRandomTower(int tier, float x = 0, float y = 0)
     {
         int beg = 0, end = 0;
