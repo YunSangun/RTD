@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour
     public Button AddTowerButton;
     public Button FastButton;
     public Button StartButton;
+    public Button OptionButton;
+
     public void Fast()
     {
 
