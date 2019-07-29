@@ -474,6 +474,46 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1284164383430141396, guid: ba5f2b66990812046a4b1703ca6562ef,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284164383430141396, guid: ba5f2b66990812046a4b1703ca6562ef,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284164383430141396, guid: ba5f2b66990812046a4b1703ca6562ef,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284164383430141396, guid: ba5f2b66990812046a4b1703ca6562ef,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284164383430141396, guid: ba5f2b66990812046a4b1703ca6562ef,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284164383430141396, guid: ba5f2b66990812046a4b1703ca6562ef,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284164383430141396, guid: ba5f2b66990812046a4b1703ca6562ef,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284164383430141396, guid: ba5f2b66990812046a4b1703ca6562ef,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba5f2b66990812046a4b1703ca6562ef, type: 3}
 --- !u!1001 &1350218334
@@ -650,6 +690,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIManager
       objectReference: {fileID: 0}
+    - target: {fileID: 6020636632982654152, guid: 3e191630c2bd87e4aa6fb2d08679eef3,
+        type: 3}
+      propertyPath: LifeText
+      value: 
+      objectReference: {fileID: 895690891}
+    - target: {fileID: 6020636632982654152, guid: 3e191630c2bd87e4aa6fb2d08679eef3,
+        type: 3}
+      propertyPath: RoundText
+      value: 
+      objectReference: {fileID: 1050567597}
+    - target: {fileID: 6020636632982654152, guid: 3e191630c2bd87e4aa6fb2d08679eef3,
+        type: 3}
+      propertyPath: GoldText
+      value: 
+      objectReference: {fileID: 108340693}
+    - target: {fileID: 6020636632982654152, guid: 3e191630c2bd87e4aa6fb2d08679eef3,
+        type: 3}
+      propertyPath: AddTowerButton
+      value: 
+      objectReference: {fileID: 850975176}
+    - target: {fileID: 6020636632982654152, guid: 3e191630c2bd87e4aa6fb2d08679eef3,
+        type: 3}
+      propertyPath: FastButton
+      value: 
+      objectReference: {fileID: 301295617}
+    - target: {fileID: 6020636632982654152, guid: 3e191630c2bd87e4aa6fb2d08679eef3,
+        type: 3}
+      propertyPath: StartButton
+      value: 
+      objectReference: {fileID: 672630414}
+    - target: {fileID: 6020636632982654152, guid: 3e191630c2bd87e4aa6fb2d08679eef3,
+        type: 3}
+      propertyPath: OptionButton
+      value: 
+      objectReference: {fileID: 1462729048}
     - target: {fileID: 6020636631666671656, guid: 3e191630c2bd87e4aa6fb2d08679eef3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -705,40 +780,5 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6020636632982654152, guid: 3e191630c2bd87e4aa6fb2d08679eef3,
-        type: 3}
-      propertyPath: LifeText
-      value: 
-      objectReference: {fileID: 895690891}
-    - target: {fileID: 6020636632982654152, guid: 3e191630c2bd87e4aa6fb2d08679eef3,
-        type: 3}
-      propertyPath: RoundText
-      value: 
-      objectReference: {fileID: 1050567597}
-    - target: {fileID: 6020636632982654152, guid: 3e191630c2bd87e4aa6fb2d08679eef3,
-        type: 3}
-      propertyPath: GoldText
-      value: 
-      objectReference: {fileID: 108340693}
-    - target: {fileID: 6020636632982654152, guid: 3e191630c2bd87e4aa6fb2d08679eef3,
-        type: 3}
-      propertyPath: AddTowerButton
-      value: 
-      objectReference: {fileID: 850975176}
-    - target: {fileID: 6020636632982654152, guid: 3e191630c2bd87e4aa6fb2d08679eef3,
-        type: 3}
-      propertyPath: FastButton
-      value: 
-      objectReference: {fileID: 301295617}
-    - target: {fileID: 6020636632982654152, guid: 3e191630c2bd87e4aa6fb2d08679eef3,
-        type: 3}
-      propertyPath: StartButton
-      value: 
-      objectReference: {fileID: 672630414}
-    - target: {fileID: 6020636632982654152, guid: 3e191630c2bd87e4aa6fb2d08679eef3,
-        type: 3}
-      propertyPath: OptionButton
-      value: 
-      objectReference: {fileID: 1462729048}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e191630c2bd87e4aa6fb2d08679eef3, type: 3}

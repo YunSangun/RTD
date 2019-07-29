@@ -115,11 +115,13 @@ public class GameManager : MonoBehaviour
     private GameObject TowerList;
     private GameObject MonsterList;
     private int PlayerHP = 50;
-    private int Stage=1;
-    private int Gold=10;
+    private int Stage = 1;
+    private int Gold = 10;
     private int BuiltTower;
     private int RemainMonster;
-    private bool beStarted=false;
+    private bool beStarted = false;
+    //private bool isPaused = false;
+    private bool pauseState = false;
     private List<GameObject> LiveMonsters=new List<GameObject>();
 
     private void MakeGameMap()//don't use
@@ -292,6 +294,7 @@ public class GameManager : MonoBehaviour
         MakeBoard();
         GameUI.StartButton.onClick.AddListener(RoundStart);
         GameUI.AddTowerButton.onClick.AddListener(delegate { AddRandomTower(0); });
+        GameUI.OptionButton.onClick.AddListener(SetPause);
     }
     public void RoundStart()
     {
@@ -337,7 +340,39 @@ public class GameManager : MonoBehaviour
         //{
         //    AddRandomTower(0);
         //}
+
+        //if (isPaused)
+        //    GUI.Label(new Rect(100, 100, 50, 30), "Game paused");
     }
+
+    public void SetPause()
+    {
+        if (!pauseState)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1.0f;
+        }
+
+        pauseState ^= true;
+    }
+
+    //void OnApplicationPause(bool pauseStatus)
+    //{
+    //    if (pauseStatus)
+    //    {
+    //        isPaused = true;
+    //    }
+    //    else
+    //    {
+    //        if (isPaused)
+    //        {
+    //            isPaused = false;
+    //        }
+    //    }
+    //}
 
     public void MonsterArrive(int attack)
     {
