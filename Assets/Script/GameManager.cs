@@ -291,6 +291,7 @@ public class GameManager : MonoBehaviour
         LoadMap();
         MakeBoard();
         GameUI.StartButton.onClick.AddListener(RoundStart);
+        GameUI.AddTowerButton.onClick.AddListener(delegate { AddRandomTower(0); });
     }
     public void RoundStart()
     {
@@ -332,10 +333,10 @@ public class GameManager : MonoBehaviour
         //{
         //    addTower();
         //}
-        if (GUI.Button(new Rect(0, 0, 100, 100), "Add Tower"))
-        {
-            AddRandomTower(0);
-        }
+        //if (GUI.Button(new Rect(0, 0, 100, 100), "Add Tower"))
+        //{
+        //    AddRandomTower(0);
+        //}
     }
 
     public void MonsterArrive(int attack)
