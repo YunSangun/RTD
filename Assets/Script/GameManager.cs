@@ -11,7 +11,7 @@ public enum MONSTER_TYPE
 {
     COMMON
 }
-public enum ELEMENT_TYPE
+public enum TOWER_TYPE
 {
     NONE,
     FIRE,
@@ -98,29 +98,34 @@ public enum ROAD_TYPE
 
 public class GameManager : MonoBehaviour
 {
+    //외부 변수
     public UIManager GameUI;
     public GameObject BoardArea;
     public Texture btnTexture;
-    public TowerManager[] towers;
-    public GameObject[] Tiles;
-    public GameObject[] RoadTiles;
-    public GameObject[] Monsters;
-
+    public TowerManager[] TowerPrefabs;
+    public GameObject[] TilePrefabs;
+    public GameObject[] RoadTilePrefabs;
+    public GameObject[] MonsterPrefabs;
+    //
+    //상수
     public static Vector2 START_POINT;
     public static Vector2 REVISE;
     public static readonly string PATH = "/Json/MapPath0.json";
-
-    private GameBoard GameMap;
-    private GameObject Board;
+    //
+    //parent object
+    private GameObject TileList;
     private GameObject TowerList;
     private GameObject MonsterList;
+    //
+    //내부 변수
+    private GameBoard GameMap;
+    private GameObject[,] Tiles=new GameObject[9,9];
     private int PlayerHP = 50;
     private int Stage = 1;
     private int Gold = 10;
     private int BuiltTower;
     private int RemainMonster;
     private bool beStarted = false;
-    //private bool isPaused = false;
     private bool pauseState = false;
     private List<GameObject> LiveMonsters=new List<GameObject>();
 
@@ -194,100 +199,55 @@ public class GameManager : MonoBehaviour
     }
     private void MakeBoard()
     {
-        Point prev = new Point();
-        Point cur = new Point();
-        Point next = new Point();
         List<Point> mapPath=new List<Point>();
         foreach (var path in GameMap.DefaultPath)
             mapPath.AddRange(path);
-        for (int i = 0; i + 1 < mapPath.Count; ++i)
+
+        GameObject origin = RoadTilePrefabs[(int)ROAD_TYPE.STRAIGHT];
+        Vector2 location=mapPath[0].ToVector()+REVISE;
+        Quaternion rotate = Quaternion.Euler(0, 0, (mapPath[0].x == mapPath[1].x) ? 0 : 90f);
+        Tiles[mapPath[0].x, mapPath[0].y] = Instantiate(origin,location,rotate, TileList.transform);//첫번째 경로타일
+
+        for (int i = 1; i + 1 < mapPath.Count; ++i)
+            //2~n-1 경로타일
         {
-            prev = cur;
-            cur = mapPath[i];
-            next = mapPath[i + 1];
-            var location = cur.ToVector()+REVISE;
-            if (prev.x == 0 && prev.y == 0)
-            {
-                if (cur.x - next.x == 0)
-                    Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], location, Quaternion.Euler(0, 0, 0),Board.transform);
-                else
-                    Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], location, Quaternion.Euler(0, 0, 90f), Board.transform);
+            var prev = mapPath[i-1];
+            var cur = mapPath[i];
+            var next = mapPath[i + 1];
+            location = cur.ToVector()+REVISE;
+            bool overlab = mapPath.FindAll(p => p.Equals(cur)).Count==2;
+            bool straightY = (next - prev).x == 0 ;
+            bool straightX = (next - prev).y == 0;
+            bool beginX = (cur - prev).y == 0;
+            if (overlab && straightX)
                 continue;
-            }
-            var delta = next - prev;
-            var same = mapPath.FindAll(p => p.Equals(cur));
-            if (delta.x == 0)
-            {
-                if (same.Count > 1)
-                {
-                    Instantiate(RoadTiles[(int)ROAD_TYPE.CROSS], location, Quaternion.Euler(0, 0, 0), Board.transform);
-                    continue;
-                }
-                Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], location, Quaternion.Euler(0, 0, 0), Board.transform);
-                continue;
-            }
-            if (delta.y == 0)
-            {
-                if (same.Count > 1)
-                    continue;
-                Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], location, Quaternion.Euler(0, 0, 90f), Board.transform);
-                continue;
-            }
-            var before = cur - prev;
-            var after = next - cur;
-            if (before.x == 1)
-            {
-                if (after.y == 1)
-                    Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 0), Board.transform);
-                else
-                    Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 90f), Board.transform);
-            }
-            else if (before.x == -1)
-            {
-                if (after.y == 1)
-                    Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 270f), Board.transform);
-                else
-                    Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 180f), Board.transform);
-            }
-            else
-            {
-                if (before.y == 1)
-                {
-                    if (after.x == 1)
-                        Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 180f), Board.transform);
-                    else
-                        Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 90f), Board.transform);
-                }
-                else
-                {
-                    if (after.x == 1)
-                        Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 270f), Board.transform);
-                    else
-                        Instantiate(RoadTiles[(int)ROAD_TYPE.TURN], location, Quaternion.Euler(0, 0, 0), Board.transform);
-                }
-            }
+            origin = overlab ? RoadTilePrefabs[(int)ROAD_TYPE.CROSS] :
+                        straightX || straightY ? RoadTilePrefabs[(int)ROAD_TYPE.STRAIGHT] : RoadTilePrefabs[(int)ROAD_TYPE.TURN];
+            float angle = 0f;
+            angle = straightX ? 90f : straightY? 0:
+                        beginX ? (float)45*(3- (cur - prev).x*((next - cur).y + 2)): (float)45 * (3 + (next - cur).x * (2- (cur - prev).y));
+            rotate = Quaternion.Euler(0, 0, angle);
+
+            Tiles[cur.x, cur.y] = Instantiate(origin, location, rotate, TileList.transform);
+
         }
-        if ((cur - next).x == 0)
-            Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], next.ToVector() + REVISE, Quaternion.Euler(0, 0, 0), Board.transform);
-        else
-            Instantiate(RoadTiles[(int)ROAD_TYPE.STRAIGHT], next.ToVector() + REVISE, Quaternion.Euler(0, 0, 90f), Board.transform);
-        for (int i = 0; i < 9; ++i)
-        {
+
+        origin = RoadTilePrefabs[(int)ROAD_TYPE.STRAIGHT];
+        location = mapPath[mapPath.Count - 1].ToVector() + REVISE;
+        rotate = mapPath[mapPath.Count - 1].x == mapPath[mapPath.Count - 2].x ? Quaternion.Euler(0, 0, 0) : Quaternion.Euler(0, 0, 90f);
+        Tiles[mapPath[mapPath.Count - 1].x, mapPath[mapPath.Count - 1].y] = Instantiate(origin, location, rotate, TileList.transform);//마지막 경로 타일
+       
+        for (int i = 0; i < 9; ++i)//경로 외 속성타일
             for (int j = 0; j < 9; ++j)
-            {
                 if (GameMap[i, j] != TILE_TYPE.ROAD)
-                {
-                    Instantiate(Tiles[(int)GameMap[i, j]], new Vector2(i,j) + REVISE, Quaternion.Euler(0, 0, 0), Board.transform);
-                }
-            }
-        }
+                    Tiles[i,j]=Instantiate(TilePrefabs[(int)GameMap[i, j]], new Vector2(i,j) + REVISE, Quaternion.Euler(0, 0, 0), TileList.transform);
     }
     void Start()
     {
         START_POINT = BoardArea.transform.position;
         REVISE = START_POINT - new Vector2(4f,4f);
         Destroy(BoardArea);
-        Board = new GameObject() { name = "Tiles" };
+        TileList = new GameObject() { name = "Tiles" };
         TowerList = new GameObject() { name = "Towers" };
         MonsterList = new GameObject() { name = "Monsters" };
         LoadMap();
@@ -310,7 +270,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         for(int i = 0; i < count; ++i)
         {
-            var monster = Instantiate<GameObject>(Monsters[(int)MONSTER_TYPE.COMMON], GameMap.EntryAt(0).ToVector3() + (Vector3)REVISE, Quaternion.Euler(0, 0, 0), MonsterList.transform);
+            var monster = Instantiate<GameObject>(MonsterPrefabs[(int)MONSTER_TYPE.COMMON], GameMap.EntryAt(0).ToVector3() + (Vector3)REVISE, Quaternion.Euler(0, 0, 0), MonsterList.transform);
             var monsterController = monster.GetComponent<CommonMonsterController>();
             monsterController.SetStatus(100, 3, 1, GameMap.DefaultPath);
             monsterController.manager = this;
@@ -408,7 +368,7 @@ public class GameManager : MonoBehaviour
             end = 15;
         }
 
-        TowerManager tw = Instantiate(towers[Random.Range(beg, end)]) as TowerManager;
+        TowerManager tw = Instantiate(TowerPrefabs[Random.Range(beg, end)]) as TowerManager;
         tw.transform.localPosition = new Vector2(x, y);
         //tw.transform.localPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
     }

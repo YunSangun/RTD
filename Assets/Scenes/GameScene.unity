@@ -474,46 +474,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1284164383430141396, guid: ba5f2b66990812046a4b1703ca6562ef,
-        type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1284164383430141396, guid: ba5f2b66990812046a4b1703ca6562ef,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1284164383430141396, guid: ba5f2b66990812046a4b1703ca6562ef,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1284164383430141396, guid: ba5f2b66990812046a4b1703ca6562ef,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1284164383430141396, guid: ba5f2b66990812046a4b1703ca6562ef,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -50
-      objectReference: {fileID: 0}
-    - target: {fileID: 1284164383430141396, guid: ba5f2b66990812046a4b1703ca6562ef,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -100
-      objectReference: {fileID: 0}
-    - target: {fileID: 1284164383430141396, guid: ba5f2b66990812046a4b1703ca6562ef,
-        type: 3}
-      propertyPath: m_Pivot.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1284164383430141396, guid: ba5f2b66990812046a4b1703ca6562ef,
-        type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba5f2b66990812046a4b1703ca6562ef, type: 3}
 --- !u!1001 &1350218334
@@ -585,19 +545,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5062899113851145362, guid: 634d0d1c7dfee5b4ca3e0355fac5187c,
         type: 3}
-      propertyPath: BoardArea
-      value: 
-      objectReference: {fileID: 692803899}
-    - target: {fileID: 5062899113851145362, guid: 634d0d1c7dfee5b4ca3e0355fac5187c,
-        type: 3}
-      propertyPath: UImanager
-      value: 
-      objectReference: {fileID: 663973093}
-    - target: {fileID: 5062899113851145362, guid: 634d0d1c7dfee5b4ca3e0355fac5187c,
-        type: 3}
       propertyPath: GameUI
       value: 
       objectReference: {fileID: 663973093}
+    - target: {fileID: 5062899113851145362, guid: 634d0d1c7dfee5b4ca3e0355fac5187c,
+        type: 3}
+      propertyPath: BoardArea
+      value: 
+      objectReference: {fileID: 692803899}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 634d0d1c7dfee5b4ca3e0355fac5187c, type: 3}
 --- !u!1 &1451374660

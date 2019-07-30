@@ -515,7 +515,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ROUND 000
+  m_Text: ROUND 001
 --- !u!1 &1284164382536478787
 GameObject:
   m_ObjectHideFlags: 0
@@ -995,11 +995,11 @@ RectTransform:
   m_Father: {fileID: 1284164382046044851}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 535.8, y: -334.9}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -50, y: -100}
   m_SizeDelta: {x: 193, y: 30}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &1284164383430141395
 CanvasRenderer:
   m_ObjectHideFlags: 0
