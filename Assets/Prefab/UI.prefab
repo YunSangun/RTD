@@ -270,6 +270,7 @@ GameObject:
   - component: {fileID: 1284164382046044848}
   - component: {fileID: 1284164382046044849}
   - component: {fileID: 1284164382046044850}
+  - component: {fileID: 5409653052487158654}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -363,6 +364,25 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &5409653052487158654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1284164382046044852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a74e9399de417f64eaeccd66ebfca58e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LifeText: {fileID: 1284164381809797458}
+  RoundText: {fileID: 1284164383363277722}
+  GoldText: {fileID: 1284164381683026794}
+  AddTowerButton: {fileID: 1284164381600554255}
+  FastButton: {fileID: 1284164383058464258}
+  StartButton: {fileID: 1284164381542884243}
+  OptionButton: {fileID: 8183895236124063811}
 --- !u!1 &1284164382140898054
 GameObject:
   m_ObjectHideFlags: 0

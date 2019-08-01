@@ -1,27 +1,65 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class MonsterController : MonoBehaviour
 {
     public GameManager manager;
-    public float MaxHP { get; set; }
-    public float HP { get; set; }
-    public float Speed { get; set; }
-    public int Attack { get; set; }
-    public List<Point>[] MovePath { get; set; }
+    private float MaxHP;
+    private float HP;
+    private float Speed;
+    private int Attack;
+    private List<Point> MovePath;
+    private float dist = 0f;
+    private float Alldist = 0f;
+    private int index = 1;
 
-    public void SetStatus(float maxHP, float speed, int attack, List<Point>[] path)
+    public void SetStatus(float maxHP, float speed, int attack, List<Point> path)
     {
         this.MaxHP = maxHP;
         this.HP = maxHP;
         this.Speed = speed;
         this.Attack = attack;
-        this.MovePath = new List<Point>[4];
-        for (int i = 0; i < 4; ++i)
-            this.MovePath[i] = new List<Point>(path[i]);
+        this.MovePath = new List<Point>(path);
     }
-
+    public void Start()
+    {
+        var startPoint = this.MovePath[0];
+        transform.position = startPoint.ToVector() + (this.MovePath[1] - startPoint).ToVector() / 2 + GameManager.REVISE;
+    }
+    public void Update()
+    {
+        dist += this.Speed * Time.deltaTime;
+        Alldist += this.Speed * Time.deltaTime;
+        if (dist >= 1f)
+        {
+            if (++index == MovePath.Count - 1)
+            {
+                manager.MonsterArrive(this.Attack);
+                Destroy(gameObject);
+                return;
+            }
+            dist -= 1f;
+        }
+        Point prevDir=MovePath[index]-MovePath[index-1];
+        Point nextDir=MovePath[index+1]-MovePath[index];
+        if (Math.Abs(prevDir.x) > 1)
+            prevDir.x /= -8;
+        else if(Math.Abs(prevDir.y) > 1)
+            prevDir.y /= -8;
+        if (Math.Abs(nextDir.x) > 1)
+            nextDir.x /= -8;
+        else if (Math.Abs(nextDir.y) > 1)
+            nextDir.y /= -8;
+        Vector3 position= MovePath[index].ToVector() + GameManager.REVISE;
+        if (dist <= 0.5f)
+            position -= (0.5f - dist) * prevDir.ToVector3();
+        else
+            position += (dist - 0.5f) * nextDir.ToVector3();
+        transform.position = position;
+    }
+    /*
     public IEnumerator Move()
     {
 
@@ -86,7 +124,6 @@ public abstract class MonsterController : MonoBehaviour
                 yield return null;
             }
         }
-        manager.MonsterArrive(this.Attack);
-        Destroy(gameObject);
-    }
+        
+    }*/
 }

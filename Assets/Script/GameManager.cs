@@ -125,10 +125,15 @@ public class GameManager : MonoBehaviour
     private int Gold = 10;
     private int BuiltTower;
     private int RemainMonster;
+    private int spanCount;
+    private int maxSpanCount;
+    private float span = 0f;
+    private float spanTime = 0.3f;
     private bool beStarted = false;
     private bool pauseState = false;
+    private List<Point> roundPath;
     private List<GameObject> LiveMonsters=new List<GameObject>();
-
+    //
     private void MakeGameMap()//don't use
     {
         var path = new List<Point>[4];
@@ -171,7 +176,7 @@ public class GameManager : MonoBehaviour
         path[3].Add(new Point(2, 6));
         path[3].Add(new Point(2, 7));
         path[3].Add(new Point(2, 8));
-        var info = new MapInfo();
+        var info = new MapFileInfo();
         info.path0 = path[0].ToArray();
         info.path1 = path[1].ToArray();
         info.path2 = path[2].ToArray();
@@ -189,13 +194,8 @@ public class GameManager : MonoBehaviour
         var sr = new StreamReader(file);
         var jsonstr = sr.ReadToEnd();
         sr.Close();
-        var info = JsonUtility.FromJson<MapInfo>(jsonstr);
-        var path = new List<Point>[4];
-        path[0] = new List<Point>(info.path0);
-        path[1] = new List<Point>(info.path1);
-        path[2] = new List<Point>(info.path2);
-        path[3] = new List<Point>(info.path3);
-        GameMap = new GameBoard(path);
+        var info = JsonUtility.FromJson<MapFileInfo>(jsonstr); 
+        GameMap = new GameBoard(new MapInfo(info));
     }
     private void MakeBoard()
     {
@@ -262,26 +262,33 @@ public class GameManager : MonoBehaviour
             return;
         beStarted = true;
         int count = 10;
+        maxSpanCount = count;
         RemainMonster = count;
-        StartCoroutine(SpanMonster(count));
+        spanCount = 0;
+        roundPath = GameMap.PathAt(Random.Range(0, 8));
     }
-    public IEnumerator SpanMonster(int count)
+    public void SpanMonster()
     {
-        yield return new WaitForSeconds(0.2f);
-        for(int i = 0; i < count; ++i)
-        {
-            var monster = Instantiate<GameObject>(MonsterPrefabs[(int)MONSTER_TYPE.COMMON], GameMap.EntryAt(0).ToVector3() + (Vector3)REVISE, Quaternion.Euler(0, 0, 0), MonsterList.transform);
-            var monsterController = monster.GetComponent<CommonMonsterController>();
-            monsterController.SetStatus(100, 3, 1, GameMap.DefaultPath);
-            monsterController.manager = this;
-            StartCoroutine(monsterController.Move());
-            yield return new WaitForSeconds(0.3f);
-        }
+
+        var monster = Instantiate<GameObject>(MonsterPrefabs[(int)MONSTER_TYPE.COMMON], GameMap.EntryAt(0).ToVector3() + (Vector3)REVISE, Quaternion.Euler(0, 0, 0), MonsterList.transform);
+        var monsterController = monster.GetComponent<CommonMonsterController>();
+        monsterController.SetStatus(100, 3, 1, roundPath);
+        monsterController.manager = this;
+
     }
 
     void Update()
     {
-
+        if (beStarted&&spanCount<maxSpanCount)
+        {
+            span += Time.deltaTime;
+            if (span >= spanTime)
+            {
+                ++spanCount;
+                span -= spanTime;
+                SpanMonster();
+            }
+        }
     }
 
     void OnGUI()
