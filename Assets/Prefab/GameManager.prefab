@@ -68,7 +68,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2a93a846c9c080b468cefb83933198c7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5c15065d02b951342afedefa5f2ce0d4, type: 3}
   m_Color: {r: 1, g: 0.9817516, b: 0.7216981, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -126,7 +126,12 @@ MonoBehaviour:
   BoardArea: {fileID: 692803899}
   SelectMask: {fileID: 8976441595491145634, guid: 26dbaf7f753f6b642b45a2ab4f4f904d,
     type: 3}
-  TowerPrefabs: []
+  TowerPrefabs:
+  - {fileID: 7446120922021192311, guid: 9d1c0d0c7fe285841b8be7f4d8896d1d, type: 3}
+  - {fileID: 5071441563257700460, guid: 8b004c444efea4e4abbf598b29a77181, type: 3}
+  - {fileID: 7583203716604418343, guid: 890b8270dbcd65b4096b380ef4af95a1, type: 3}
+  - {fileID: 683612451543291174, guid: 51def8db76391654e91a6e4272961707, type: 3}
+  - {fileID: 2655779669433057948, guid: 6b2c256910fc1e24b9ee4e6c8dff0a80, type: 3}
   TilePrefabs:
   - {fileID: 3415797936730248248, guid: eb4f1291df4d4ff42b9ba0c8cbae2cac, type: 3}
   - {fileID: 2419619200456740624, guid: 6004b1ec636a4da4eb924b6e3894ca82, type: 3}

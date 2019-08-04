@@ -4,12 +4,31 @@ using UnityEngine;
 
 public class TowerManager : MonoBehaviour
 {
+    public Sprite[] Texture;
     public float attack = 1.0f;
     public float range = 1.0f;
     public float delayTime = 0.0f;
+    private int tier = 1;
+    public TileController BaseTile { get; set; }
+    public int Tier
+    {
+        get { return this.tier; }
+        set
+        {
+            GetComponent<SpriteRenderer>().sprite = Texture[value - 1];
+            this.tier = value;
+        }
+    }
 
-    public int tier = 1;
-
+    public void UpgradeTower()
+    {
+        var tw = Instantiate(GameManager.Inst.TowerPrefabs[Random.Range(0, 5)]) as TowerManager;
+        BaseTile.BuiltTower = tw;
+        tw.transform.position = BaseTile.transform.position;
+        tw.Tier = tier+1;
+        tw.BaseTile = BaseTile;
+        Destroy(gameObject);
+    }
     void Start()
     {
         
@@ -27,6 +46,7 @@ public class TowerManager : MonoBehaviour
         //Debug.Log("OnMouseDown");
 
         firstPosition = this.transform.position;
+        GameManager.Inst.TileSelect(BaseTile);
     }
 
     private void OnMouseUp()
@@ -37,26 +57,27 @@ public class TowerManager : MonoBehaviour
         OnOffCollider();
 
         Vector2 pos = this.transform.position;
-        Ray2D ray = new Ray2D(pos, Vector2.zero);
-        RaycastHit2D rayHit = Physics2D.Raycast(ray.origin, ray.direction);
+        RaycastHit2D rayHit = Physics2D.Raycast(pos, Vector2.zero);
 
         //this.gameObject.GetComponent<CircleCollider2D>().enabled = true;
         OnOffCollider();
 
-        if (rayHit.collider != null && (this.tier == rayHit.collider.gameObject.GetComponent<TowerManager>().tier))
+        if (rayHit.collider != null&&rayHit.collider.CompareTag("Tower"))
         {
-            float x = this.transform.position.x;
-            float y = this.transform.position.y;
-
+            var tw = rayHit.collider.gameObject.GetComponent<TowerManager>();
+            if (Tier != tw.Tier || Tier > 2)
+            {
+                this.transform.position = firstPosition;
+                return;
+            }
             Debug.Log(rayHit.collider.gameObject.name);
-            Destroy(rayHit.collider.gameObject);
+            BaseTile.BuiltTower = null;
             Destroy(this.gameObject);
-
-            GameObject.Find("GameManager").GetComponent<GameManager>().AddRandomTower(tier, x, y);
+            tw.UpgradeTower();
         }
         else
         {
-            //this.transform.position = firstPosition;
+            this.transform.position = firstPosition;
         }
     }
 
@@ -72,13 +93,6 @@ public class TowerManager : MonoBehaviour
 
     void OnOffCollider()
     {
-        if(tier == 1 || tier == 3)
-        {
-            this.gameObject.GetComponent<CircleCollider2D>().enabled ^= true;
-        }
-        else if(tier == 2)
-        {
             this.gameObject.GetComponent<BoxCollider2D>().enabled ^= true;
-        }
     }
 }

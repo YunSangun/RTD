@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
 
         }
     }
-    //
+    
     //외부 변수
     public GameObject BoardArea;
     public GameObject SelectMask;
@@ -117,17 +117,17 @@ public class GameManager : MonoBehaviour
     public GameObject[] TilePrefabs;
     public GameObject[] RoadTilePrefabs;
     public GameObject[] MonsterPrefabs;
-    //
+    
     //상수
     public static Vector2 START_POINT; // 보드의 중심
     public static Vector2 REVISE;      // 0,0 타일의 좌표
     public static readonly string PATH = "/Json/MapPath0.json";
-    //
+    
     //parent object
     private GameObject TileList;
     private GameObject TowerList;
     private GameObject MonsterList;
-    //
+    
     //내부 변수
     private GameBoard GameMap;
     private TileController[,] Tiles=new TileController[9,9];
@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour
     private bool started = false;
     private bool pauseState = false;
     private List<Point> roundPath;     //이번 라운드의 몬스터 진행 경로
-    //
+    
     //내부 속성
     private int Gold
     {
@@ -181,7 +181,7 @@ public class GameManager : MonoBehaviour
             UIManager.Inst.LifeText.text = $"{this.playerHP:D2}";
         }
     }
-    //
+    
     //유니티 이벤트
     void Awake()
     {
@@ -193,7 +193,7 @@ public class GameManager : MonoBehaviour
         GameManager.REVISE = START_POINT - new Vector2(4f,4f); //0,0 설정
         PlayerHP = 50;
         Round = 1;
-        Gold = 10;
+        Gold = 1000;
         //parent 객체 설정
         Destroy(BoardArea);
         TileList = new GameObject() { name = "Tiles" };
@@ -204,7 +204,7 @@ public class GameManager : MonoBehaviour
         MakeBoard();
         //버튼 이벤트 할당
         UIManager.Inst.StartButton.onClick.AddListener(RoundStart);
-        UIManager.Inst.AddTowerButton.onClick.AddListener(delegate { AddRandomTower(0); });
+        UIManager.Inst.AddTowerButton.onClick.AddListener(delegate { AddRandomTower(1); });
         UIManager.Inst.OptionButton.onClick.AddListener(SetPause);
         //
     }
@@ -271,7 +271,7 @@ public class GameManager : MonoBehaviour
         //if (isPaused)
         //    GUI.Label(new Rect(100, 100, 50, 30), "Game paused");
     }
-    //
+    
     //내부 함수
     private void MakeGameMap()//not use
     {
@@ -396,7 +396,9 @@ public class GameManager : MonoBehaviour
         .GetComponent<CommonMonsterController>().SetStatus(100, 3, 1, roundPath);
         //
     }
-    private void TileSelect(TileController tc)
+
+    //외부 함수
+    public void TileSelect(TileController tc)
     {
 
         if (SelectedTile != null)
@@ -410,8 +412,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    //
-    //외부 함수
     public void SetPause()
     {
         if (!pauseState)
@@ -445,29 +445,21 @@ public class GameManager : MonoBehaviour
         roundPath = GameMap.PathAt(Random.Range(0, 8));
         //
     }
-    public void AddRandomTower(int tier, float x = 0, float y = 0)
+    public void AddRandomTower(int tier)
     {
-        int beg = 0, end = 0;
+        if (SelectedTile == null)
+            return;
+        if (SelectedTile.BuiltTower != null)
+            return;
+        if (Gold < 10)
+            return;
+        Gold -= 10;
+        TowerManager tw = Instantiate(TowerPrefabs[Random.Range(0, 5)]) as TowerManager;
+        SelectedTile.BuiltTower = tw;
+        tw.transform.position = SelectedTile.transform.position;
+        tw.Tier = tier;
+        tw.BaseTile = SelectedTile;
 
-        if (tier == 0)
-        {
-            beg = 0;
-            end = 5;
-        }
-        else if (tier == 1)
-        {
-            beg = 5;
-            end = 10;
-        }
-        else if (tier == 2)
-        {
-            beg = 10;
-            end = 15;
-        }
-
-        TowerManager tw = Instantiate(TowerPrefabs[Random.Range(beg, end)]) as TowerManager;
-        tw.transform.localPosition = new Vector2(x, y);
-        //tw.transform.localPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
     }
     //
 }
