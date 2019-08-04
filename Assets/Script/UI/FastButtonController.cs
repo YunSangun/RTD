@@ -3,22 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class FastButtonController : MonoBehaviour, IPointerClickHandler
+public class FastButtonController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
 {
     public float TimeScale = 4f;
-    private bool clicked = false;
-    public void OnPointerClick(PointerEventData eventData)
+    private bool downed = false;
+    public void OnPointerDown(PointerEventData eventData)
     {
-        if (clicked)
-        {
-            Time.timeScale = 1f;
-            clicked = false;
-        }
-        else
+        if (!downed)
         {
             Time.timeScale = TimeScale;
-            clicked = true;
+            downed = true;
+        }
+    }
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (downed)
+        {
+            Time.timeScale = 1f;
+            downed = false;
         }
     }
 

@@ -5,6 +5,14 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    private static UIManager inst;
+    public static UIManager Inst
+    {
+        get
+        {
+            return UIManager.inst;
+        }
+    }
     public Text LifeText;
     public Text RoundText;
     public Text GoldText;
@@ -13,19 +21,8 @@ public class UIManager : MonoBehaviour
     public Button StartButton;
     public Button OptionButton;
 
-    public void Fast()
+    private void Awake()
     {
-
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        UIManager.inst = this;
     }
 }

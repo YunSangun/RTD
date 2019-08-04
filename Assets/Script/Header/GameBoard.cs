@@ -85,16 +85,6 @@ public class GameBoard
             return board[x, y];
         }
     }
-    public List<Point>[] DefaultPath
-    {
-        get
-        {
-            var tmp = new List<Point>[4];
-            for (int i = 0; i < 4; ++i)
-                tmp[i] = new List<Point>(map.path[i]);
-            return tmp;
-        }
-    }
     public GameBoard(MapInfo info)
     {
         this.board = new TILE_TYPE[9, 9];
@@ -163,5 +153,9 @@ public class GameBoard
             tmp.Add(new Point(tmp[1].x, -1));
         }
         return tmp;
+    }
+    public List<Point> ToList()
+    {
+        return map.ToList();
     }
 }

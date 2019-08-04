@@ -38,7 +38,7 @@ public enum ROAD_TYPE
     CROSS
 }
 
-[Serializable]public struct Point :ICloneable
+[Serializable]public struct Point//(x,y)구조체
 {
     public int x;
     public int y;
@@ -47,9 +47,10 @@ public enum ROAD_TYPE
         this.x = x;
         this.y = y;
     }
-    public object Clone()
+    public Point(Point p)
     {
-        return new Point(this.x, this.y);
+        this.x = p.x;
+        this.y = p.y;
     }
     public static Point operator+(Point p1, Point p2)
     {
@@ -98,18 +99,28 @@ public enum ROAD_TYPE
 
 public class GameManager : MonoBehaviour
 {
+    //singeton
+    private static GameManager inst;
+    public static GameManager Inst
+    {
+        get
+        {
+            return GameManager.inst;
+
+        }
+    }
+    //
     //외부 변수
-    public UIManager GameUI;
     public GameObject BoardArea;
-    public Texture btnTexture;
+    public GameObject SelectMask;
     public TowerManager[] TowerPrefabs;
     public GameObject[] TilePrefabs;
     public GameObject[] RoadTilePrefabs;
     public GameObject[] MonsterPrefabs;
     //
     //상수
-    public static Vector2 START_POINT;
-    public static Vector2 REVISE;
+    public static Vector2 START_POINT; // 보드의 중심
+    public static Vector2 REVISE;      // 0,0 타일의 좌표
     public static readonly string PATH = "/Json/MapPath0.json";
     //
     //parent object
@@ -119,22 +130,150 @@ public class GameManager : MonoBehaviour
     //
     //내부 변수
     private GameBoard GameMap;
-    private GameObject[,] Tiles=new GameObject[9,9];
-    private int PlayerHP = 50;
-    private int Stage = 1;
-    private int Gold = 10;
-    private int BuiltTower;
-    private int RemainMonster;
-    private int spanCount;
-    private int maxSpanCount;
-    private float span = 0f;
-    private float spanTime = 0.3f;
-    private bool beStarted = false;
+    private TileController[,] Tiles=new TileController[9,9];
+    private TileController SelectedTile=null;
+    private int playerHP;
+    private int round;
+    private int gold;
+    private int BuiltTowers;   //설치된 타워 수
+    private int RemainMonster; //보드에 남은 몬스터
+    private int RemainSpan;    //남은 몬스터 스폰 횟수
+    private float SpanTime = 0f;       //스폰 시간
+    private float IntervalSpan = 0.3f; //스폰 간격
+    private bool started = false;
     private bool pauseState = false;
-    private List<Point> roundPath;
-    private List<GameObject> LiveMonsters=new List<GameObject>();
+    private List<Point> roundPath;     //이번 라운드의 몬스터 진행 경로
     //
-    private void MakeGameMap()//don't use
+    //내부 속성
+    private int Gold
+    {
+        get
+        {
+            return this.gold;
+        }
+        set
+        {
+            this.gold = value;
+            UIManager.Inst.GoldText.text = $"GOLD : {this.gold:D8}";
+        }
+    }
+    private int Round
+    {
+        get
+        {
+            return this.round;
+        }
+        set
+        {
+            this.round = value;
+            UIManager.Inst.RoundText.text = $"ROUND {this.round:D3}";
+        }
+    }
+    private int PlayerHP
+    {
+        get
+        {
+            return this.playerHP;
+        }
+        set
+        {
+            this.playerHP = value;
+            UIManager.Inst.LifeText.text = $"{this.playerHP:D2}";
+        }
+    }
+    //
+    //유니티 이벤트
+    void Awake()
+    {
+        GameManager.inst = this;//싱글톤 초기화
+    }
+    void Start()
+    {
+        START_POINT = BoardArea.transform.position; //중점 설정
+        GameManager.REVISE = START_POINT - new Vector2(4f,4f); //0,0 설정
+        PlayerHP = 50;
+        Round = 1;
+        Gold = 10;
+        //parent 객체 설정
+        Destroy(BoardArea);
+        TileList = new GameObject() { name = "Tiles" };
+        TowerList = new GameObject() { name = "Towers" };
+        MonsterList = new GameObject() { name = "Monsters" };
+        //
+        LoadMap();
+        MakeBoard();
+        //버튼 이벤트 할당
+        UIManager.Inst.StartButton.onClick.AddListener(RoundStart);
+        UIManager.Inst.AddTowerButton.onClick.AddListener(delegate { AddRandomTower(0); });
+        UIManager.Inst.OptionButton.onClick.AddListener(SetPause);
+        //
+    }
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var hit = Physics2D.Raycast(pos, Vector2.zero, 0f);
+            if (hit.collider != null)
+            {
+                var obj = hit.collider.gameObject;
+                if (obj.CompareTag("Tile"))
+                    TileSelect(obj.GetComponent<TileController>());
+            }
+        }
+    }
+    void FixedUpdate()
+    {
+        //IntervalSpan 마다 몬스터 스폰
+        if (started && RemainSpan != 0)
+        {
+            SpanTime += Time.deltaTime;
+            if (SpanTime >= IntervalSpan)
+            {
+                --RemainSpan;
+                SpanTime -= IntervalSpan;
+                SpanMonster();
+            }
+        }
+        //
+    }
+    //void OnApplicationPause(bool pauseStatus)
+    //{
+    //    if (pauseStatus)
+    //    {
+    //        isPaused = true;
+    //    }
+    //    else
+    //    {
+    //        if (isPaused)
+    //        {
+    //            isPaused = false;
+    //        }
+    //    }
+    //}
+    void OnGUI()
+    {
+        //if (!btnTexture)
+        //{
+        //    Debug.Log("Check btnTexture");
+        //    return;
+        //}
+
+        //if (GUI.Button(new Rect(100, 100, 100, 100), btnTexture, "Add Tower"))
+        //{
+        //    addTower();
+        //}
+        //if (GUI.Button(new Rect(0, 0, 100, 100), "Add Tower"))
+        //{
+        //    AddRandomTower(0);
+        //}
+
+        //if (isPaused)
+        //    GUI.Label(new Rect(100, 100, 50, 30), "Game paused");
+    }
+    //
+    //내부 함수
+    private void MakeGameMap()//not use
     {
         var path = new List<Point>[4];
         for (int i = 0; i < 4; ++i)
@@ -182,7 +321,7 @@ public class GameManager : MonoBehaviour
         info.path2 = path[2].ToArray();
         info.path3 = path[3].ToArray();
         var jsonstr = JsonUtility.ToJson(info);
-        var file = new FileStream(Application.dataPath + PATH,FileMode.OpenOrCreate);
+        var file = new FileStream(Application.dataPath + GameManager.PATH, FileMode.OpenOrCreate);
         var sw = new StreamWriter(file);
         sw.Write(jsonstr);
         sw.Close();
@@ -190,33 +329,33 @@ public class GameManager : MonoBehaviour
     }
     private void LoadMap()
     {
-        var file = new FileStream(Application.dataPath + PATH, FileMode.Open);
+        var file = new FileStream(Application.dataPath + GameManager.PATH, FileMode.Open);
         var sr = new StreamReader(file);
         var jsonstr = sr.ReadToEnd();
         sr.Close();
-        var info = JsonUtility.FromJson<MapFileInfo>(jsonstr); 
+        var info = JsonUtility.FromJson<MapFileInfo>(jsonstr);
         GameMap = new GameBoard(new MapInfo(info));
     }
     private void MakeBoard()
     {
-        List<Point> mapPath=new List<Point>();
-        foreach (var path in GameMap.DefaultPath)
-            mapPath.AddRange(path);
-
+        //첫번째 경로 타일
+        List<Point> mapPath = GameMap.ToList();
         GameObject origin = RoadTilePrefabs[(int)ROAD_TYPE.STRAIGHT];
-        Vector2 location=mapPath[0].ToVector()+REVISE;
+        Vector2 location = mapPath[0].ToVector() + GameManager.REVISE;
         Quaternion rotate = Quaternion.Euler(0, 0, (mapPath[0].x == mapPath[1].x) ? 0 : 90f);
-        Tiles[mapPath[0].x, mapPath[0].y] = Instantiate(origin,location,rotate, TileList.transform);//첫번째 경로타일
-
+        var tc = Instantiate(origin, location, rotate, TileList.transform).GetComponent<TileController>();
+        Tiles[mapPath[0].x, mapPath[0].y] = tc;
+        tc.SetStatus(TILE_TYPE.ROAD, mapPath[0]);
+        //
+        //2~n-1 경로타일
         for (int i = 1; i + 1 < mapPath.Count; ++i)
-            //2~n-1 경로타일
         {
-            var prev = mapPath[i-1];
+            var prev = mapPath[i - 1];
             var cur = mapPath[i];
             var next = mapPath[i + 1];
-            location = cur.ToVector()+REVISE;
-            bool overlab = mapPath.FindAll(p => p.Equals(cur)).Count==2;
-            bool straightY = (next - prev).x == 0 ;
+            location = cur.ToVector() + GameManager.REVISE;
+            bool overlab = mapPath.FindAll(p => p.Equals(cur)).Count == 2;
+            bool straightY = (next - prev).x == 0;
             bool straightX = (next - prev).y == 0;
             bool beginX = (cur - prev).y == 0;
             if (overlab && straightX)
@@ -224,94 +363,55 @@ public class GameManager : MonoBehaviour
             origin = overlab ? RoadTilePrefabs[(int)ROAD_TYPE.CROSS] :
                         straightX || straightY ? RoadTilePrefabs[(int)ROAD_TYPE.STRAIGHT] : RoadTilePrefabs[(int)ROAD_TYPE.TURN];
             float angle = 0f;
-            angle = straightX ? 90f : straightY? 0:
-                        beginX ? (float)45*(3- (cur - prev).x*((next - cur).y + 2)): (float)45 * (3 + (next - cur).x * (2- (cur - prev).y));
+            angle = straightX ? 90f : straightY ? 0 :
+                        beginX ? (float)45 * (3 - (cur - prev).x * ((next - cur).y + 2)) : (float)45 * (3 + (next - cur).x * (2 - (cur - prev).y));
             rotate = Quaternion.Euler(0, 0, angle);
 
-            Tiles[cur.x, cur.y] = Instantiate(origin, location, rotate, TileList.transform);
+            Tiles[cur.x, cur.y] = Instantiate(origin, location, rotate, TileList.transform).GetComponent<TileController>();
+            Tiles[cur.x, cur.y].SetStatus(TILE_TYPE.ROAD, cur);
 
         }
-
+        //
+        //마지막 경로 타일
         origin = RoadTilePrefabs[(int)ROAD_TYPE.STRAIGHT];
-        location = mapPath[mapPath.Count - 1].ToVector() + REVISE;
+        location = mapPath[mapPath.Count - 1].ToVector() + GameManager.REVISE;
         rotate = mapPath[mapPath.Count - 1].x == mapPath[mapPath.Count - 2].x ? Quaternion.Euler(0, 0, 0) : Quaternion.Euler(0, 0, 90f);
-        Tiles[mapPath[mapPath.Count - 1].x, mapPath[mapPath.Count - 1].y] = Instantiate(origin, location, rotate, TileList.transform);//마지막 경로 타일
-       
-        for (int i = 0; i < 9; ++i)//경로 외 속성타일
+        Tiles[mapPath[mapPath.Count - 1].x, mapPath[mapPath.Count - 1].y] = Instantiate(origin, location, rotate, TileList.transform).GetComponent<TileController>();
+        Tiles[mapPath[mapPath.Count - 1].x, mapPath[mapPath.Count - 1].y].SetStatus(TILE_TYPE.ROAD, mapPath[mapPath.Count - 1]);
+        //
+        //경로 외 속성타일
+        for (int i = 0; i < 9; ++i)
             for (int j = 0; j < 9; ++j)
                 if (GameMap[i, j] != TILE_TYPE.ROAD)
-                    Tiles[i,j]=Instantiate(TilePrefabs[(int)GameMap[i, j]], new Vector2(i,j) + REVISE, Quaternion.Euler(0, 0, 0), TileList.transform);
+                {
+                    Tiles[i, j] = Instantiate(TilePrefabs[(int)GameMap[i, j]], new Vector2(i, j) + GameManager.REVISE, Quaternion.Euler(0, 0, 0), TileList.transform).GetComponent<TileController>();
+                    Tiles[i, j].SetStatus(GameMap[i, j], new Point(i, j));
+                }
+        //
     }
-    void Start()
+    private void SpanMonster()
     {
-        START_POINT = BoardArea.transform.position;
-        REVISE = START_POINT - new Vector2(4f,4f);
-        Destroy(BoardArea);
-        TileList = new GameObject() { name = "Tiles" };
-        TowerList = new GameObject() { name = "Towers" };
-        MonsterList = new GameObject() { name = "Monsters" };
-        LoadMap();
-        MakeBoard();
-        GameUI.StartButton.onClick.AddListener(RoundStart);
-        GameUI.AddTowerButton.onClick.AddListener(delegate { AddRandomTower(0); });
-        GameUI.OptionButton.onClick.AddListener(SetPause);
+        //몬스터 생성 후 정보 할당
+        Instantiate<GameObject>(MonsterPrefabs[(int)MONSTER_TYPE.COMMON], GameMap.EntryAt(0).ToVector3() + (Vector3)GameManager.REVISE, Quaternion.Euler(0, 0, 0), MonsterList.transform)
+        .GetComponent<CommonMonsterController>().SetStatus(100, 3, 1, roundPath);
+        //
     }
-    public void RoundStart()
-    {
-        if (beStarted)
-            return;
-        beStarted = true;
-        int count = 10;
-        maxSpanCount = count;
-        RemainMonster = count;
-        spanCount = 0;
-        roundPath = GameMap.PathAt(Random.Range(0, 8));
-    }
-    public void SpanMonster()
+    private void TileSelect(TileController tc)
     {
 
-        var monster = Instantiate<GameObject>(MonsterPrefabs[(int)MONSTER_TYPE.COMMON], GameMap.EntryAt(0).ToVector3() + (Vector3)REVISE, Quaternion.Euler(0, 0, 0), MonsterList.transform);
-        var monsterController = monster.GetComponent<CommonMonsterController>();
-        monsterController.SetStatus(100, 3, 1, roundPath);
-        monsterController.manager = this;
-
-    }
-
-    void Update()
-    {
-        if (beStarted&&spanCount<maxSpanCount)
+        if (SelectedTile != null)
+            SelectedTile.Selected = false;
+        if (tc.Type != TILE_TYPE.ROAD)
         {
-            span += Time.deltaTime;
-            if (span >= spanTime)
-            {
-                ++spanCount;
-                span -= spanTime;
-                SpanMonster();
+            if (!tc.Selected)
+            { 
+                tc.Selected = true;
+                SelectedTile = tc;
             }
         }
     }
-
-    void OnGUI()
-    {
-        //if (!btnTexture)
-        //{
-        //    Debug.Log("Check btnTexture");
-        //    return;
-        //}
-
-        //if (GUI.Button(new Rect(100, 100, 100, 100), btnTexture, "Add Tower"))
-        //{
-        //    addTower();
-        //}
-        //if (GUI.Button(new Rect(0, 0, 100, 100), "Add Tower"))
-        //{
-        //    AddRandomTower(0);
-        //}
-
-        //if (isPaused)
-        //    GUI.Label(new Rect(100, 100, 50, 30), "Game paused");
-    }
-
+    //
+    //외부 함수
     public void SetPause()
     {
         if (!pauseState)
@@ -325,35 +425,25 @@ public class GameManager : MonoBehaviour
 
         pauseState ^= true;
     }
-
-    //void OnApplicationPause(bool pauseStatus)
-    //{
-    //    if (pauseStatus)
-    //    {
-    //        isPaused = true;
-    //    }
-    //    else
-    //    {
-    //        if (isPaused)
-    //        {
-    //            isPaused = false;
-    //        }
-    //    }
-    //}
-
     public void MonsterArrive(int attack)
     {
         PlayerHP -= attack;
-        GameUI.LifeText.text = $"{PlayerHP}";
-        if (--RemainMonster == 0)
-            RoundEnd();
+        if (--RemainMonster == 0) {
+            started = false;
+            ++Round;
+        }
     }
-    public void RoundEnd()
+    public void RoundStart()
     {
-        beStarted = false;
-        ++Stage;
-        GameUI.RoundText.text = $"ROUND {Stage:D3}";
-
+        if (started) return; //라운드가 진행중이면 종료
+        //라운드 정보 할당
+        started = true;
+        int count = 10;
+        RemainSpan = count;
+        RemainMonster = count;
+        SpanTime = 0;
+        roundPath = GameMap.PathAt(Random.Range(0, 8));
+        //
     }
     public void AddRandomTower(int tier, float x = 0, float y = 0)
     {
@@ -379,4 +469,5 @@ public class GameManager : MonoBehaviour
         tw.transform.localPosition = new Vector2(x, y);
         //tw.transform.localPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
     }
+    //
 }
