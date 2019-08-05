@@ -24,6 +24,4 @@ public class FastButtonController : MonoBehaviour, IPointerDownHandler, IPointer
             downed = false;
         }
     }
-
-
 }

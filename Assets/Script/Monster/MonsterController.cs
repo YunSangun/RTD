@@ -70,10 +70,9 @@ public abstract class MonsterController : MonoBehaviour
     public void AttackedByTower(float Damage)
     {
         HP -= Damage;
-
-        if(HP <= 0)
+        if(HP <= 0.0f)
         {
-            GameManager.Inst.AddRewardGold(reward);
+            GameManager.Inst.MonsterArrive(0);
             Destroy(this.gameObject);
         }
     }

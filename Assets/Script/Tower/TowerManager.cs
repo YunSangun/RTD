@@ -9,7 +9,7 @@ public class TowerManager : MonoBehaviour
 
     public Sprite[] Texture;
     public float attackPoint = 1.0f;
-    public float range = 10f;
+    public float range = 2f;
     public float delayTime = 1.0f;
     public float delayTimeRemain = 0.0f;
     private int tier = 1;
