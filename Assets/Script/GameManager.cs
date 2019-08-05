@@ -459,7 +459,10 @@ public class GameManager : MonoBehaviour
         tw.transform.position = SelectedTile.transform.position;
         tw.Tier = tier;
         tw.BaseTile = SelectedTile;
-
     }
-    //
+
+    public void AddRewardGold(int reward)
+    {
+        Gold += reward;
+    }
 }

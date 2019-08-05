@@ -14,6 +14,7 @@ public abstract class MonsterController : MonoBehaviour
     private float dist = 0f;
     private float AllDist = 0f;
     private int index = 1;
+    public int reward = 1;
 
     public void SetStatus(float maxHP, float speed, int attack, List<Point> path)
     {
@@ -72,6 +73,7 @@ public abstract class MonsterController : MonoBehaviour
 
         if(HP <= 0)
         {
+            GameManager.Inst.AddRewardGold(reward);
             Destroy(this.gameObject);
         }
     }
