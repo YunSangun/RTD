@@ -93,13 +93,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb2b4f579ae4d234da17f88d00c077bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
   Texture:
   - {fileID: 21300000, guid: f62f7dd20c4ca594784d3c205c7675c0, type: 3}
   - {fileID: 21300000, guid: 2a93a846c9c080b468cefb83933198c7, type: 3}
   - {fileID: 21300000, guid: 45a8dc7e9630c2449b7b38fedf0ac5ac, type: 3}
-  attack: 1
+  attackPoint: 1
   range: 100
-  delayTime: 0
+  delayTime: 1
+  delayTimeRemain: 0
 --- !u!61 &2727738066362213773
 BoxCollider2D:
   m_ObjectHideFlags: 0

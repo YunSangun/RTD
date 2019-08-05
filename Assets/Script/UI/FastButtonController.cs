@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class FastButtonController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
 {
-    public float TimeScale = 4f;
+    public float TimeScale = 2f;
     private bool downed = false;
     public void OnPointerDown(PointerEventData eventData)
     {

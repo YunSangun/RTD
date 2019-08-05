@@ -393,7 +393,7 @@ public class GameManager : MonoBehaviour
     {
         //몬스터 생성 후 정보 할당
         Instantiate<GameObject>(MonsterPrefabs[(int)MONSTER_TYPE.COMMON], GameMap.EntryAt(0).ToVector3() + (Vector3)GameManager.REVISE, Quaternion.Euler(0, 0, 0), MonsterList.transform)
-        .GetComponent<CommonMonsterController>().SetStatus(100, 3, 1, roundPath);
+        .GetComponent<CommonMonsterController>().SetStatus(10, 3, 1, roundPath);
         //
     }
 

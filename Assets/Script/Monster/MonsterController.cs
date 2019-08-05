@@ -65,4 +65,14 @@ public abstract class MonsterController : MonoBehaviour
         transform.position = position;
         //
     }
+
+    public void AttackedByTower(float Damage)
+    {
+        HP -= Damage;
+
+        if(HP <= 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 }

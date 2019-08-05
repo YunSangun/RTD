@@ -4,12 +4,19 @@ using UnityEngine;
 
 public class TowerManager : MonoBehaviour
 {
+    public GameObject target;
+    private string monsterTag = "Monster";
+
     public Sprite[] Texture;
-    public float attack = 1.0f;
-    public float range = 1.0f;
-    public float delayTime = 0.0f;
+    public float attackPoint = 1.0f;
+    public float range = 10f;
+    public float delayTime = 1.0f;
+    public float delayTimeRemain = 0.0f;
     private int tier = 1;
     public TileController BaseTile { get; set; }
+
+    //bool attackState = false;
+
     public int Tier
     {
         get { return this.tier; }
@@ -31,12 +38,14 @@ public class TowerManager : MonoBehaviour
     }
     void Start()
     {
-        
+
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        
+        CheckTarget();
+        CheckAttackDelay();
+        AttackTarget();
     }
 
     Vector3 firstPosition;
@@ -94,5 +103,42 @@ public class TowerManager : MonoBehaviour
     void OnOffCollider()
     {
             this.gameObject.GetComponent<BoxCollider2D>().enabled ^= true;
+    }
+
+    void CheckTarget()
+    {
+        if(target != null)
+        {
+            if (range < Vector2.Distance((Vector2)target.transform.localPosition, (Vector2)this.transform.localPosition))
+            {
+                target = null;
+            }
+        }
+        if(target == null)
+        {
+            GameObject[] monsterList = GameObject.FindGameObjectsWithTag(monsterTag);
+
+            foreach(GameObject obj in monsterList)
+            {
+                if(range > Vector2.Distance((Vector2)obj.transform.localPosition, (Vector2)this.transform.localPosition))
+                {
+                    target = obj;
+                    return;
+                }
+            }
+        }
+    }
+
+    void AttackTarget()
+    {
+        if ((target == null) || (delayTimeRemain > 0.0f)) return;
+        //Debug.Log(delayTimeRemain);
+        Debug.DrawLine((Vector2)this.transform.position, (Vector2)target.transform.position, Color.red);
+        target.GetComponent<MonsterController>().AttackedByTower(attackPoint);
+        delayTimeRemain = delayTime;
+    }
+    void CheckAttackDelay()
+    {
+        delayTimeRemain -= Time.deltaTime;
     }
 }
