@@ -32,13 +32,14 @@ public class TowerManager : MonoBehaviour
         var tw = Instantiate(GameManager.Inst.TowerPrefabs[Random.Range(0, 5)]) as TowerManager;
         BaseTile.BuiltTower = tw;
         tw.transform.position = BaseTile.transform.position;
-        tw.Tier = tier+1;
+        tw.Tier = tier + 1;
         tw.BaseTile = BaseTile;
         Destroy(gameObject);
     }
     void Start()
     {
-
+        attackPoint *= tier;
+        transform.Translate(Vector3.back);
     }
 
     void FixedUpdate()

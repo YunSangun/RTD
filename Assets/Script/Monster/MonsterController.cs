@@ -70,10 +70,22 @@ public abstract class MonsterController : MonoBehaviour
     public void AttackedByTower(float Damage)
     {
         HP -= Damage;
+
+        DrawHitEffect();
+
         if(HP <= 0.0f)
         {
             GameManager.Inst.MonsterArrive(0);
             Destroy(this.gameObject);
         }
+    }
+
+    public void DrawHitEffect()
+    {
+        SpriteRenderer spr = GetComponent<SpriteRenderer>();
+
+        Color color = spr.color;
+        color.a = HP / MaxHP;
+        spr.color = color;
     }
 }
