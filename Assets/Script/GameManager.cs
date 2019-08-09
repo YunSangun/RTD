@@ -38,7 +38,8 @@ public enum ROAD_TYPE
     CROSS
 }
 
-[Serializable]public struct Point//(x,y)구조체
+[Serializable]
+public struct Point//(x,y)구조체
 {
     public int x;
     public int y;
@@ -52,7 +53,7 @@ public enum ROAD_TYPE
         this.x = p.x;
         this.y = p.y;
     }
-    public static Point operator+(Point p1, Point p2)
+    public static Point operator +(Point p1, Point p2)
     {
         return new Point(p1.x + p2.x, p1.y + p2.y);
 
@@ -62,7 +63,7 @@ public enum ROAD_TYPE
         return new Point(-p.x, -p.y);
 
     }
-    public static Point operator -(Point p1,Point p2)
+    public static Point operator -(Point p1, Point p2)
     {
         return p1 + (-p2);
 
@@ -87,13 +88,22 @@ public enum ROAD_TYPE
     {
         return this.x == p.x && this.y == p.y;
     }
+    public override String ToString()
+    {
+        return $"({x},{y})";
+    }
     public Vector2 ToVector()
     {
         return new Vector2(this.x, this.y);
     }
     public Vector3 ToVector3()
     {
-        return new Vector3(this.x, this.y,0);
+        return new Vector3(this.x, this.y, 0);
+    }
+    public bool Inside(Point LeftTop, Point RightBottom)
+    {
+        return LeftTop.x <= x && x <= RightBottom.x &&
+               LeftTop.y <= y && y <= RightBottom.y;
     }
 }
 
@@ -109,7 +119,7 @@ public class GameManager : MonoBehaviour
 
         }
     }
-    
+
     //외부 변수
     public GameObject BoardArea;
     public GameObject SelectMask;
@@ -117,21 +127,21 @@ public class GameManager : MonoBehaviour
     public GameObject[] TilePrefabs;
     public GameObject[] RoadTilePrefabs;
     public GameObject[] MonsterPrefabs;
-    
+
     //상수
     public static Vector2 START_POINT; // 보드의 중심
     public static Vector2 REVISE;      // 0,0 타일의 좌표
     public static readonly string PATH = "/Json/MapPath0.json";
-    
+
     //parent object
-    private GameObject TileList;
-    private GameObject TowerList;
-    private GameObject MonsterList;
-    
+    public GameObject TileList { get; set; }
+    public GameObject TowerList { get; set; }
+    public GameObject MonsterList { get; set; }
+
     //내부 변수
     private GameBoard GameMap;
-    private TileController[,] Tiles=new TileController[9,9];
-    private TileController SelectedTile=null;
+    private TileController[,] Tiles = new TileController[9, 9];
+    private TileController SelectedTile = null;
     private int playerHP;
     private int round;
     private int gold;
@@ -143,7 +153,10 @@ public class GameManager : MonoBehaviour
     private bool started = false;
     private bool pauseState = false;
     private List<Point> roundPath;     //이번 라운드의 몬스터 진행 경로
-    
+
+    //외부 속성
+    public List<MonsterController> Monsters { get; set; }
+
     //내부 속성
     private int Gold
     {
@@ -181,7 +194,7 @@ public class GameManager : MonoBehaviour
             UIManager.Inst.LifeText.text = $"{this.playerHP:D2}";
         }
     }
-    
+
     //유니티 이벤트
     void Awake()
     {
@@ -189,8 +202,9 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
+        Monsters = new List<MonsterController>();
         START_POINT = BoardArea.transform.position; //중점 설정
-        GameManager.REVISE = START_POINT - new Vector2(4f,4f); //0,0 설정
+        GameManager.REVISE = START_POINT - new Vector2(4f, 4f); //0,0 설정
         PlayerHP = 50;
         Round = 1;
         Gold = 1000;
@@ -271,7 +285,7 @@ public class GameManager : MonoBehaviour
         //if (isPaused)
         //    GUI.Label(new Rect(100, 100, 50, 30), "Game paused");
     }
-    
+
     //내부 함수
     private void MakeGameMap()//not use
     {
@@ -392,8 +406,14 @@ public class GameManager : MonoBehaviour
     private void SpanMonster()
     {
         //몬스터 생성 후 정보 할당
-        Instantiate<GameObject>(MonsterPrefabs[(int)MONSTER_TYPE.COMMON], GameMap.EntryAt(0).ToVector3() + (Vector3)GameManager.REVISE, Quaternion.Euler(0, 0, 0), MonsterList.transform)
-        .GetComponent<CommonMonsterController>().SetStatus(10, 3, 1, roundPath);
+        var mt = Instantiate<GameObject>(MonsterPrefabs[(int)MONSTER_TYPE.COMMON], GameMap.EntryAt(0).ToVector3() + (Vector3)GameManager.REVISE, Quaternion.Euler(0, 0, 0), MonsterList.transform)
+        .GetComponent<CommonMonsterController>();
+        int hp = 2;
+        int speed = 3;
+        int attack = 1;
+        int reward = 1;
+        mt.SetStatus(hp, speed, attack, reward, roundPath);
+        Monsters.Add(mt);
         //
     }
 
@@ -406,7 +426,7 @@ public class GameManager : MonoBehaviour
         if (tc.Type != TILE_TYPE.ROAD)
         {
             if (!tc.Selected)
-            { 
+            {
                 tc.Selected = true;
                 SelectedTile = tc;
             }
@@ -428,7 +448,8 @@ public class GameManager : MonoBehaviour
     public void MonsterArrive(int attack)
     {
         PlayerHP -= attack;
-        if (--RemainMonster == 0) {
+        if (--RemainMonster == 0)
+        {
             started = false;
             ++Round;
         }
@@ -454,11 +475,10 @@ public class GameManager : MonoBehaviour
         if (Gold < 10)
             return;
         Gold -= 10;
-        TowerManager tw = Instantiate(TowerPrefabs[Random.Range(0, 5)]) as TowerManager;
+        TowerManager tw = Instantiate(TowerPrefabs[Random.Range(0, 5)], TowerList.transform) as TowerManager;
         SelectedTile.BuiltTower = tw;
         tw.transform.position = SelectedTile.transform.position;
-        tw.Tier = tier;
-        tw.BaseTile = SelectedTile;
+        tw.SetStatus(1, 1, tier, 0.3f, SelectedTile);
     }
 
     public void AddRewardGold(int reward)

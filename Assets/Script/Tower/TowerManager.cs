@@ -1,17 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class TowerManager : MonoBehaviour
 {
-    public GameObject target;
+    public MonsterController target;
     private string monsterTag = "Monster";
 
     public Sprite[] Texture;
-    public float attackPoint = 1.0f;
-    public float range = 2f;
-    public float delayTime = 1.0f;
-    public float delayTimeRemain = 0.0f;
+    private float attackPoint = 1.0f;
+    private int range = 1;
+    private float delayTime = 1.0f;
+    private float delayTimeRemain = 0.0f;
     private int tier = 1;
     public TileController BaseTile { get; set; }
 
@@ -26,30 +29,40 @@ public class TowerManager : MonoBehaviour
             this.tier = value;
         }
     }
-
+    public void SetStatus(int attack, int range,int tier,float delay,TileController basetile)
+    {
+        this.attackPoint = attack;
+        this.range = range;
+        this.tier = tier;
+        this.delayTime = delay;
+        this.BaseTile = basetile;
+    }
     public void UpgradeTower()
     {
-        var tw = Instantiate(GameManager.Inst.TowerPrefabs[Random.Range(0, 5)]) as TowerManager;
+        var tw = Instantiate(GameManager.Inst.TowerPrefabs[Random.Range(0, 5)], GameManager.Inst.TowerList.transform) as TowerManager;
         BaseTile.BuiltTower = tw;
         tw.transform.position = BaseTile.transform.position;
         tw.Tier = tier + 1;
         tw.BaseTile = BaseTile;
-        Destroy(gameObject);
+        DestroyObj();
     }
     void Start()
     {
         attackPoint *= tier;
         transform.Translate(Vector3.back);
     }
-
+    public void DestroyObj()
+    {
+        target.TargetedTowers.Remove(this);
+        Destroy(gameObject);
+    }
     void FixedUpdate()
     {
-        CheckTarget();
-        CheckAttackDelay();
-        AttackTarget();
+        if(CheckTarget())
+            AttackTarget();
     }
 
-    Vector3 firstPosition;
+    private Vector3 firstPosition;
 
     private void OnMouseDown()
     {
@@ -72,7 +85,7 @@ public class TowerManager : MonoBehaviour
         //this.gameObject.GetComponent<CircleCollider2D>().enabled = true;
         OnOffCollider();
 
-        if (rayHit.collider != null&&rayHit.collider.CompareTag("Tower"))
+        if (rayHit.collider != null && rayHit.collider.CompareTag("Tower"))
         {
             var tw = rayHit.collider.gameObject.GetComponent<TowerManager>();
             if (Tier != tw.Tier || Tier > 2)
@@ -82,7 +95,7 @@ public class TowerManager : MonoBehaviour
             }
             Debug.Log(rayHit.collider.gameObject.name);
             BaseTile.BuiltTower = null;
-            Destroy(this.gameObject);
+            DestroyObj();
             tw.UpgradeTower();
         }
         else
@@ -101,45 +114,44 @@ public class TowerManager : MonoBehaviour
         this.transform.position = Camera.main.ScreenToWorldPoint(mousePosition);
     }
 
-    void OnOffCollider()
+    private void OnOffCollider()
     {
-            this.gameObject.GetComponent<BoxCollider2D>().enabled ^= true;
+        this.gameObject.GetComponent<BoxCollider2D>().enabled ^= true;
     }
-
-    void CheckTarget()
+    private bool Targeting(MonsterController target)
     {
-        if(target != null)
+        if (target != null)
         {
-            if (range < Vector2.Distance((Vector2)target.transform.localPosition, (Vector2)this.transform.localPosition))
-            {
-                target = null;
-            }
+            target.TargetedTowers.Add(this);
+            this.target = target;
+            return true;
         }
-        if(target == null)
-        {
-            GameObject[] monsterList = GameObject.FindGameObjectsWithTag(monsterTag);
-
-            foreach(GameObject obj in monsterList)
-            {
-                if(range > Vector2.Distance((Vector2)obj.transform.localPosition, (Vector2)this.transform.localPosition))
-                {
-                    target = obj;
-                    return;
-                }
-            }
-        }
+        return false;
+    }
+    private void DisTartgeting()
+    {
+        target.TargetedTowers.Remove(this);
+        target = null;
+    }
+    private bool CheckTarget()
+    {
+        var lt = new Point(BaseTile.Position.x - range, BaseTile.Position.y - range);
+        var rb = new Point(BaseTile.Position.x + range, BaseTile.Position.y + range);
+        if (target != null)
+            if (!target.Position.Inside(lt, rb))
+                DisTartgeting();
+        if (target == null)
+            return Targeting(GameManager.Inst.Monsters.Find(mc => mc.Position.Inside(lt, rb)));
+        return true;
     }
 
     void AttackTarget()
     {
-        if ((target == null) || (delayTimeRemain > 0.0f)) return;
+        delayTimeRemain -= Time.deltaTime;
+        if (delayTimeRemain > 0.0f) return;
         //Debug.Log(delayTimeRemain);
         Debug.DrawLine((Vector2)this.transform.position, (Vector2)target.transform.position, Color.red);
         target.GetComponent<MonsterController>().AttackedByTower(attackPoint);
         delayTimeRemain = delayTime;
-    }
-    void CheckAttackDelay()
-    {
-        delayTimeRemain -= Time.deltaTime;
     }
 }

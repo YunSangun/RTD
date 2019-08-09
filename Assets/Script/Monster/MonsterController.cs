@@ -15,26 +15,35 @@ public abstract class MonsterController : MonoBehaviour
     private float AllDist = 0f;
     private int index = 1;
     public int reward = 1;
-
-    public void SetStatus(float maxHP, float speed, int attack, List<Point> path)
+    public Point Position
+    {
+        get
+        {
+            return MovePath[index];
+        }
+    }
+    public List<TowerManager> TargetedTowers { get; set; }
+    public virtual void SetStatus(float maxHP, float speed, int attack,int reward, List<Point> path)
     {
         this.MaxHP = maxHP;
         this.HP = maxHP;
         this.Speed = speed;
         this.Attack = attack;
+        this.reward = reward;
         this.MovePath = new List<Point>(path);
+    }
+    public void DestroyObj()
+    {
+        GameManager.Inst.Monsters.Remove(this);
+        foreach (var t in TargetedTowers)
+            t.target = null;
+        Destroy(gameObject);
     }
     public void Start()
     {
+        TargetedTowers = new List<TowerManager>();
         var startPoint = this.MovePath[0];
         transform.position = startPoint.ToVector() + (this.MovePath[1] - startPoint).ToVector() / 2 + GameManager.REVISE;
-    }
-    private void ConversionDir(ref Point p)  //끝점에서 끝점으로 이동한 경우 올바른 방향값으로 변환
-    {
-        if (Math.Abs(p.x) > 1)
-            p.x /= -8;
-        else if (Math.Abs(p.y) > 1)
-            p.y /= -8;
     }
     public void FixedUpdate()
     {
@@ -48,7 +57,7 @@ public abstract class MonsterController : MonoBehaviour
             if (++index == MovePath.Count - 1)
             {
                 GameManager.Inst.MonsterArrive(this.Attack);
-                Destroy(gameObject);
+                DestroyObj();
                 return;
             }
             dist -= DistPerTile;
@@ -59,14 +68,20 @@ public abstract class MonsterController : MonoBehaviour
         ConversionDir(ref nextDir);
         Vector3 position = MovePath[index].ToVector() + GameManager.REVISE; //현재 타일의 중점
         //이동 거리만큼 조정 후 이동
-        if (dist <= DistPerTile/2)
-            position -= (DistPerTile/2 - dist) * prevDir.ToVector3();
+        if (dist <= DistPerTile / 2)
+            position -= (DistPerTile / 2 - dist) * prevDir.ToVector3();
         else
-            position += (dist - DistPerTile/2) * nextDir.ToVector3();
+            position += (dist - DistPerTile / 2) * nextDir.ToVector3();
         transform.position = position;
         //
     }
-
+    private void ConversionDir(ref Point p)  //끝점에서 끝점으로 이동한 경우 올바른 방향값으로 변환
+    {
+        if (Math.Abs(p.x) > 1)
+            p.x /= -8;
+        else if (Math.Abs(p.y) > 1)
+            p.y /= -8;
+    }
     public void AttackedByTower(float Damage)
     {
         HP -= Damage;
@@ -76,7 +91,7 @@ public abstract class MonsterController : MonoBehaviour
         if(HP <= 0.0f)
         {
             GameManager.Inst.MonsterArrive(0);
-            Destroy(this.gameObject);
+            DestroyObj();
         }
     }
 
