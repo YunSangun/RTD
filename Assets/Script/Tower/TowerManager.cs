@@ -7,6 +7,8 @@ using Random = UnityEngine.Random;
 
 public class TowerManager : MonoBehaviour
 {
+    TOWER_TYPE TT = TOWER_TYPE.NONE;
+
     public MonsterController target;
     //private string monsterTag = "Monster";
 
@@ -18,7 +20,21 @@ public class TowerManager : MonoBehaviour
     private int tier = 1;
     public TileController BaseTile { get; set; }
 
-    //bool attackState = false;
+    void Start()
+    {
+        transform.Translate(Vector3.back);
+    }
+
+    void SetTowerType()
+    {
+        string towerName = this.name;
+        int delimiterIdx = towerName.IndexOf("_");
+        towerName = towerName.Substring(delimiterIdx + 1);
+        delimiterIdx = towerName.IndexOf("(Clone)");
+        towerName = towerName.Substring(0, delimiterIdx).ToUpper();
+        TT = (TOWER_TYPE)Enum.Parse(typeof(TOWER_TYPE), towerName);
+        //Debug.Log(TT);
+    }
 
     public int Tier
     {
@@ -31,10 +47,13 @@ public class TowerManager : MonoBehaviour
     }
     public void SetStatus(int attack, int range,int tier,float delay,TileController basetile)
     {
+        SetTowerType();
         this.attackPoint = attack;
+        attackPoint *= tier;
         this.range = range;
         this.tier = tier;
         this.delayTime = delay;
+        if (TT == TOWER_TYPE.WIND) delayTime *= 0.5f;
         this.BaseTile = basetile;
     }
     public void UpgradeTower()
@@ -45,11 +64,6 @@ public class TowerManager : MonoBehaviour
         tw.Tier = tier + 1;
         tw.BaseTile = BaseTile;
         DestroyObj();
-    }
-    void Start()
-    {
-        attackPoint *= tier;
-        transform.Translate(Vector3.back);
     }
     public void DestroyObj()
     {
@@ -76,13 +90,11 @@ public class TowerManager : MonoBehaviour
     {
         //Debug.Log("OnMouseUp");
 
-        //this.gameObject.GetComponent<CircleCollider2D>().enabled = false;
         OnOffCollider();
 
         Vector2 pos = this.transform.position;
         RaycastHit2D rayHit = Physics2D.Raycast(pos, Vector2.zero);
 
-        //this.gameObject.GetComponent<CircleCollider2D>().enabled = true;
         OnOffCollider();
 
         if (rayHit.collider != null && rayHit.collider.CompareTag("Tower"))
@@ -147,14 +159,12 @@ public class TowerManager : MonoBehaviour
 
     void AttackTarget()
     {
-        //if (target == null) return;
-
         delayTimeRemain -= Time.deltaTime;
         if (delayTimeRemain > 0.0f) return;
         //Debug.Log(delayTimeRemain);
         Debug.DrawLine((Vector2)this.transform.position, (Vector2)target.transform.position, Color.red);
 
-        if(this.name == "Tower1_Ice(Clone)")
+        if(TT == TOWER_TYPE.ICE)
         {
             target.GetComponent<MonsterController>().Iced(tier);
         }

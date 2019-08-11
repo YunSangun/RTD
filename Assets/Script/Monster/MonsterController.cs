@@ -116,7 +116,7 @@ public abstract class MonsterController : MonoBehaviour
         icedLevel = tier;
         Speed = SpeedOrgin * (1 - 0.25f * tier);
 
-        Debug.Log("Iced! : " + icedLevel);
+        //Debug.Log("Iced! : " + icedLevel);
         Debug.Log("Speed : " + Speed);
     }
 }
