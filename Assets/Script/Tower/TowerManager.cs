@@ -8,13 +8,13 @@ using Random = UnityEngine.Random;
 public class TowerManager : MonoBehaviour
 {
     public MonsterController target;
-    private string monsterTag = "Monster";
+    //private string monsterTag = "Monster";
 
     public Sprite[] Texture;
-    private float attackPoint = 1.0f;
+    private float attackPoint = 1.0f; // 타워 공격력
     private int range = 1;
-    private float delayTime = 1.0f;
-    private float delayTimeRemain = 0.0f;
+    private float delayTime = 1.0f; // 지연 시간
+    private float delayTimeRemain = 0.0f; // 남은 지연 시간(deltatime)
     private int tier = 1;
     public TileController BaseTile { get; set; }
 
@@ -53,7 +53,7 @@ public class TowerManager : MonoBehaviour
     }
     public void DestroyObj()
     {
-        target.TargetedTowers.Remove(this);
+        //target.TargetedTowers.Remove(this);
         Destroy(gameObject);
     }
     void FixedUpdate()
@@ -122,7 +122,7 @@ public class TowerManager : MonoBehaviour
     {
         if (target != null)
         {
-            target.TargetedTowers.Add(this);
+            target.TargetedTowers.Add(this); // 간헐적으로 에러 발생
             this.target = target;
             return true;
         }
@@ -147,10 +147,18 @@ public class TowerManager : MonoBehaviour
 
     void AttackTarget()
     {
+        //if (target == null) return;
+
         delayTimeRemain -= Time.deltaTime;
         if (delayTimeRemain > 0.0f) return;
         //Debug.Log(delayTimeRemain);
         Debug.DrawLine((Vector2)this.transform.position, (Vector2)target.transform.position, Color.red);
+
+        if(this.name == "Tower1_Ice(Clone)")
+        {
+            target.GetComponent<MonsterController>().Iced(tier);
+        }
+
         target.GetComponent<MonsterController>().AttackedByTower(attackPoint);
         delayTimeRemain = delayTime;
     }

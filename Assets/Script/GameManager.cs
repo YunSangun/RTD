@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Windows;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public enum MONSTER_TYPE
@@ -284,6 +285,12 @@ public class GameManager : MonoBehaviour
 
         //if (isPaused)
         //    GUI.Label(new Rect(100, 100, 50, 30), "Game paused");
+
+        // 테스트용
+        if (GUI.Button(new Rect(550, 15, 50, 30), "Restart"))
+        {
+            SceneManager.LoadScene("GameScene");
+        }
     }
 
     //내부 함수
@@ -408,7 +415,7 @@ public class GameManager : MonoBehaviour
         //몬스터 생성 후 정보 할당
         var mt = Instantiate<GameObject>(MonsterPrefabs[(int)MONSTER_TYPE.COMMON], GameMap.EntryAt(0).ToVector3() + (Vector3)GameManager.REVISE, Quaternion.Euler(0, 0, 0), MonsterList.transform)
         .GetComponent<CommonMonsterController>();
-        int hp = 2;
+        int hp = 5;
         int speed = 3;
         int attack = 1;
         int reward = 1;
@@ -478,7 +485,7 @@ public class GameManager : MonoBehaviour
         TowerManager tw = Instantiate(TowerPrefabs[Random.Range(0, 5)], TowerList.transform) as TowerManager;
         SelectedTile.BuiltTower = tw;
         tw.transform.position = SelectedTile.transform.position;
-        tw.SetStatus(1, 1, tier, 0.3f, SelectedTile);
+        tw.SetStatus(1, 1, tier, 1f, SelectedTile);
     }
 
     public void AddRewardGold(int reward)

@@ -8,6 +8,7 @@ public abstract class MonsterController : MonoBehaviour
     private readonly float DistPerTile = 1f;
     private float MaxHP;
     private float HP;
+    private float SpeedOrgin;
     private float Speed;
     private int Attack;
     private List<Point> MovePath;
@@ -15,6 +16,9 @@ public abstract class MonsterController : MonoBehaviour
     private float AllDist = 0f;
     private int index = 1;
     public int reward = 1;
+
+    private int icedLevel = 0;
+
     public Point Position
     {
         get
@@ -28,6 +32,7 @@ public abstract class MonsterController : MonoBehaviour
         this.MaxHP = maxHP;
         this.HP = maxHP;
         this.Speed = speed;
+        this.SpeedOrgin = Speed;
         this.Attack = attack;
         this.reward = reward;
         this.MovePath = new List<Point>(path);
@@ -102,5 +107,16 @@ public abstract class MonsterController : MonoBehaviour
         Color color = spr.color;
         color.a = HP / MaxHP;
         spr.color = color;
+    }
+
+    public void Iced(int tier)
+    {
+        if (icedLevel >= tier) return;
+
+        icedLevel = tier;
+        Speed = SpeedOrgin * (1 - 0.25f * tier);
+
+        Debug.Log("Iced! : " + icedLevel);
+        Debug.Log("Speed : " + Speed);
     }
 }
