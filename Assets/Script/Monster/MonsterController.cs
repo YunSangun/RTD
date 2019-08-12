@@ -18,6 +18,7 @@ public abstract class MonsterController : MonoBehaviour
     public int reward = 1;
 
     private int icedLevel = 0;
+    private bool hasIronStack = false;
 
     public Point Position
     {
@@ -118,5 +119,16 @@ public abstract class MonsterController : MonoBehaviour
 
         //Debug.Log("Iced! : " + icedLevel);
         Debug.Log("Speed : " + Speed);
+    }
+    public void IronStack(int tier)
+    {
+        if (hasIronStack)
+        {
+            Debug.Log("before HP : " + HP);
+            HP *= (1 - 0.1f * tier);
+            Debug.Log("after HP : " + HP);
+        }
+
+        hasIronStack ^= true;
     }
 }

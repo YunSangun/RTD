@@ -188,6 +188,10 @@ public class TowerManager : MonoBehaviour
                 target.GetComponent<MonsterController>().Iced(tier);
                 target.GetComponent<MonsterController>().AttackedByTower(Attack);
                 break;
+            case TOWER_TYPE.IRON:
+                target.GetComponent<MonsterController>().IronStack(tier);
+                target.GetComponent<MonsterController>().AttackedByTower(Attack);
+                break;
             case TOWER_TYPE.WIND:
                 target.GetComponent<MonsterController>().AttackedByTower(Attack);
                 break;
