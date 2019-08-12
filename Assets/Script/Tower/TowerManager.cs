@@ -171,25 +171,30 @@ public class TowerManager : MonoBehaviour
         //attackLine.SetPosition(0, (Vector2)this.transform.position);
         //attackLine.SetPosition(1, (Vector2)target.transform.position);
 
-        if(type == TOWER_TYPE.FIRE)
+        switch (type)
         {
-            Collider2D[] MonsterColl = Physics2D.OverlapBoxAll(target.transform.position, new Vector2(tier, tier), 0);
+            case TOWER_TYPE.FIRE:
+                Collider2D[] MonsterColl = Physics2D.OverlapBoxAll(target.transform.position, new Vector2(tier, tier), 0);
 
-            foreach (Collider2D i in MonsterColl)
-            {
-                if (i.gameObject.tag == "Monster")
+                foreach (Collider2D i in MonsterColl)
                 {
-                    i.gameObject.GetComponent<MonsterController>().AttackedByTower(Attack);
+                    if (i.gameObject.tag == "Monster")
+                    {
+                        i.gameObject.GetComponent<MonsterController>().AttackedByTower(Attack);
+                    }
                 }
-            }
+                break;
+            case TOWER_TYPE.ICE:
+                target.GetComponent<MonsterController>().Iced(tier);
+                target.GetComponent<MonsterController>().AttackedByTower(Attack);
+                break;
+            case TOWER_TYPE.WIND:
+                target.GetComponent<MonsterController>().AttackedByTower(Attack);
+                break;
+            default:
+                target.GetComponent<MonsterController>().AttackedByTower(Attack);
+                break;
         }
-
-        if (type == TOWER_TYPE.ICE)
-        {
-            target.GetComponent<MonsterController>().Iced(tier);
-        }
-
-        //if(target != null) target.GetComponent<MonsterController>().AttackedByTower(Attack);
         delayRemain = Delay;
     }
 }
