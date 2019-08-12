@@ -124,6 +124,7 @@ public class GameManager : MonoBehaviour
     //외부 변수
     public GameObject BoardArea;
     public GameObject SelectMask;
+    public GameObject EntryMark;
     public TowerManager[] TowerPrefabs;
     public GameObject[] TilePrefabs;
     public GameObject[] RoadTilePrefabs;
@@ -143,6 +144,8 @@ public class GameManager : MonoBehaviour
     private GameBoard GameMap;
     private TileController[,] Tiles = new TileController[9, 9];
     private TileController SelectedTile = null;
+    private GameObject entry;
+    private GameObject exit;
     private int playerHP;
     private int round;
     private int gold;
@@ -197,31 +200,33 @@ public class GameManager : MonoBehaviour
     }
 
     //유니티 이벤트
-    void Awake()
+
+    private void Awake()
     {
         GameManager.inst = this;//싱글톤 초기화
     }
-    void Start()
+    private void Start()
     {
+        //parent 객체 설정
+        Destroy(BoardArea);
+        TileList = new GameObject() { name = "Tiles" };
+        TowerList = new GameObject() { name = "Towers" };
+        MonsterList = new GameObject() { name = "Monsters" };
+        //버튼 이벤트 할당
+        UIManager.Inst.StartButton.onClick.AddListener(RoundStart);
+        UIManager.Inst.AddTowerButton.onClick.AddListener(delegate { AddRandomTower(1); });
+        UIManager.Inst.OptionButton.onClick.AddListener(SetPause);
+        //내부변수 할당
         Monsters = new List<MonsterController>();
         START_POINT = BoardArea.transform.position; //중점 설정
         GameManager.REVISE = START_POINT - new Vector2(4f, 4f); //0,0 설정
         PlayerHP = 50;
         Round = 1;
         Gold = 1000;
-        //parent 객체 설정
-        Destroy(BoardArea);
-        TileList = new GameObject() { name = "Tiles" };
-        TowerList = new GameObject() { name = "Towers" };
-        MonsterList = new GameObject() { name = "Monsters" };
-        //
         LoadMap();
         MakeBoard();
-        //버튼 이벤트 할당
-        UIManager.Inst.StartButton.onClick.AddListener(RoundStart);
-        UIManager.Inst.AddTowerButton.onClick.AddListener(delegate { AddRandomTower(1); });
-        UIManager.Inst.OptionButton.onClick.AddListener(SetPause);
-        //
+        SetRandomPath();
+        
     }
     private void Update()
     {
@@ -237,7 +242,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         //IntervalSpan 마다 몬스터 스폰
         if (started && RemainSpan != 0)
@@ -266,7 +271,7 @@ public class GameManager : MonoBehaviour
     //        }
     //    }
     //}
-    void OnGUI()
+    private void OnGUI()
     {
         //if (!btnTexture)
         //{
@@ -292,7 +297,6 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene("GameScene");
         }
     }
-
     //내부 함수
     private void MakeGameMap()//not use
     {
@@ -423,7 +427,25 @@ public class GameManager : MonoBehaviour
         Monsters.Add(mt);
         //
     }
-
+    private void SetRandomPath()
+    {
+        int entryIndex = Random.Range(0, 8);
+        roundPath = GameMap.PathAt(entryIndex);
+        var entry = roundPath[1];
+        var exit = roundPath[roundPath.Count - 2];
+        var entryTile = Tiles[entry.x, entry.y];
+        var exitTile = Tiles[exit.x, exit.y];
+        float angle = (entry.y == 0) ? 0f :
+                      (entry.y == 8) ? 180f :
+                      (entry.x == 0) ? 270f :
+                                       90f;
+        if (this.entry != null)
+            Destroy(this.entry);
+        this.entry = Instantiate(EntryMark, entryTile.transform.position, Quaternion.Euler(0,0,angle), entryTile.transform);
+        if (this.exit != null)
+            Destroy(this.exit);
+        this.exit = Instantiate(EntryMark, exitTile.transform.position, Quaternion.Euler(0,0,angle), exitTile.transform);
+    }
     //외부 함수
     public void TileSelect(TileController tc)
     {
@@ -456,10 +478,7 @@ public class GameManager : MonoBehaviour
     {
         PlayerHP -= attack;
         if (--RemainMonster == 0)
-        {
-            started = false;
-            ++Round;
-        }
+            RoundEnd();
     }
     public void RoundStart()
     {
@@ -470,8 +489,13 @@ public class GameManager : MonoBehaviour
         RemainSpan = count;
         RemainMonster = count;
         SpanTime = 0;
-        roundPath = GameMap.PathAt(Random.Range(0, 8));
         //
+    }
+    public void RoundEnd()
+    {
+        started = false;
+        ++Round;
+        SetRandomPath();
     }
     public void AddRandomTower(int tier)
     {

@@ -126,6 +126,8 @@ MonoBehaviour:
   BoardArea: {fileID: 692803899}
   SelectMask: {fileID: 8976441595491145634, guid: 26dbaf7f753f6b642b45a2ab4f4f904d,
     type: 3}
+  EntryMark: {fileID: 4345061818435541412, guid: 3a4ed0026a2da53429e2dcbce682a617,
+    type: 3}
   TowerPrefabs:
   - {fileID: 7446120922021192311, guid: 9d1c0d0c7fe285841b8be7f4d8896d1d, type: 3}
   - {fileID: 5071441563257700460, guid: 8b004c444efea4e4abbf598b29a77181, type: 3}
