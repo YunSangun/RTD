@@ -1,112 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Windows;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
-
-public enum MONSTER_TYPE
-{
-    COMMON
-}
-public enum TOWER_TYPE
-{
-    NONE,
-    FIRE,
-    ICE,
-    POISON,
-    IRON,
-    WIND
-}
-public enum TILE_TYPE
-{
-    NONE,
-    FIRE,
-    ICE,
-    POISON,
-    IRON,
-    WIND,
-    ROAD
-
-}
-public enum ROAD_TYPE
-{
-    STRAIGHT,
-    TURN,
-    CROSS
-}
-
-[Serializable]
-public struct Point//(x,y)구조체
-{
-    public int x;
-    public int y;
-    public Point(int x, int y)
-    {
-        this.x = x;
-        this.y = y;
-    }
-    public Point(Point p)
-    {
-        this.x = p.x;
-        this.y = p.y;
-    }
-    public static Point operator +(Point p1, Point p2)
-    {
-        return new Point(p1.x + p2.x, p1.y + p2.y);
-
-    }
-    public static Point operator -(Point p)
-    {
-        return new Point(-p.x, -p.y);
-
-    }
-    public static Point operator -(Point p1, Point p2)
-    {
-        return p1 + (-p2);
-
-    }
-    public static Point operator *(Point p, float f)
-    {
-        Point tmp;
-        tmp.x = (int)(p.x * f);
-        tmp.y = (int)(p.y * f);
-        return tmp;
-
-    }
-    public static Point operator /(Point p, float f)
-    {
-        Point tmp;
-        tmp.x = (int)(p.x / f);
-        tmp.y = (int)(p.y / f);
-        return tmp;
-
-    }
-    public bool Equals(Point p)
-    {
-        return this.x == p.x && this.y == p.y;
-    }
-    public override String ToString()
-    {
-        return $"({x},{y})";
-    }
-    public Vector2 ToVector()
-    {
-        return new Vector2(this.x, this.y);
-    }
-    public Vector3 ToVector3()
-    {
-        return new Vector3(this.x, this.y, 0);
-    }
-    public bool Inside(Point LeftTop, Point RightBottom)
-    {
-        return LeftTop.x <= x && x <= RightBottom.x &&
-               LeftTop.y <= y && y <= RightBottom.y;
-    }
-}
 
 public class GameManager : MonoBehaviour
 {
@@ -122,30 +21,14 @@ public class GameManager : MonoBehaviour
     }
 
     //외부 변수
-    public GameObject BoardArea;
-    public GameObject SelectMask;
-    public GameObject EntryMark;
-    public TowerManager[] TowerPrefabs;
-    public GameObject[] TilePrefabs;
-    public GameObject[] RoadTilePrefabs;
-    public GameObject[] MonsterPrefabs;
 
-    //상수
-    public static Vector2 START_POINT; // 보드의 중심
-    public static Vector2 REVISE;      // 0,0 타일의 좌표
+    public BoardManager BM;
+
     public static readonly string PATH = "/Json/MapPath0.json";
 
-    //parent object
-    public GameObject TileList { get; set; }
-    public GameObject TowerList { get; set; }
-    public GameObject MonsterList { get; set; }
 
     //내부 변수
-    private GameBoard GameMap;
-    private TileController[,] Tiles = new TileController[9, 9];
-    private TileController SelectedTile = null;
-    private GameObject entry;
-    private GameObject exit;
+    private GameBoard gameMap;
     private int playerHP;
     private int round;
     private int gold;
@@ -160,6 +43,7 @@ public class GameManager : MonoBehaviour
 
     //외부 속성
     public List<MonsterController> Monsters { get; set; }
+    public GameBoard GameMap { get { return gameMap; } }
 
     //내부 속성
     private int Gold
@@ -207,41 +91,17 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        //parent 객체 설정
-        Destroy(BoardArea);
-        TileList = new GameObject() { name = "Tiles" };
-        TowerList = new GameObject() { name = "Towers" };
-        MonsterList = new GameObject() { name = "Monsters" };
-        //버튼 이벤트 할당
-        UIManager.Inst.StartButton.onClick.AddListener(RoundStart);
-        UIManager.Inst.AddTowerButton.onClick.AddListener(delegate { AddRandomTower(1); });
-        UIManager.Inst.OptionButton.onClick.AddListener(SetPause);
         //내부변수 할당
         Monsters = new List<MonsterController>();
-        START_POINT = BoardArea.transform.position; //중점 설정
-        GameManager.REVISE = START_POINT - new Vector2(4f, 4f); //0,0 설정
         PlayerHP = 50;
         Round = 1;
         Gold = 1000;
         LoadMap();
-        MakeBoard();
+        BM.MakeBoard();
         SetRandomPath();
         
     }
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            var hit = Physics2D.Raycast(pos, Vector2.zero, 0f);
-            if (hit.collider != null)
-            {
-                var obj = hit.collider.gameObject;
-                if (obj.CompareTag("Tile"))
-                    TileSelect(obj.GetComponent<TileController>());
-            }
-        }
-    }
+
     private void FixedUpdate()
     {
         //IntervalSpan 마다 몬스터 스폰
@@ -350,7 +210,7 @@ public class GameManager : MonoBehaviour
         var sw = new StreamWriter(file);
         sw.Write(jsonstr);
         sw.Close();
-        GameMap = new GameBoard(path);
+        gameMap = new GameBoard(path);
     }
     private void LoadMap()
     {
@@ -359,66 +219,12 @@ public class GameManager : MonoBehaviour
         var jsonstr = sr.ReadToEnd();
         sr.Close();
         var info = JsonUtility.FromJson<MapFileInfo>(jsonstr);
-        GameMap = new GameBoard(new MapInfo(info));
-    }
-    private void MakeBoard()
-    {
-        //첫번째 경로 타일
-        List<Point> mapPath = GameMap.ToList();
-        GameObject origin = RoadTilePrefabs[(int)ROAD_TYPE.STRAIGHT];
-        Vector2 location = mapPath[0].ToVector() + GameManager.REVISE;
-        Quaternion rotate = Quaternion.Euler(0, 0, (mapPath[0].x == mapPath[1].x) ? 0 : 90f);
-        var tc = Instantiate(origin, location, rotate, TileList.transform).GetComponent<TileController>();
-        Tiles[mapPath[0].x, mapPath[0].y] = tc;
-        tc.SetStatus(TILE_TYPE.ROAD, mapPath[0]);
-        //
-        //2~n-1 경로타일
-        for (int i = 1; i + 1 < mapPath.Count; ++i)
-        {
-            var prev = mapPath[i - 1];
-            var cur = mapPath[i];
-            var next = mapPath[i + 1];
-            location = cur.ToVector() + GameManager.REVISE;
-            bool overlab = mapPath.FindAll(p => p.Equals(cur)).Count == 2;
-            bool straightY = (next - prev).x == 0;
-            bool straightX = (next - prev).y == 0;
-            bool beginX = (cur - prev).y == 0;
-            if (overlab && straightX)
-                continue;
-            origin = overlab ? RoadTilePrefabs[(int)ROAD_TYPE.CROSS] :
-                        straightX || straightY ? RoadTilePrefabs[(int)ROAD_TYPE.STRAIGHT] : RoadTilePrefabs[(int)ROAD_TYPE.TURN];
-            float angle = 0f;
-            angle = straightX ? 90f : straightY ? 0 :
-                        beginX ? (float)45 * (3 - (cur - prev).x * ((next - cur).y + 2)) : (float)45 * (3 + (next - cur).x * (2 - (cur - prev).y));
-            rotate = Quaternion.Euler(0, 0, angle);
-
-            Tiles[cur.x, cur.y] = Instantiate(origin, location, rotate, TileList.transform).GetComponent<TileController>();
-            Tiles[cur.x, cur.y].SetStatus(TILE_TYPE.ROAD, cur);
-
-        }
-        //
-        //마지막 경로 타일
-        origin = RoadTilePrefabs[(int)ROAD_TYPE.STRAIGHT];
-        location = mapPath[mapPath.Count - 1].ToVector() + GameManager.REVISE;
-        rotate = mapPath[mapPath.Count - 1].x == mapPath[mapPath.Count - 2].x ? Quaternion.Euler(0, 0, 0) : Quaternion.Euler(0, 0, 90f);
-        Tiles[mapPath[mapPath.Count - 1].x, mapPath[mapPath.Count - 1].y] = Instantiate(origin, location, rotate, TileList.transform).GetComponent<TileController>();
-        Tiles[mapPath[mapPath.Count - 1].x, mapPath[mapPath.Count - 1].y].SetStatus(TILE_TYPE.ROAD, mapPath[mapPath.Count - 1]);
-        //
-        //경로 외 속성타일
-        for (int i = 0; i < 9; ++i)
-            for (int j = 0; j < 9; ++j)
-                if (GameMap[i, j] != TILE_TYPE.ROAD)
-                {
-                    Tiles[i, j] = Instantiate(TilePrefabs[(int)GameMap[i, j]], new Vector2(i, j) + GameManager.REVISE, Quaternion.Euler(0, 0, 0), TileList.transform).GetComponent<TileController>();
-                    Tiles[i, j].SetStatus(GameMap[i, j], new Point(i, j));
-                }
-        //
+        gameMap = new GameBoard(new MapInfo(info));
     }
     private void SpanMonster()
     {
         //몬스터 생성 후 정보 할당
-        var mt = Instantiate<GameObject>(MonsterPrefabs[(int)MONSTER_TYPE.COMMON], GameMap.EntryAt(0).ToVector3() + (Vector3)GameManager.REVISE, Quaternion.Euler(0, 0, 0), MonsterList.transform)
-        .GetComponent<CommonMonsterController>();
+        var mt = BM.CreateMonster(MONSTER_TYPE.COMMON, roundPath[0]);
         int hp = 5;
         int speed = 3;
         int attack = 1;
@@ -433,34 +239,11 @@ public class GameManager : MonoBehaviour
         roundPath = GameMap.PathAt(entryIndex);
         var entry = roundPath[1];
         var exit = roundPath[roundPath.Count - 2];
-        var entryTile = Tiles[entry.x, entry.y];
-        var exitTile = Tiles[exit.x, exit.y];
-        float angle = (entry.y == 0) ? 0f :
-                      (entry.y == 8) ? 180f :
-                      (entry.x == 0) ? 270f :
-                                       90f;
-        if (this.entry != null)
-            Destroy(this.entry);
-        this.entry = Instantiate(EntryMark, entryTile.transform.position, Quaternion.Euler(0,0,angle), entryTile.transform);
-        if (this.exit != null)
-            Destroy(this.exit);
-        this.exit = Instantiate(EntryMark, exitTile.transform.position, Quaternion.Euler(0,0,angle), exitTile.transform);
+        BM.DisplayEntryMark(entry, exit);
     }
+    
     //외부 함수
-    public void TileSelect(TileController tc)
-    {
 
-        if (SelectedTile != null)
-            SelectedTile.Selected = false;
-        if (tc.Type != TILE_TYPE.ROAD)
-        {
-            if (!tc.Selected)
-            {
-                tc.Selected = true;
-                SelectedTile = tc;
-            }
-        }
-    }
     public void SetPause()
     {
         if (!pauseState)
@@ -497,21 +280,14 @@ public class GameManager : MonoBehaviour
         ++Round;
         SetRandomPath();
     }
-    public void AddRandomTower(int tier)
+    public bool BoughtTower(int price)
     {
-        if (SelectedTile == null)
-            return;
-        if (SelectedTile.BuiltTower != null)
-            return;
-        if (Gold < 10)
-            return;
-        Gold -= 10;
-        int type = Random.Range(1, 6);
-        TowerManager tw = Instantiate(TowerPrefabs[type-1], TowerList.transform) as TowerManager;
-        SelectedTile.BuiltTower = tw;
-        tw.transform.position = SelectedTile.transform.position;
-        tw.SetStatus((TOWER_TYPE)type,1f, 1, tier, 0.5f, SelectedTile);
+        if (Gold < price)
+            return false;
+        Gold -= price;
+        return true;
     }
+ 
 
     public void AddRewardGold(int reward)
     {

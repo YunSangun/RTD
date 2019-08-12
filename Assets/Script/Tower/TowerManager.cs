@@ -58,10 +58,11 @@ public class TowerManager : MonoBehaviour
     public void UpgradeTower()
     {
         int type = Random.Range(1, 6);
-        var tw = Instantiate(GameManager.Inst.TowerPrefabs[type-1], GameManager.Inst.TowerList.transform) as TowerManager;
+        var tw = GameManager.Inst.BM.CreateTower(type);
         BaseTile.BuiltTower = tw;
         tw.transform.position = BaseTile.transform.position;
         tw.SetStatus((TOWER_TYPE)type, attackPoint + 1f, range + 1, tier + 1, 0.5f, BaseTile);
+        GameManager.Inst.BM.TileSelect(tw.BaseTile);
         DestroyObj();
     }
     public void DestroyObj()
@@ -82,7 +83,7 @@ public class TowerManager : MonoBehaviour
         //Debug.Log("OnMouseDown");
 
         firstPosition = this.transform.position;
-        GameManager.Inst.TileSelect(BaseTile);
+        GameManager.Inst.BM.TileSelect(BaseTile);
     }
 
     private void OnMouseUp()

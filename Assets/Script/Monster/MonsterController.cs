@@ -36,6 +36,7 @@ public abstract class MonsterController : MonoBehaviour
         this.Attack = attack;
         this.reward = reward;
         this.MovePath = new List<Point>(path);
+        TargetedTowers = new List<TowerManager>();
     }
     public void DestroyObj()
     {
@@ -46,9 +47,9 @@ public abstract class MonsterController : MonoBehaviour
     }
     public void Start()
     {
-        TargetedTowers = new List<TowerManager>();
+        
         var startPoint = this.MovePath[0];
-        transform.position = startPoint.ToVector() + (this.MovePath[1] - startPoint).ToVector() / 2 + GameManager.REVISE;
+        transform.position = startPoint.ToVector() + (this.MovePath[1] - startPoint).ToVector() / 2 + BoardManager.REVISE;
     }
     public void FixedUpdate()
     {
@@ -71,7 +72,7 @@ public abstract class MonsterController : MonoBehaviour
         ConversionDir(ref prevDir);
         Point nextDir = MovePath[index + 1] - MovePath[index]; //현재 타일의 이동 방향
         ConversionDir(ref nextDir);
-        Vector3 position = MovePath[index].ToVector() + GameManager.REVISE; //현재 타일의 중점
+        Vector3 position = MovePath[index].ToVector() + BoardManager.REVISE; //현재 타일의 중점
         //이동 거리만큼 조정 후 이동
         if (dist <= DistPerTile / 2)
             position -= (DistPerTile / 2 - dist) * prevDir.ToVector3();

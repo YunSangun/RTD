@@ -20,9 +20,25 @@ public class UIManager : MonoBehaviour
     public Button FastButton;
     public Button StartButton;
     public Button OptionButton;
+    public GameObject TowerExplainPanel;
+    public GameObject EmptyPanel;
+
+
+    private TileController[,] Tiles = new TileController[9, 9];
+    private TileController SelectedTile = null;
+    private GameObject entry;
+    private GameObject exit;
+    private GameObject rangeMask;
 
     private void Awake()
     {
         UIManager.inst = this;
+    }
+    private void Start()
+    {
+        //버튼 이벤트 할당
+        StartButton.onClick.AddListener(GameManager.Inst.RoundStart);
+        AddTowerButton.onClick.AddListener(GameManager.Inst.BM.AddRandomTower);
+        OptionButton.onClick.AddListener(GameManager.Inst.SetPause);
     }
 }
