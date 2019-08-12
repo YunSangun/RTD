@@ -506,10 +506,11 @@ public class GameManager : MonoBehaviour
         if (Gold < 10)
             return;
         Gold -= 10;
-        TowerManager tw = Instantiate(TowerPrefabs[Random.Range(0, 5)], TowerList.transform) as TowerManager;
+        int type = Random.Range(1, 6);
+        TowerManager tw = Instantiate(TowerPrefabs[type-1], TowerList.transform) as TowerManager;
         SelectedTile.BuiltTower = tw;
         tw.transform.position = SelectedTile.transform.position;
-        tw.SetStatus(1, 1, tier, 1f, SelectedTile);
+        tw.SetStatus((TOWER_TYPE)type,1f, 1, tier, 0.5f, SelectedTile);
     }
 
     public void AddRewardGold(int reward)

@@ -7,36 +7,30 @@ using Random = UnityEngine.Random;
 
 public class TowerManager : MonoBehaviour
 {
-    TOWER_TYPE TT = TOWER_TYPE.NONE;
 
     public MonsterController target;
     //private string monsterTag = "Monster";
 
     public Sprite[] Texture;
-    private float attackPoint = 1.0f; // 타워 공격력
-    private int range = 1;
-    private float delayTime = 1.0f; // 지연 시간
-    private float delayTimeRemain = 0.0f; // 남은 지연 시간(deltatime)
-    private int tier = 1;
+    private TOWER_TYPE type;
+    private float attackPoint; // 타워 공격력
+    private float attackRate = 1f;
+    private int range;
+    private float rangeRate = 1f;
+    private float delay; // 지연 시간
+    private float delayRate = 1f;
+    private float delayRemain = 0.0f; // 남은 지연 시간(deltatime)
+    private int tier;
     public TileController BaseTile { get; set; }
+    public float Attack { get { return attackPoint * attackRate; } }
+    public int Range { get { return (int)(range * rangeRate); } }
+    public float Delay { get { return delay*delayRate; } }
 
     void Start()
     {
         transform.Translate(Vector3.back);
     }
-
-    void SetTowerType()
-    {
-        string towerName = this.name;
-        int delimiterIdx = towerName.IndexOf("_");
-        towerName = towerName.Substring(delimiterIdx + 1);
-        delimiterIdx = towerName.IndexOf("(Clone)");
-        towerName = towerName.Substring(0, delimiterIdx).ToUpper();
-        TT = (TOWER_TYPE)Enum.Parse(typeof(TOWER_TYPE), towerName);
-        //Debug.Log(TT);
-    }
-
-    public int Tier
+    private int Tier
     {
         get { return this.tier; }
         set
@@ -45,24 +39,29 @@ public class TowerManager : MonoBehaviour
             this.tier = value;
         }
     }
-    public void SetStatus(int attack, int range,int tier,float delay,TileController basetile)
+    private void OnSameTile()
     {
-        SetTowerType();
+
+    }
+    public void SetStatus(TOWER_TYPE type,float attack, int range,int tier,float delay,TileController basetile)
+    {
+        this.type = type;
         this.attackPoint = attack;
-        attackPoint *= tier;
         this.range = range;
-        this.tier = tier;
-        this.delayTime = delay;
-        if (TT == TOWER_TYPE.WIND) delayTime *= 0.5f;
+        Tier = tier;
+        this.delay = delay;
+        if (type == TOWER_TYPE.WIND) delay *= 0.5f;
+        if ((int)type == (int)basetile.Type)
+            OnSameTile();
         this.BaseTile = basetile;
     }
     public void UpgradeTower()
     {
-        var tw = Instantiate(GameManager.Inst.TowerPrefabs[Random.Range(0, 5)], GameManager.Inst.TowerList.transform) as TowerManager;
+        int type = Random.Range(1, 6);
+        var tw = Instantiate(GameManager.Inst.TowerPrefabs[type-1], GameManager.Inst.TowerList.transform) as TowerManager;
         BaseTile.BuiltTower = tw;
         tw.transform.position = BaseTile.transform.position;
-        tw.Tier = tier + 1;
-        tw.BaseTile = BaseTile;
+        tw.SetStatus((TOWER_TYPE)type, attackPoint + 1f, range + 1, tier + 1, 0.5f, BaseTile);
         DestroyObj();
     }
     public void DestroyObj()
@@ -147,8 +146,8 @@ public class TowerManager : MonoBehaviour
     }
     private bool CheckTarget()
     {
-        var lt = new Point(BaseTile.Position.x - range, BaseTile.Position.y - range);
-        var rb = new Point(BaseTile.Position.x + range, BaseTile.Position.y + range);
+        var lt = new Point(BaseTile.Position.x - Range, BaseTile.Position.y - Range);
+        var rb = new Point(BaseTile.Position.x + Range, BaseTile.Position.y + Range);
         if (target != null)
             if (!target.Position.Inside(lt, rb))
                 DisTartgeting();
@@ -159,17 +158,17 @@ public class TowerManager : MonoBehaviour
 
     void AttackTarget()
     {
-        delayTimeRemain -= Time.deltaTime;
-        if (delayTimeRemain > 0.0f) return;
+        delayRemain -= Time.deltaTime;
+        if (delayRemain > 0.0f) return;
         //Debug.Log(delayTimeRemain);
         Debug.DrawLine((Vector2)this.transform.position, (Vector2)target.transform.position, Color.red);
 
-        if(TT == TOWER_TYPE.ICE)
+        if(type == TOWER_TYPE.ICE)
         {
             target.GetComponent<MonsterController>().Iced(tier);
         }
 
-        target.GetComponent<MonsterController>().AttackedByTower(attackPoint);
-        delayTimeRemain = delayTime;
+        target.GetComponent<MonsterController>().AttackedByTower(Attack);
+        delayRemain = Delay;
     }
 }
