@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class MonsterController : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public abstract class MonsterController : MonoBehaviour
 
     private int icedLevel = 0;
     private bool hasIronStack = false;
+
+    public GameObject HpBarBackGround;
+    public Image HpBar;
 
     public Point Position
     {
@@ -48,6 +52,7 @@ public abstract class MonsterController : MonoBehaviour
     }
     public void Start()
     {
+        HpBar.fillAmount = 1f;
         var startPoint = this.MovePath[0];
         transform.position = startPoint.ToVector() + (this.MovePath[1] - startPoint).ToVector() / 2 + BoardManager.REVISE;
     }
@@ -104,6 +109,9 @@ public abstract class MonsterController : MonoBehaviour
     }
     public void DrawHitEffect()
     {
+        HpBar.fillAmount = HP / MaxHP;
+        HpBarBackGround.SetActive(true);
+
         SpriteRenderer spr = GetComponent<SpriteRenderer>();
 
         Color color = spr.color;
@@ -124,9 +132,9 @@ public abstract class MonsterController : MonoBehaviour
     {
         if (hasIronStack)
         {
-            Debug.Log("before HP : " + HP);
+            //Debug.Log("before HP : " + HP);
             HP *= (1 - 0.1f * tier);
-            Debug.Log("after HP : " + HP);
+            //Debug.Log("after HP : " + HP);
         }
 
         hasIronStack ^= true;
