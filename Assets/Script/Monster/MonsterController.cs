@@ -27,7 +27,7 @@ public abstract class MonsterController : MonoBehaviour
         }
     }
     public List<TowerManager> TargetedTowers { get; set; }
-    public virtual void SetStatus(float maxHP, float speed, int attack,int reward, List<Point> path)
+    public virtual void SetStatus(float maxHP, float speed, int attack, int reward, List<Point> path)
     {
         this.MaxHP = maxHP;
         this.HP = maxHP;
@@ -47,7 +47,6 @@ public abstract class MonsterController : MonoBehaviour
     }
     public void Start()
     {
-        
         var startPoint = this.MovePath[0];
         transform.position = startPoint.ToVector() + (this.MovePath[1] - startPoint).ToVector() / 2 + BoardManager.REVISE;
     }
@@ -88,19 +87,20 @@ public abstract class MonsterController : MonoBehaviour
         else if (Math.Abs(p.y) > 1)
             p.y /= -8;
     }
+
+
     public void AttackedByTower(float Damage)
     {
         HP -= Damage;
 
         DrawHitEffect();
 
-        if(HP <= 0.0f)
+        if (HP <= 0.0f)
         {
             GameManager.Inst.MonsterArrive(0);
             DestroyObj();
         }
     }
-
     public void DrawHitEffect()
     {
         SpriteRenderer spr = GetComponent<SpriteRenderer>();
@@ -109,7 +109,6 @@ public abstract class MonsterController : MonoBehaviour
         color.a = HP / MaxHP;
         spr.color = color;
     }
-
     public void Iced(int tier)
     {
         if (icedLevel >= tier) return;

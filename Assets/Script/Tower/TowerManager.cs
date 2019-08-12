@@ -24,7 +24,7 @@ public class TowerManager : MonoBehaviour
     public TileController BaseTile { get; set; }
     public float Attack { get { return attackPoint * attackRate; } }
     public int Range { get { return (int)(range * rangeRate); } }
-    public float Delay { get { return delay*delayRate; } }
+    public float Delay { get { return delay * delayRate; } }
 
     void Start()
     {
@@ -43,7 +43,7 @@ public class TowerManager : MonoBehaviour
     {
 
     }
-    public void SetStatus(TOWER_TYPE type,float attack, int range,int tier,float delay,TileController basetile)
+    public void SetStatus(TOWER_TYPE type, float attack, int range, int tier, float delay, TileController basetile)
     {
         this.type = type;
         this.attackPoint = attack;
@@ -72,7 +72,7 @@ public class TowerManager : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if(CheckTarget())
+        if (CheckTarget())
             AttackTarget();
     }
 
@@ -164,12 +164,32 @@ public class TowerManager : MonoBehaviour
         //Debug.Log(delayTimeRemain);
         Debug.DrawLine((Vector2)this.transform.position, (Vector2)target.transform.position, Color.red);
 
-        if(type == TOWER_TYPE.ICE)
+        //private LineRenderer attackLine;
+        //attackLine = GetComponent<LineRenderer>();
+        //attackLine.SetColors(Color.red);
+        //attackLine.SetWidth(0.1f, 0.1f);
+        //attackLine.SetPosition(0, (Vector2)this.transform.position);
+        //attackLine.SetPosition(1, (Vector2)target.transform.position);
+
+        if(type == TOWER_TYPE.FIRE)
+        {
+            Collider2D[] MonsterColl = Physics2D.OverlapBoxAll(target.transform.position, new Vector2(tier, tier), 0);
+
+            foreach (Collider2D i in MonsterColl)
+            {
+                if (i.gameObject.tag == "Monster")
+                {
+                    i.gameObject.GetComponent<MonsterController>().AttackedByTower(Attack);
+                }
+            }
+        }
+
+        if (type == TOWER_TYPE.ICE)
         {
             target.GetComponent<MonsterController>().Iced(tier);
         }
 
-        target.GetComponent<MonsterController>().AttackedByTower(Attack);
+        //if(target != null) target.GetComponent<MonsterController>().AttackedByTower(Attack);
         delayRemain = Delay;
     }
 }
