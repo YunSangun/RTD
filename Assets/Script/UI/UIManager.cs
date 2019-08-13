@@ -16,6 +16,10 @@ public class UIManager : MonoBehaviour
     public Text LifeText;
     public Text RoundText;
     public Text GoldText;
+    public Text TowerTierText;
+    public Text TowerTypeText;
+    public Text TowerAttackText;
+    public Text TowerDelayText;
     public Button AddTowerButton;
     public Button FastButton;
     public Button StartButton;

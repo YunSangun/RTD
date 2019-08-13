@@ -122,13 +122,18 @@ public class BoardManager : MonoBehaviour
     }
     private void DisplayOn(TowerManager tm)
     {
-        UIManager.Inst.TowerExplainPanel.SetActive(true);
-        UIManager.Inst.EmptyPanel.SetActive(false);
+        var ui = UIManager.Inst;
+        ui.TowerExplainPanel.SetActive(true);
+        ui.EmptyPanel.SetActive(false);
         if (rangeMask != null)
             Destroy(rangeMask);
         rangeMask = Instantiate(RangeMask, tm.BaseTile.transform);
         int scale = tm.Range * 2 + 1;
         rangeMask.transform.localScale = new Vector3(scale, scale);
+        ui.TowerTierText.text = $"Tier : {tm.Tier}";
+        ui.TowerTypeText.text = $"Emement : {tm.Type}";
+        ui.TowerAttackText.text = $"Attack : {tm.Attack}";
+        ui.TowerDelayText.text = $"Delay : {tm.Delay}";
     }
     private void DisplayOff()
     {

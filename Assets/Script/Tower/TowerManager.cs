@@ -22,15 +22,12 @@ public class TowerManager : MonoBehaviour
     private float delayRemain = 0.0f; // 남은 지연 시간(deltatime)
     private int tier;
     public TileController BaseTile { get; set; }
+
+    public TOWER_TYPE Type { get { return type; } }
     public float Attack { get { return attackPoint * attackRate; } }
     public int Range { get { return (int)(range * rangeRate); } }
     public float Delay { get { return delay * delayRate; } }
-
-    void Start()
-    {
-        transform.Translate(Vector3.back);
-    }
-    private int Tier
+    public int Tier
     {
         get { return this.tier; }
         set
@@ -39,9 +36,15 @@ public class TowerManager : MonoBehaviour
             this.tier = value;
         }
     }
+    void Start()
+    {
+        transform.Translate(Vector3.back);
+    }
+    
     private void OnSameTile()
     {
-
+        this.attackRate = 1.5f;
+        this.delayRate = 0.8f;
     }
     public void SetStatus(TOWER_TYPE type, float attack, int range, int tier, float delay, TileController basetile)
     {
@@ -50,7 +53,8 @@ public class TowerManager : MonoBehaviour
         this.range = range;
         Tier = tier;
         this.delay = delay;
-        if (type == TOWER_TYPE.WIND) delay *= 0.5f;
+        if (type == TOWER_TYPE.WIND)
+            this.delay *= 0.5f;
         if ((int)type == (int)basetile.Type)
             OnSameTile();
         this.BaseTile = basetile;
