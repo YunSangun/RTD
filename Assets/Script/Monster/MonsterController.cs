@@ -105,6 +105,7 @@ public abstract class MonsterController : MonoBehaviour
         if (HP <= 0.0f)
         {
             GameManager.Inst.MonsterArrive(0);
+            GameManager.Inst.AddRewardGold(reward);
             DestroyObj();
         }
     }
@@ -113,11 +114,11 @@ public abstract class MonsterController : MonoBehaviour
         HpBar.fillAmount = HP / MaxHP;
         HpBarBackGround.SetActive(true);
 
-        SpriteRenderer spr = GetComponent<SpriteRenderer>();
+        //SpriteRenderer spr = GetComponent<SpriteRenderer>();
 
-        Color color = spr.color;
-        color.a = HP / MaxHP;
-        spr.color = color;
+        //Color color = spr.color;
+        //color.a = HP / MaxHP;
+        //spr.color = color;
     }
     public void Iced(int tier)
     {

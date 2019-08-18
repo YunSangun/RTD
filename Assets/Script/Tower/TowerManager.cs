@@ -40,7 +40,7 @@ public class TowerManager : MonoBehaviour
     {
         transform.Translate(Vector3.back);
     }
-    
+
     private void OnSameTile()
     {
         this.attackRate = 1.5f;
@@ -167,13 +167,6 @@ public class TowerManager : MonoBehaviour
         if (delayRemain > 0.0f) return;
         //Debug.Log(delayTimeRemain);
         Debug.DrawLine((Vector2)this.transform.position, (Vector2)target.transform.position, Color.red);
-
-        //private LineRenderer attackLine;
-        //attackLine = GetComponent<LineRenderer>();
-        //attackLine.SetColors(Color.red);
-        //attackLine.SetWidth(0.1f, 0.1f);
-        //attackLine.SetPosition(0, (Vector2)this.transform.position);
-        //attackLine.SetPosition(1, (Vector2)target.transform.position);
 
         switch (type)
         {

@@ -99,7 +99,6 @@ public class GameManager : MonoBehaviour
         LoadMap();
         BM.MakeBoard();
         SetRandomPath();
-        
     }
 
     private void FixedUpdate()
@@ -137,15 +136,6 @@ public class GameManager : MonoBehaviour
         //{
         //    Debug.Log("Check btnTexture");
         //    return;
-        //}
-
-        //if (GUI.Button(new Rect(100, 100, 100, 100), btnTexture, "Add Tower"))
-        //{
-        //    addTower();
-        //}
-        //if (GUI.Button(new Rect(0, 0, 100, 100), "Add Tower"))
-        //{
-        //    AddRandomTower(0);
         //}
 
         //if (isPaused)
@@ -241,7 +231,7 @@ public class GameManager : MonoBehaviour
         var exit = roundPath[roundPath.Count - 2];
         BM.DisplayEntryMark(entry, exit);
     }
-    
+
     //외부 함수
 
     public void SetPause()
@@ -254,7 +244,7 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 1.0f;
         }
-
+        
         pauseState ^= true;
     }
     public void MonsterArrive(int attack)
@@ -287,7 +277,7 @@ public class GameManager : MonoBehaviour
         Gold -= price;
         return true;
     }
- 
+
 
     public void AddRewardGold(int reward)
     {
