@@ -20,6 +20,7 @@ public abstract class MonsterController : MonoBehaviour
 
     private int icedLevel = 0;
     private bool hasIronStack = false;
+    private int poisonLevel = 0;
 
     public GameObject HpBarBackGround;
     public Image HpBar;
@@ -127,6 +128,25 @@ public abstract class MonsterController : MonoBehaviour
 
         //Debug.Log("Iced! : " + icedLevel);
         Debug.Log("Speed : " + Speed);
+    }
+    public void Poisoned(int tier)
+    {
+        if (poisonLevel >= tier) return;
+
+        if (poisonLevel == 0)
+        {
+            poisonLevel = tier;
+            InvokeRepeating("DamagedByPoison", 1, 1);
+        }
+        else
+        {
+            poisonLevel = tier;
+        }
+    }
+    private void DamagedByPoison()
+    {
+        AttackedByTower(poisonLevel);
+        //Debug.Log("Poisoned : " + poisonLevel);
     }
     public void IronStack(int tier)
     {
