@@ -131,7 +131,7 @@ public class BoardManager : MonoBehaviour
         int scale = tm.Range * 2 + 1;
         rangeMask.transform.localScale = new Vector3(scale, scale);
         ui.TowerTierText.text = $"Tier : {tm.Tier}";
-        ui.TowerTypeText.text = $"Emement : {tm.Type}";
+        ui.TowerTypeText.text = $"Element : {tm.Type}";
         ui.TowerAttackText.text = $"Attack : {tm.Attack}";
         ui.TowerDelayText.text = $"Delay : {tm.Delay}";
     }
