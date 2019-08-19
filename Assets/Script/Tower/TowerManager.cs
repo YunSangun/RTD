@@ -12,6 +12,8 @@ public class TowerManager : MonoBehaviour
     //private string monsterTag = "Monster";
 
     public Sprite[] Texture;
+    public GameObject hitEffect;
+    private SpriteRenderer spr;
     private TOWER_TYPE type;
     private float attackPoint; // 타워 공격력
     private float attackRate = 1f;
@@ -39,6 +41,7 @@ public class TowerManager : MonoBehaviour
     void Start()
     {
         transform.Translate(Vector3.back);
+        spr = GetComponent<SpriteRenderer>();
     }
 
     private void OnSameTile()
@@ -167,6 +170,7 @@ public class TowerManager : MonoBehaviour
         if (delayRemain > 0.0f) return;
         //Debug.Log(delayTimeRemain);
         Debug.DrawLine((Vector2)this.transform.position, (Vector2)target.transform.position, Color.red);
+        DrawHitEffect();
 
         switch (type)
         {
@@ -200,5 +204,13 @@ public class TowerManager : MonoBehaviour
                 break;
         }
         delayRemain = Delay;
+    }
+    private void DrawHitEffect()
+    {
+        if (!target) return;
+
+        hitEffect.GetComponent<SpriteRenderer>().color = spr.color;
+
+        Destroy(Instantiate(hitEffect.gameObject, target.transform.position, target.transform.rotation), 1);
     }
 }

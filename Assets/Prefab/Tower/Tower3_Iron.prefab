@@ -98,10 +98,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f62f7dd20c4ca594784d3c205c7675c0, type: 3}
   - {fileID: 21300000, guid: 2a93a846c9c080b468cefb83933198c7, type: 3}
   - {fileID: 21300000, guid: 45a8dc7e9630c2449b7b38fedf0ac5ac, type: 3}
-  attackPoint: 1
-  range: 3
-  delayTime: 1
-  delayTimeRemain: 0
+  hitEffect: {fileID: 4061187195314974644, guid: 0de0bf4898747a64b959a72760b004c5,
+    type: 3}
 --- !u!61 &1016532805742977744
 BoxCollider2D:
   m_ObjectHideFlags: 0
