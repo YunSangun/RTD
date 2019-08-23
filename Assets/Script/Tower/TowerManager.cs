@@ -175,7 +175,7 @@ public class TowerManager : MonoBehaviour
         switch (type)
         {
             case TOWER_TYPE.FIRE:
-                Collider2D[] MonsterColl = Physics2D.OverlapBoxAll(target.transform.position, new Vector2(tier, tier), 0);
+                Collider2D[] MonsterColl = Physics2D.OverlapBoxAll(target.transform.position, new Vector2(tier * 1.5f, tier * 1.5f), 0);
 
                 foreach (Collider2D i in MonsterColl)
                 {
@@ -211,6 +211,6 @@ public class TowerManager : MonoBehaviour
 
         hitEffect.GetComponent<SpriteRenderer>().color = spr.color;
 
-        Destroy(Instantiate(hitEffect.gameObject, target.transform.position, target.transform.rotation), 1);
+        Destroy(Instantiate(hitEffect.gameObject, target.transform.position, target.transform.rotation), 0.5f);
     }
 }
