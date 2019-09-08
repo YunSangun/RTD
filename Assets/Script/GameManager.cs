@@ -142,7 +142,7 @@ public class GameManager : MonoBehaviour
         //    GUI.Label(new Rect(100, 100, 50, 30), "Game paused");
 
         // 테스트용
-        if (GUI.Button(new Rect(550, 15, 50, 30), "Restart"))
+        if (GUI.Button(new Rect(Screen.width / 16 * 12, Screen.height / 30, Screen.width / 10, Screen.height / 15), "Restart"))
         {
             SceneManager.LoadScene("GameScene");
         }
