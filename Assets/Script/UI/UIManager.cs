@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
     public Text TowerDelayText;
     public Button AddTowerButton;
     public Button FastButton;
-    public Button StartButton;
+    public Button StartStopButton;
     public Button OptionButton;
     public GameObject TowerExplainPanel;
     public GameObject EmptyPanel;
@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         //버튼 이벤트 할당
-        StartButton.onClick.AddListener(GameManager.Inst.RoundStart);
+        StartStopButton.onClick.AddListener(GameManager.Inst.RoundStart);
         AddTowerButton.onClick.AddListener(GameManager.Inst.BM.AddRandomTower);
         OptionButton.onClick.AddListener(GameManager.Inst.SetPause);
     }
@@ -54,11 +54,11 @@ public class UIManager : MonoBehaviour
         if (state == -1) { return; }
         else if (state == 0)
         {
-            StartButton.GetComponent<Image>().sprite = StopSpr;
+            StartStopButton.GetComponent<Image>().sprite = StopSpr;
         }
         else if (state == 1)
         {
-            StartButton.GetComponent<Image>().sprite = StartSpr;
+            StartStopButton.GetComponent<Image>().sprite = StartSpr;
         }
     }
 }

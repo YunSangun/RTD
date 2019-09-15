@@ -93,8 +93,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         //내부변수 할당
-        pauseState = false;
-        started = false;
+        Time.timeScale = 1.0f;
+
         Monsters = new List<MonsterController>();
         PlayerHP = 50;
         Round = 1;
@@ -140,9 +140,6 @@ public class GameManager : MonoBehaviour
         //    Debug.Log("Check btnTexture");
         //    return;
         //}
-
-        //if (isPaused)
-        //    GUI.Label(new Rect(100, 100, 50, 30), "Game paused");
 
         // 테스트용
         if (GUI.Button(new Rect(Screen.width / 16 * 12, Screen.height / 30, Screen.width / 10, Screen.height / 15), "Restart"))
@@ -296,8 +293,6 @@ public class GameManager : MonoBehaviour
         Gold -= price;
         return true;
     }
-
-
     public void AddRewardGold(int reward)
     {
         Gold += reward;

@@ -45,7 +45,7 @@ public class BoardManager : MonoBehaviour
         MonsterHolder = Instantiate(new GameObject() { name = "Monsters" }, transform);
         //첫번째 경로 타일
         var GameMap = GameManager.Inst.GameMap;
-        List <Point> mapPath = GameMap.ToList();
+        List<Point> mapPath = GameMap.ToList();
         GameObject origin = RoadTilePrefabs[(int)ROAD_TYPE.STRAIGHT];
         Vector2 location = mapPath[0].ToVector() + BoardManager.REVISE;
         Quaternion rotate = Quaternion.Euler(0, 0, (mapPath[0].x == mapPath[1].x) ? 0 : 90f);
@@ -95,7 +95,7 @@ public class BoardManager : MonoBehaviour
                 }
         //
     }
-    public MonsterController CreateMonster(MONSTER_TYPE type,Point pos)
+    public MonsterController CreateMonster(MONSTER_TYPE type, Point pos)
     {
         return Instantiate(MonsterPrefabs[(int)type], MonsterHolder.transform)
         .GetComponent<MonsterController>();
@@ -104,7 +104,7 @@ public class BoardManager : MonoBehaviour
     {
         return Instantiate(TowerPrefabs[type], TowerHolder.transform) as TowerManager;
     }
-    public void DisplayEntryMark(Point entry,Point exit)
+    public void DisplayEntryMark(Point entry, Point exit)
     {
 
         var entryTile = Tiles[entry.x, entry.y];

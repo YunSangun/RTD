@@ -1437,7 +1437,7 @@ MonoBehaviour:
   TowerDelayText: {fileID: 8345980477861107751}
   AddTowerButton: {fileID: 8345980478481776784}
   FastButton: {fileID: 8345980478319285891}
-  StartButton: {fileID: 8345980478273123056}
+  StartStopButton: {fileID: 8345980478273123056}
   OptionButton: {fileID: 8345980477716296694}
   TowerExplainPanel: {fileID: 8345980477606009844}
   EmptyPanel: {fileID: 8345980477962158269}
