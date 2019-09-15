@@ -27,6 +27,9 @@ public class UIManager : MonoBehaviour
     public GameObject TowerExplainPanel;
     public GameObject EmptyPanel;
 
+    public Sprite StartSpr;
+    public Sprite StopSpr;
+
 
     private TileController[,] Tiles = new TileController[9, 9];
     private TileController SelectedTile = null;
@@ -44,5 +47,18 @@ public class UIManager : MonoBehaviour
         StartButton.onClick.AddListener(GameManager.Inst.RoundStart);
         AddTowerButton.onClick.AddListener(GameManager.Inst.BM.AddRandomTower);
         OptionButton.onClick.AddListener(GameManager.Inst.SetPause);
+    }
+
+    public void ChangeStartButtonImage(int state = -1)
+    {
+        if (state == -1) { return; }
+        else if (state == 0)
+        {
+            StartButton.GetComponent<Image>().sprite = StopSpr;
+        }
+        else if (state == 1)
+        {
+            StartButton.GetComponent<Image>().sprite = StartSpr;
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Windows;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
@@ -92,6 +93,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         //내부변수 할당
+        pauseState = false;
+        started = false;
         Monsters = new List<MonsterController>();
         PlayerHP = 50;
         Round = 1;
@@ -239,12 +242,18 @@ public class GameManager : MonoBehaviour
         if (!pauseState)
         {
             Time.timeScale = 0;
+            UIManager.Inst.ChangeStartButtonImage(1);
+            //UIManager.Inst.StartButton.GetComponent<Image>().sprite = UIManager.Inst.StartSpr;
+            /*Resources.Load<Sprite>("Assets/Sprite/ETC/TestImage") as Sprite;*/
         }
         else
         {
             Time.timeScale = 1.0f;
+            UIManager.Inst.ChangeStartButtonImage(0);
+            //UIManager.Inst.StartButton.GetComponent<Image>().sprite = UIManager.Inst.StopSpr;
+            /*Resources.Load<Sprite>("Assets/Sprite/ETC/TestImage") as Sprite;*/
         }
-        
+
         pauseState ^= true;
     }
     public void MonsterArrive(int attack)
@@ -255,7 +264,16 @@ public class GameManager : MonoBehaviour
     }
     public void RoundStart()
     {
-        if (started) return; //라운드가 진행중이면 종료
+        if (started) //라운드가 진행중이면 종료
+        {
+            SetPause();
+            return;
+        }
+        else
+        {
+            UIManager.Inst.ChangeStartButtonImage(0);
+        }
+
         //라운드 정보 할당
         started = true;
         int count = 10;
@@ -269,6 +287,7 @@ public class GameManager : MonoBehaviour
         started = false;
         ++Round;
         SetRandomPath();
+        UIManager.Inst.ChangeStartButtonImage(1);
     }
     public bool BoughtTower(int price)
     {
