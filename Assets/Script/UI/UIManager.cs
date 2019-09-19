@@ -27,9 +27,12 @@ public class UIManager : MonoBehaviour
     public GameObject TowerExplainPanel;
     public GameObject EmptyPanel;
 
+    public GameObject GameOverPanel;
+    public Button RestartButton;
+    public Text RoundOverText;
+
     public Sprite StartSpr;
     public Sprite StopSpr;
-
 
     private TileController[,] Tiles = new TileController[9, 9];
     private TileController SelectedTile = null;
@@ -60,5 +63,12 @@ public class UIManager : MonoBehaviour
         {
             StartStopButton.GetComponent<Image>().sprite = StartSpr;
         }
+    }
+
+    public void OnGameOverPanel(int round)
+    {
+        GameOverPanel.SetActive(true);
+        RoundOverText.text = round.ToString() + " Round";
+        RestartButton.onClick.AddListener(GameManager.Inst.Restart);
     }
 }

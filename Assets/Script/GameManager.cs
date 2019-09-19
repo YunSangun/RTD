@@ -256,6 +256,12 @@ public class GameManager : MonoBehaviour
     public void MonsterArrive(int attack)
     {
         PlayerHP -= attack;
+
+        if (PlayerHP == 0)
+        {
+            UIManager.Inst.OnGameOverPanel(round);
+        }
+
         if (--RemainMonster == 0)
             RoundEnd();
     }
@@ -285,6 +291,10 @@ public class GameManager : MonoBehaviour
         ++Round;
         SetRandomPath();
         UIManager.Inst.ChangeStartButtonImage(1);
+    }
+    public void Restart()
+    {
+        SceneManager.LoadScene("GameScene");
     }
     public bool BoughtTower(int price)
     {

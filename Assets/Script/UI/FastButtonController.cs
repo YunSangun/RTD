@@ -8,6 +8,7 @@ public class FastButtonController : MonoBehaviour, IPointerDownHandler, IPointer
 {
     public float TimeScale = 2f;
     private bool downed = false;
+
     public void OnPointerDown(PointerEventData eventData)
     {
         if (!downed)
