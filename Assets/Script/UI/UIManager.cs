@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class UIManager : MonoBehaviour
 
     public GameObject GameOverPanel;
     public Button RestartButton;
+    public Button MenuButton;
     public Text RoundOverText;
 
     public Sprite StartSpr;
@@ -50,6 +52,7 @@ public class UIManager : MonoBehaviour
         StartStopButton.onClick.AddListener(GameManager.Inst.RoundStart);
         AddTowerButton.onClick.AddListener(GameManager.Inst.BM.AddRandomTower);
         OptionButton.onClick.AddListener(GameManager.Inst.SetPause);
+        MenuButton.onClick.AddListener(ChangeMainScene);
     }
 
     public void ChangeStartButtonImage(int state = -1)
@@ -70,5 +73,10 @@ public class UIManager : MonoBehaviour
         GameOverPanel.SetActive(true);
         RoundOverText.text = round.ToString() + " Round";
         RestartButton.onClick.AddListener(GameManager.Inst.Restart);
+    }
+
+    void ChangeMainScene()
+    {
+        SceneManager.LoadScene("MainScene");
     }
 }
