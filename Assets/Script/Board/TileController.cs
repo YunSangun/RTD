@@ -18,7 +18,10 @@ public class TileController : MonoBehaviour
         set
         {
             if (value)
+            {
                 mask = Instantiate(GameManager.Inst.BM.SelectMask, transform);
+                mask.transform.Translate(Vector3.forward);
+            }
             else
                 Destroy(mask);
             selected = value;

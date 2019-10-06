@@ -112,7 +112,7 @@ public class TowerManager : MonoBehaviour
                 this.transform.position = firstPosition;
                 return;
             }
-            Debug.Log(rayHit.collider.gameObject.name);
+            //Debug.Log(rayHit.collider.gameObject.name);
             BaseTile.BuiltTower = null;
             DestroyObj();
             tw.UpgradeTower();

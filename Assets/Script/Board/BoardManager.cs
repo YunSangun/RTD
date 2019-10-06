@@ -139,7 +139,7 @@ public class BoardManager : MonoBehaviour
         ui.EmptyPanel.SetActive(false);
         if (rangeMask != null)
             Destroy(rangeMask);
-        rangeMask = Instantiate(RangeMask, tm.BaseTile.transform); // here!!!
+        rangeMask = Instantiate(RangeMask, tm.BaseTile.transform);
         int scale = tm.Range * 2 + 1;
         rangeMask.transform.localScale = new Vector3(scale, scale);
         rangeMask.transform.Rotate(270, 0, 0);
