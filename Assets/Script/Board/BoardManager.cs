@@ -90,7 +90,7 @@ public class BoardManager : MonoBehaviour
             for (int j = 0; j < 9; ++j)
                 if (GameMap[i, j] != TILE_TYPE.ROAD)
                 {
-                    Tiles[i, j] = Instantiate(TilePrefabs[(int)GameMap[i, j]], new Vector2(i, j) + BoardManager.REVISE, Quaternion.Euler(0, 0, 0), TileHolder.transform).GetComponent<TileController>();
+                    Tiles[i, j] = Instantiate(TilePrefabs[(int)GameMap[i, j]], new Vector2(i, j) + BoardManager.REVISE, Quaternion.Euler(270, 0, 0), TileHolder.transform).GetComponent<TileController>();
                     Tiles[i, j].SetStatus(GameMap[i, j], new Point(i, j));
                 }
         //
