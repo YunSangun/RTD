@@ -23,11 +23,23 @@ public class BoardManager : MonoBehaviour
     public static Vector2 REVISE;
     private void Update()
     {
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //    var hit = Physics2D.Raycast(pos, Vector2.zero, 0f);
+        //    if (hit.collider != null)
+        //    {
+        //        var obj = hit.collider.gameObject;
+        //        if (obj.CompareTag("Tile"))
+        //            TileSelect(obj.GetComponent<TileController>());
+        //    }
+        //}
         if (Input.GetMouseButtonDown(0))
         {
-            Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            var hit = Physics2D.Raycast(pos, Vector2.zero, 0f);
-            if (hit.collider != null)
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit = new RaycastHit();
+
+            if(Physics.Raycast(ray.origin, ray.direction, out hit))
             {
                 var obj = hit.collider.gameObject;
                 if (obj.CompareTag("Tile"))
@@ -90,7 +102,7 @@ public class BoardManager : MonoBehaviour
             for (int j = 0; j < 9; ++j)
                 if (GameMap[i, j] != TILE_TYPE.ROAD)
                 {
-                    Tiles[i, j] = Instantiate(TilePrefabs[(int)GameMap[i, j]], new Vector2(i, j) + BoardManager.REVISE, Quaternion.Euler(270, 0, 0), TileHolder.transform).GetComponent<TileController>();
+                    Tiles[i, j] = Instantiate(TilePrefabs[(int)GameMap[i, j]], new Vector3(i, j, 1.0f) + (Vector3)BoardManager.REVISE, Quaternion.Euler(270, 0, 0), TileHolder.transform).GetComponent<TileController>();
                     Tiles[i, j].SetStatus(GameMap[i, j], new Point(i, j));
                 }
         //
@@ -127,9 +139,10 @@ public class BoardManager : MonoBehaviour
         ui.EmptyPanel.SetActive(false);
         if (rangeMask != null)
             Destroy(rangeMask);
-        rangeMask = Instantiate(RangeMask, tm.BaseTile.transform);
+        rangeMask = Instantiate(RangeMask, tm.BaseTile.transform); // here!!!
         int scale = tm.Range * 2 + 1;
         rangeMask.transform.localScale = new Vector3(scale, scale);
+        rangeMask.transform.Rotate(270, 0, 0);
         ui.TowerTierText.text = $"Tier : {tm.Tier}";
         ui.TowerTypeText.text = $"Element : {tm.Type}";
         ui.TowerAttackText.text = $"Attack : {tm.Attack}";

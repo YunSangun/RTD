@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 7151766891171342175}
   - component: {fileID: 7162298468287592843}
   - component: {fileID: 7747783922882563968}
-  m_Layer: 0
-  m_Name: Cube6_Poison
-  m_TagString: Untagged
+  - component: {fileID: 912775587688986539}
+  m_Layer: 8
+  m_Name: Cube3_Poison
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -90,3 +91,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &912775587688986539
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7148072566118968829}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.0000005, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0}
