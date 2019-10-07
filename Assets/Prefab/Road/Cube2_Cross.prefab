@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3149578245408400578}
   - component: {fileID: 3141282249942870430}
   - component: {fileID: 8319043470497182937}
+  - component: {fileID: 721548353984711591}
   m_Layer: 8
   m_Name: Cube2_Cross
   m_TagString: Tile
@@ -90,3 +91,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &721548353984711591
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3155113297385321242}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.0000005, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0}

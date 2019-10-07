@@ -59,8 +59,18 @@ public class BoardManager : MonoBehaviour
         var GameMap = GameManager.Inst.GameMap;
         List<Point> mapPath = GameMap.ToList();
         GameObject origin = RoadTilePrefabs[(int)ROAD_TYPE.STRAIGHT];
-        Vector2 location = mapPath[0].ToVector() + BoardManager.REVISE;
-        Quaternion rotate = Quaternion.Euler(0, 0, (mapPath[0].x == mapPath[1].x) ? 0 : 90f);
+        Vector3 location = mapPath[0].ToVector() + BoardManager.REVISE;
+        location.z = 1;
+        //Quaternion rotate = Quaternion.Euler(0, 0, (mapPath[0].x == mapPath[1].x) ? 0 : 90f);
+        Quaternion rotate = Quaternion.identity;
+
+        if (mapPath[0].x == mapPath[1].x)
+            rotate = Quaternion.Euler(-90, 0, 0);
+        else
+            rotate = Quaternion.Euler(0, 90, -90);
+
+        //var angles = transform.rotation.eulerAngles;
+        //Quaternion rotate = Quaternion.Euler(angles);
         var tc = Instantiate(origin, location, rotate, TileHolder.transform).GetComponent<TileController>();
         Tiles[mapPath[0].x, mapPath[0].y] = tc;
         tc.SetStatus(TILE_TYPE.ROAD, mapPath[0]);
@@ -72,6 +82,7 @@ public class BoardManager : MonoBehaviour
             var cur = mapPath[i];
             var next = mapPath[i + 1];
             location = cur.ToVector() + BoardManager.REVISE;
+            location.z = 1;
             bool overlab = mapPath.FindAll(p => p.Equals(cur)).Count == 2;
             bool straightY = (next - prev).x == 0;
             bool straightX = (next - prev).y == 0;
@@ -80,20 +91,41 @@ public class BoardManager : MonoBehaviour
                 continue;
             origin = overlab ? RoadTilePrefabs[(int)ROAD_TYPE.CROSS] :
                         straightX || straightY ? RoadTilePrefabs[(int)ROAD_TYPE.STRAIGHT] : RoadTilePrefabs[(int)ROAD_TYPE.TURN];
-            float angle = 0f;
-            angle = straightX ? 90f : straightY ? 0 :
-                        beginX ? (float)45 * (3 - (cur - prev).x * ((next - cur).y + 2)) : (float)45 * (3 + (next - cur).x * (2 - (cur - prev).y));
-            rotate = Quaternion.Euler(0, 0, angle);
-
+            //float angle = 0f;
+            //angle = straightX ? 90f : straightY ? 0 :
+            //            beginX ? (float)45 * (3 - (cur - prev).x * ((next - cur).y + 2)) : (float)45 * (3 + (next - cur).x * (2 - (cur - prev).y));
+            //rotate = Quaternion.Euler(0, 0, angle);
+            if (straightX)
+            {
+                rotate = Quaternion.Euler(0, 90, -90);
+            }
+            else if (straightY)
+            {
+                rotate = Quaternion.Euler(-90, 0, 0);
+            }
+            else
+            {
+                if (beginX)
+                {
+                    if((next - cur).y >= 0) rotate = Quaternion.Euler(90, 90, -90);
+                    else rotate = Quaternion.Euler(0, 90, -90);
+                }
+                else
+                {
+                    if ((cur - prev).y < 0) rotate = Quaternion.Euler(0, -90, 90);
+                    else rotate = Quaternion.Euler(-90, 90, -90);
+                }
+            }
             Tiles[cur.x, cur.y] = Instantiate(origin, location, rotate, TileHolder.transform).GetComponent<TileController>();
             Tiles[cur.x, cur.y].SetStatus(TILE_TYPE.ROAD, cur);
-
         }
         //
         //마지막 경로 타일
         origin = RoadTilePrefabs[(int)ROAD_TYPE.STRAIGHT];
         location = mapPath[mapPath.Count - 1].ToVector() + BoardManager.REVISE;
-        rotate = mapPath[mapPath.Count - 1].x == mapPath[mapPath.Count - 2].x ? Quaternion.Euler(0, 0, 0) : Quaternion.Euler(0, 0, 90f);
+        location.z = 1;
+        //rotate = mapPath[mapPath.Count - 1].x == mapPath[mapPath.Count - 2].x ? Quaternion.Euler(0, 0, 0) : Quaternion.Euler(0, 0, 90f);
+        rotate = mapPath[mapPath.Count - 1].x == mapPath[mapPath.Count - 2].x ? Quaternion.Euler(-90, 0, 0) : Quaternion.Euler(0, 90, -90);
         Tiles[mapPath[mapPath.Count - 1].x, mapPath[mapPath.Count - 1].y] = Instantiate(origin, location, rotate, TileHolder.transform).GetComponent<TileController>();
         Tiles[mapPath[mapPath.Count - 1].x, mapPath[mapPath.Count - 1].y].SetStatus(TILE_TYPE.ROAD, mapPath[mapPath.Count - 1]);
         //
@@ -140,6 +172,7 @@ public class BoardManager : MonoBehaviour
         if (rangeMask != null)
             Destroy(rangeMask);
         rangeMask = Instantiate(RangeMask, tm.BaseTile.transform);
+        rangeMask.transform.Translate(0, 1, 0);
         int scale = tm.Range * 2 + 1;
         rangeMask.transform.localScale = new Vector3(scale, scale);
         rangeMask.transform.Rotate(270, 0, 0);
