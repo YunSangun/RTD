@@ -51,7 +51,7 @@ public class BoardManager : MonoBehaviour
     {
         BoardManager.REVISE = transform.position + new Vector3(-4f, -4f);
         //parent 객체 설정
-        Destroy(BoardArea);
+        //Destroy(BoardArea);
         TileHolder = Instantiate(new GameObject() { name = "Tiles" }, transform);
         TowerHolder = Instantiate(new GameObject() { name = "Towers" }, transform);
         MonsterHolder = Instantiate(new GameObject() { name = "Monsters" }, transform);
