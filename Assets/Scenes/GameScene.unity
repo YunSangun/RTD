@@ -854,6 +854,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6085401644507002965, guid: dcd7ace2b62d6a1449faa164fa846246,
         type: 3}
+    - target: {fileID: 4558884041410246296, guid: 634d0d1c7dfee5b4ca3e0355fac5187c,
+        type: 3}
+      propertyPath: RoadTilePrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 5515592635105500615, guid: 9e71c1ab470bf184ca045ccc18effee1,
+        type: 3}
+    - target: {fileID: 4558884041410246296, guid: 634d0d1c7dfee5b4ca3e0355fac5187c,
+        type: 3}
+      propertyPath: RoadTilePrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 2510556734087825473, guid: 9ae901aefa689bc4bb4078b22caa6819,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 634d0d1c7dfee5b4ca3e0355fac5187c, type: 3}
 --- !u!1 &1359987452
