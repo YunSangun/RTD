@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ground_Mat
+  m_Name: GroundWGrassCross_Mat
   m_Shader: {fileID: 4800000, guid: 4578e9fc29f326b43af42d43ea0a245e, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: 9de02a2f27364e6468ba91155532fbdf, type: 3}
+        m_Texture: {fileID: 2800000, guid: f0ff2a9b3d0f3cd4197aa58551fa2040, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -51,10 +51,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Normal:
-        m_Texture: {fileID: 2800000, guid: b3b9ca7b924f78e44b6678c048d6e20a, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -64,11 +60,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Specular:
-        m_Texture: {fileID: 2800000, guid: b3b9ca7b924f78e44b6678c048d6e20a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 23ffd32de3ef25a48a0972d8debb518b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureSample0:
-        m_Texture: {fileID: 2800000, guid: 21a016d22b99ee64598aa20ffe8dd9a5, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9fdf6ef07d0fb284188e8fd29f48c7de, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
