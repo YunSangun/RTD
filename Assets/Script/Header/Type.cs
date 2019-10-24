@@ -22,14 +22,11 @@ public enum TILE_TYPE
     POISON,
     IRON,
     WIND,
-    ROAD
-
-}
-public enum ROAD_TYPE
-{
+    WALL,
     STRAIGHT,
     TURN,
     CROSS
+
 }
 
 [Serializable]

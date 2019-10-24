@@ -74,7 +74,7 @@ public class MapInfo
 
 }
 
-public class GameBoard
+public class GameBoard2
 {
     private TILE_TYPE[,] board;
     private MapInfo map;
@@ -85,19 +85,19 @@ public class GameBoard
             return board[x, y];
         }
     }
-    public GameBoard(MapInfo info)
+    public GameBoard2(MapInfo info)
     {
         this.board = new TILE_TYPE[9, 9];
         this.map = info;
         foreach (var p in this.map.ToList())
-            this.board[p.x, p.y] = TILE_TYPE.ROAD;
+            this.board[p.x, p.y] = TILE_TYPE.STRAIGHT;
         for (int i = 0; i < 9; ++i)
             for (int j = 0; j < 9; ++j)
                 if (this.board[i, j] == TILE_TYPE.NONE)
                     this.board[i, j] = (TILE_TYPE)Random.Range(1, 6);
     }
-    public GameBoard(List<Point>[] path) : this(new MapInfo(path)) { }
-    public GameBoard(TILE_TYPE[,] board, MapInfo map)
+    public GameBoard2(List<Point>[] path) : this(new MapInfo(path)) { }
+    public GameBoard2(TILE_TYPE[,] board, MapInfo map)
     {
         this.board = (TILE_TYPE[,])board.Clone();
         this.map = new MapInfo(map);

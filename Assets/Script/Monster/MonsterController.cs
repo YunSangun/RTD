@@ -12,7 +12,7 @@ public abstract class MonsterController : MonoBehaviour
     private float SpeedOrgin;
     private float Speed;
     private int Attack;
-    private List<Point> MovePath;
+    private List<Vector2Int>[] MovePath;
     private float dist = 0f;
     private float AllDist = 0f;
     private int index = 1;
@@ -25,15 +25,15 @@ public abstract class MonsterController : MonoBehaviour
     public GameObject HpBarBackGround;
     public Image HpBar;
 
-    public Point Position
+    public Vector2Int Position
     {
         get
         {
-            return MovePath[index];
+            return MovePath[0][index];
         }
     }
     public List<TowerManager> TargetedTowers { get; set; }
-    public virtual void SetStatus(float maxHP, float speed, int attack, int reward, List<Point> path)
+    public virtual void SetStatus(float maxHP, float speed, int attack, int reward, List<Vector2Int>[] path)
     {
         this.MaxHP = maxHP;
         this.HP = maxHP;
@@ -41,7 +41,7 @@ public abstract class MonsterController : MonoBehaviour
         this.SpeedOrgin = Speed;
         this.Attack = attack;
         this.reward = reward;
-        this.MovePath = new List<Point>(path);
+        this.MovePath = new List<Vector2Int>[4];
         TargetedTowers = new List<TowerManager>();
     }
     public void DestroyObj()
@@ -55,38 +55,38 @@ public abstract class MonsterController : MonoBehaviour
     {
         HpBar.fillAmount = 1f;
         var startPoint = this.MovePath[0];
-        transform.position = startPoint.ToVector() + (this.MovePath[1] - startPoint).ToVector() / 2 + BoardManager.REVISE;
+        //transform.position = startPoint.ToVector() + (this.MovePath[1] - startPoint).ToVector() / 2 + BoardManager.REVISE;
     }
-    public void FixedUpdate()
-    {
-        //이동 거리만큼 dist와 AllDist 증가
-        dist += this.Speed * Time.deltaTime;
-        AllDist += this.Speed * Time.deltaTime;
-        //
-        if (dist >= DistPerTile)
-        {
-            //경로의 끝에 도달하면 GameManager에 도착을 알리고 오브젝트 파괴
-            if (++index == MovePath.Count - 1)
-            {
-                GameManager.Inst.MonsterArrive(this.Attack);
-                DestroyObj();
-                return;
-            }
-            dist -= DistPerTile;
-        }
-        Point prevDir = MovePath[index] - MovePath[index - 1]; //이전 타일의 이동 방향
-        ConversionDir(ref prevDir);
-        Point nextDir = MovePath[index + 1] - MovePath[index]; //현재 타일의 이동 방향
-        ConversionDir(ref nextDir);
-        Vector3 position = MovePath[index].ToVector() + BoardManager.REVISE; //현재 타일의 중점
-        //이동 거리만큼 조정 후 이동
-        if (dist <= DistPerTile / 2)
-            position -= (DistPerTile / 2 - dist) * prevDir.ToVector3();
-        else
-            position += (dist - DistPerTile / 2) * nextDir.ToVector3();
-        transform.position = position;
-        //
-    }
+    //public void FixedUpdate()
+    //{
+    //    //이동 거리만큼 dist와 AllDist 증가
+    //    dist += this.Speed * Time.deltaTime;
+    //    AllDist += this.Speed * Time.deltaTime;
+    //    //
+    //    if (dist >= DistPerTile)
+    //    {
+    //        //경로의 끝에 도달하면 GameManager에 도착을 알리고 오브젝트 파괴
+    //        if (++index == MovePath.Count - 1)
+    //        {
+    //            GameManager.Inst.MonsterArrive(this.Attack);
+    //            DestroyObj();
+    //            return;
+    //        }
+    //        dist -= DistPerTile;
+    //    }
+    //    Point prevDir = MovePath[index] - MovePath[index - 1]; //이전 타일의 이동 방향
+    //    ConversionDir(ref prevDir);
+    //    Point nextDir = MovePath[index + 1] - MovePath[index]; //현재 타일의 이동 방향
+    //    ConversionDir(ref nextDir);
+    //    Vector3 position = MovePath[index].ToVector() + BoardManager.REVISE; //현재 타일의 중점
+    //    //이동 거리만큼 조정 후 이동
+    //    if (dist <= DistPerTile / 2)
+    //        position -= (DistPerTile / 2 - dist) * prevDir.ToVector3();
+    //    else
+    //        position += (dist - DistPerTile / 2) * nextDir.ToVector3();
+    //    transform.position = position;
+    //    //
+    //}
     private void ConversionDir(ref Point p)  //끝점에서 끝점으로 이동한 경우 올바른 방향값으로 변환
     {
         if (Math.Abs(p.x) > 1)

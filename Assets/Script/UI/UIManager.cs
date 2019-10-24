@@ -50,7 +50,7 @@ public class UIManager : MonoBehaviour
     {
         //버튼 이벤트 할당
         StartStopButton.onClick.AddListener(GameManager.Inst.RoundStart);
-        AddTowerButton.onClick.AddListener(GameManager.Inst.BM.AddRandomTower);
+        //AddTowerButton.onClick.AddListener(GameManager.Inst.BM.AddRandomTower);
         OptionButton.onClick.AddListener(GameManager.Inst.SetPause);
         MenuButton.onClick.AddListener(ChangeMainScene);
     }

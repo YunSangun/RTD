@@ -49,8 +49,9 @@ public class TowerManager : MonoBehaviour
         this.attackRate = 1.5f;
         this.delayRate = 0.8f;
     }
-    public void SetStatus(TOWER_TYPE type, float attack, int range, int tier, float delay, TileController basetile)
+    public void SetStatus(Vector3 pos,TOWER_TYPE type, float attack, int range, int tier, float delay, TileController basetile)
     {
+        this.transform.position = pos;
         this.type = type;
         this.attackPoint = attack;
         this.range = range;
@@ -62,14 +63,13 @@ public class TowerManager : MonoBehaviour
             OnSameTile();
         this.BaseTile = basetile;
     }
-    public void UpgradeTower()
+    public void UpgradeTower() 
     {
         int type = Random.Range(1, 6);
         var tw = GameManager.Inst.BM.CreateTower(type);
+        tw.SetStatus(BaseTile.transform.position,(TOWER_TYPE)type, attackPoint + 1f, range + 1, tier + 1, 0.5f, BaseTile);
         BaseTile.BuiltTower = tw;
-        tw.transform.position = BaseTile.transform.position;
-        tw.SetStatus((TOWER_TYPE)type, attackPoint + 1f, range + 1, tier + 1, 0.5f, BaseTile);
-        GameManager.Inst.BM.TileSelect(tw.BaseTile);
+        //GameManager.Inst.BM.TileSelect(tw.BaseTile);
         DestroyObj();
     }
     public void DestroyObj()
@@ -90,7 +90,7 @@ public class TowerManager : MonoBehaviour
         //Debug.Log("OnMouseDown");
 
         firstPosition = this.transform.position;
-        GameManager.Inst.BM.TileSelect(BaseTile);
+        //GameManager.Inst.BM.TileSelect(BaseTile);
     }
 
     private void OnMouseUp()
@@ -156,11 +156,11 @@ public class TowerManager : MonoBehaviour
     {
         var lt = new Point(BaseTile.Position.x - Range, BaseTile.Position.y - Range);
         var rb = new Point(BaseTile.Position.x + Range, BaseTile.Position.y + Range);
-        if (target != null)
-            if (!target.Position.Inside(lt, rb))
-                DisTartgeting();
-        if (target == null)
-            return Targeting(GameManager.Inst.Monsters.Find(mc => mc.Position.Inside(lt, rb)));
+        //if (target != null)
+            //if (!target.Position.Inside(lt, rb))
+            //    DisTartgeting();
+        //if (target == null)
+            //return Targeting(GameManager.Inst.Monsters.Find(mc => mc.Position.Inside(lt, rb)));
         return true;
     }
 
