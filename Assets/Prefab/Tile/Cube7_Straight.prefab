@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 8113663608726122703}
   - component: {fileID: 8542272280671469619}
   m_Layer: 8
-  m_Name: Cube0_Straight
-  m_TagString: Tile
+  m_Name: Cube7_Straight
+  m_TagString: Path
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

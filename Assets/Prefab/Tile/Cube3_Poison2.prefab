@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 8768670576185023620}
   - component: {fileID: 8779692874136009526}
   - component: {fileID: 8787299673048566988}
-  m_Layer: 0
-  m_Name: Cube_WoodNormal
-  m_TagString: Untagged
+  - component: {fileID: 4315693908753833577}
+  m_Layer: 8
+  m_Name: Cube3_Poison2
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -57,6 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
+  - {fileID: 0}
   - {fileID: 2100000, guid: d08a2b1b654a38d4bb8901806db5a539, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -77,3 +79,16 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &4315693908753833577
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8765849323959424062}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.0000005, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0}

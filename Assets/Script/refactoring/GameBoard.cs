@@ -99,8 +99,10 @@ public class PathInfo
 
 public class GameBoard : MonoBehaviour
 {
+    private static readonly CubeManager NONECUBE = new CubeManager();
     public CubeManager[,] m_Tiles = new CubeManager[9, 9];
     public PathInfo m_Path = new PathInfo();
+    public CubeManager m_SelectCube = NONECUBE;
     public GameBoard()
     {
         var mat9 = from x in Enumerable.Range(0, 9)
@@ -145,7 +147,7 @@ public class GameBoard : MonoBehaviour
             {
                 rotate = fromX ?
                   (cur - prev).x < 0 ?
-                      (next - cur).y < 0 ? 0f  : 270f
+                      (next - cur).y < 0 ? 0f : 270f
                     : (next - cur).y < 0 ? 90f : 180f
                 : (cur - prev).y < 0 ?
                       (next - cur).x < 0 ? 18f : 270f
@@ -205,6 +207,11 @@ public class GameBoard : MonoBehaviour
             path[i][path[i].Count - 1] = v2;
         }
         return path;
+    }
+    //m_SelectCube 수정
+    public void CubeSelect(CubeManager cube=null)
+    {
+        m_SelectCube = cube ?? NONECUBE;
     }
 
     private static List<Vector2> Reversed(List<Vector2> list)

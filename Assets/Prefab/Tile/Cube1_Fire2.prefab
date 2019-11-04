@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 2980842096214896312}
   - component: {fileID: 2970212772912135630}
   - component: {fileID: 2962932106463720092}
-  m_Layer: 0
-  m_Name: Cube_Magma (1)
-  m_TagString: Untagged
+  - component: {fileID: 3174901547682405594}
+  m_Layer: 8
+  m_Name: Cube1_Fire2
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -57,6 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
+  - {fileID: 0}
   - {fileID: 2100000, guid: 7f9a43163c944ea4f91f8257b525186f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -77,3 +79,16 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &3174901547682405594
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2974817189883337076}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.0000005, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0}

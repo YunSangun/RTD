@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 8319043470497182937}
   - component: {fileID: 721548353984711591}
   m_Layer: 8
-  m_Name: Cube2_Cross
-  m_TagString: Tile
+  m_Name: Cube9_Cross
+  m_TagString: Path
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

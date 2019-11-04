@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 8613827023827913429}
   - component: {fileID: 8642679387375819395}
   - component: {fileID: 8635114852969214101}
-  m_Layer: 0
-  m_Name: Cube_Stone4 (21)
-  m_TagString: Untagged
+  m_Layer: 8
+  m_Name: Cube6_Wall
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

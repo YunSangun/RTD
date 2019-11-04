@@ -10,7 +10,9 @@ public class BoardManager : MonoBehaviour
     public TowerManager[] m_TowerPrefabs;
     public GameObject[] m_CubePrefabs;
     public GameObject[] m_MonsterPrefabs;
+    public Material m_SelectMask;
 
+    private GameBoard m_Board;
     private Transform m_TileHolder;
     private Transform m_WallHolder;
     private Transform m_PathHolder;
@@ -20,33 +22,52 @@ public class BoardManager : MonoBehaviour
 
     private void Update()
     {
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //    var hit = Physics2D.Raycast(pos, Vector2.zero, 0f);
-        //    if (hit.collider != null)
-        //    {
-        //        var obj = hit.collider.gameObject;
-        //        if (obj.CompareTag("Tile"))
-        //            TileSelect(obj.GetComponent<TileController>());
-        //    }
-        //}
         if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit = new RaycastHit();
+            OnMouseLeftClick();
+    }
+    //마우스 클릭 이벤트
+    private void OnMouseLeftClick()
+    {
+        var selected = m_Board.m_SelectCube;
+        if (selected.m_Instance != null)  //선택된 큐브를 해제
+            CubeDeselect(selected);
 
-            if (Physics.Raycast(ray.origin, ray.direction, out hit))
+        RaycastHit hit;
+        if (GetScreenHit(out hit))
+        {
+            var obj = hit.collider.gameObject;
+            if (obj.CompareTag("Tile"))
             {
-                var obj = hit.collider.gameObject;
-                //if (obj.CompareTag("Tile"))
-                //    TileSelect(obj.GetComponent<TileController>());
+                var cube = m_Board[(int)obj.transform.position.x, (int)obj.transform.position.z];
+                if (cube != selected)   // 다른 큐브가 클릭됐으면 선택
+                    CubeSelect(cube);
             }
         }
+    }
+    //클릭된 곳의 충돌 여부, 충돌 정보 반환
+    private bool GetScreenHit(out RaycastHit hit)
+    {
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        return Physics.Raycast(ray.origin, ray.direction, out hit);
+    }
+    //cube mask제거 후 board에서 선택 취소
+    public void CubeDeselect(CubeManager selected)
+    {
+        selected.m_Instance.GetComponent<MeshRenderer>().material = null;
+        m_Board.CubeSelect();
+
+    }
+    //cube mask생성 후 board에서 선택
+    public void CubeSelect(CubeManager cube)
+    {
+        cube.m_Instance.GetComponent<MeshRenderer>().material = m_SelectMask;
+        m_Board.CubeSelect(cube);
+
     }
     //보드 생성
     public void CreateBoard(GameBoard board)
     {
+        m_Board = board;
         var TileMap = new GameObject() { name = "Map" }.transform;
         TileMap.parent = transform;
         m_TileHolder = new GameObject() { name = "Tiles" }.transform;
@@ -62,19 +83,19 @@ public class BoardManager : MonoBehaviour
                           from y in Enumerable.Range(0, 9)
                           select new Vector2Int(x, y))
         {
-            var cm = board[p.x, p.y];
+            var cm = m_Board[p.x, p.y];
             switch (cm.m_Type)
             {
                 case TILE_TYPE.STRAIGHT:
                 case TILE_TYPE.TURN:
                 case TILE_TYPE.CROSS:
-                    Instantiate(m_CubePrefabs[(int)cm.m_Type], cm.m_Position, cm.m_Rotation, m_PathHolder);
+                    cm.m_Instance = Instantiate(m_CubePrefabs[(int)cm.m_Type], cm.m_Position, cm.m_Rotation, m_PathHolder);
                     break;
                 case TILE_TYPE.NONE:
                 case TILE_TYPE.WALL:
                     break;
                 default:
-                    Instantiate(m_CubePrefabs[(int)cm.m_Type], cm.m_Position, cm.m_Rotation, m_TileHolder);
+                    cm.m_Instance = Instantiate(m_CubePrefabs[(int)cm.m_Type], cm.m_Position, cm.m_Rotation, m_TileHolder);
                     break;
             }
         }
@@ -83,7 +104,7 @@ public class BoardManager : MonoBehaviour
                           where x == 0 || y == 0 || x == 8 || y == 8
                           select new Vector2Int(x, y))
         {
-            if (board[p.x, p.y].m_Type == TILE_TYPE.NONE)
+            if (m_Board[p.x, p.y].m_Type == TILE_TYPE.NONE)
             {
                 Instantiate(m_CubePrefabs[(int)TILE_TYPE.WALL], new Vector3(p.x, -0.5f, p.y), Quaternion.Euler(0f, 0f, 0f), m_WallHolder);
                 Instantiate(m_CubePrefabs[(int)TILE_TYPE.WALL], new Vector3(p.x, 0.5f, p.y), Quaternion.Euler(0f, 0f, 0f), m_WallHolder);
@@ -91,6 +112,7 @@ public class BoardManager : MonoBehaviour
             Instantiate(m_CubePrefabs[(int)TILE_TYPE.WALL], new Vector3(p.x, 1.5f, p.y), Quaternion.Euler(0f, 0f, 0f), m_WallHolder);
         }
     }
+    // type형 몬스터를 보드에 생성한 후 controller 반환
     public MonsterController CreateMonster(MONSTER_TYPE type)
     {
         return Instantiate(m_MonsterPrefabs[(int)type], m_MonsterHolder.transform)
@@ -101,6 +123,7 @@ public class BoardManager : MonoBehaviour
     {
         return Instantiate(m_TowerPrefabs[type], m_TowerHolder.transform) as TowerManager;
     }
+
     //entry mark 표시
     //public void DisplayEntryMark(Point entry, Point exit)
     //{
@@ -143,22 +166,6 @@ public class BoardManager : MonoBehaviour
     //    UIManager.Inst.EmptyPanel.SetActive(true);
     //    if (rangeMask != null)
     //        Destroy(rangeMask);
-    //}
-    //public void TileSelect(TileController tc)
-    //{
-    //    DisplayOff();
-    //    if (SelectedTile != null)
-    //        SelectedTile.Selected = false;
-    //    if (tc.Type < TILE_TYPE.STRAIGHT)
-    //    {
-    //        if (!tc.Selected)
-    //        {
-    //            tc.Selected = true;
-    //            SelectedTile = tc;
-    //            if (tc.BuiltTower != null)
-    //                DisplayOn(tc.BuiltTower);
-    //        }
-    //    }
     //}
     //public void AddRandomTower()
     //{

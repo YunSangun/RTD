@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 6099719680615456730}
   - component: {fileID: 5264235040204751704}
   m_Layer: 8
-  m_Name: Cube1_Turn
-  m_TagString: Tile
+  m_Name: Cube8_Turn
+  m_TagString: Path
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
