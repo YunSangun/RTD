@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3160951184573648698}
   - component: {fileID: 3149578245408400578}
   - component: {fileID: 3141282249942870430}
-  - component: {fileID: 8319043470497182937}
   - component: {fileID: 721548353984711591}
   m_Layer: 8
   m_Name: Cube9_Cross
@@ -79,18 +78,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &8319043470497182937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3155113297385321242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &721548353984711591
 BoxCollider:
   m_ObjectHideFlags: 0

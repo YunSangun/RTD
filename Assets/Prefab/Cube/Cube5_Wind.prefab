@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6081898836902795121}
   - component: {fileID: 6053307482722405145}
   - component: {fileID: 6063293784054878033}
-  - component: {fileID: 5783093634782210495}
   - component: {fileID: 2874054639273828039}
   m_Layer: 8
   m_Name: Cube5_Wind
@@ -80,18 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &5783093634782210495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6085401644507002965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &2874054639273828039
 BoxCollider:
   m_ObjectHideFlags: 0
