@@ -23,7 +23,7 @@ public class TowerManager : MonoBehaviour
     private float delayRate = 1f;
     private float delayRemain = 0.0f; // 남은 지연 시간(deltatime)
     private int tier;
-    public TileController BaseTile { get; set; }
+    public CubeManager BaseTile { get; set; }
 
     public TOWER_TYPE Type { get { return type; } }
     public float Attack { get { return attackPoint * attackRate; } }
@@ -49,7 +49,7 @@ public class TowerManager : MonoBehaviour
         this.attackRate = 1.5f;
         this.delayRate = 0.8f;
     }
-    public void SetStatus(Vector3 pos,TOWER_TYPE type, float attack, int range, int tier, float delay, TileController basetile)
+    public void SetStatus(Vector3 pos,TOWER_TYPE type, float attack, int range, int tier, float delay, CubeManager basetile)
     {
         this.transform.position = pos;
         this.type = type;
@@ -59,7 +59,7 @@ public class TowerManager : MonoBehaviour
         this.delay = delay;
         if (type == TOWER_TYPE.WIND)
             this.delay *= 0.5f;
-        if ((int)type == (int)basetile.Type)
+        if ((int)type == (int)basetile.m_Type)
             OnSameTile();
         this.BaseTile = basetile;
     }
@@ -67,8 +67,8 @@ public class TowerManager : MonoBehaviour
     {
         int type = Random.Range(1, 6);
         var tw = GameManager.Inst.BM.CreateTower(type);
-        tw.SetStatus(BaseTile.transform.position,(TOWER_TYPE)type, attackPoint + 1f, range + 1, tier + 1, 0.5f, BaseTile);
-        BaseTile.BuiltTower = tw;
+        tw.SetStatus(BaseTile.m_Position,(TOWER_TYPE)type, attackPoint + 1f, range + 1, tier + 1, 0.5f, BaseTile);
+        //BaseTile.BuiltTower = tw;
         //GameManager.Inst.BM.TileSelect(tw.BaseTile);
         DestroyObj();
     }
@@ -113,7 +113,7 @@ public class TowerManager : MonoBehaviour
                 return;
             }
             //Debug.Log(rayHit.collider.gameObject.name);
-            BaseTile.BuiltTower = null;
+            //BaseTile.BuiltTower = null;
             DestroyObj();
             tw.UpgradeTower();
         }
@@ -154,8 +154,6 @@ public class TowerManager : MonoBehaviour
     }
     private bool CheckTarget()
     {
-        var lt = new Point(BaseTile.Position.x - Range, BaseTile.Position.y - Range);
-        var rb = new Point(BaseTile.Position.x + Range, BaseTile.Position.y + Range);
         //if (target != null)
             //if (!target.Position.Inside(lt, rb))
             //    DisTartgeting();

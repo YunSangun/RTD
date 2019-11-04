@@ -2,6 +2,7 @@
 
 public class CubeManager
 {
+    public static readonly CubeManager None = new CubeManager();
     public GameObject m_Instance = null;
     public TILE_TYPE m_Type = TILE_TYPE.NONE;
     public Vector3 m_Position;

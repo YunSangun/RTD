@@ -48,7 +48,7 @@ public class BoardManager : MonoBehaviour
         if (selected.m_Instance != null)
         {
             selected.m_Instance.GetComponent<MeshRenderer>().material = null;
-            m_Board.CubeSelect();
+            m_Board.m_SelectCube = CubeManager.None;
         }
         return selected;
 
@@ -57,7 +57,7 @@ public class BoardManager : MonoBehaviour
     public void CubeSelect(CubeManager cube)
     {
         cube.m_Instance.GetComponent<MeshRenderer>().material = m_SelectMask;
-        m_Board.CubeSelect(cube);
+        m_Board.m_SelectCube = cube;
 
     }
     //클릭된 곳의 충돌 여부, 충돌 정보 반환
