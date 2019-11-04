@@ -8,6 +8,8 @@ TagManager:
   - Tower
   - Monster
   - Bullet
+  - Path
+  - Wall
   layers:
   - Default
   - TransparentFX
