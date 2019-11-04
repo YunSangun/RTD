@@ -423,15 +423,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &69095062
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -788,15 +779,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &97764275
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1027,15 +1009,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &135028602
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1140,15 +1113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &158498712
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1713,15 +1677,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &241469955
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2204,15 +2159,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &328167306
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2258,75 +2204,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 328167302}
   m_Mesh: {fileID: 4300000, guid: d73f25ac0bcef5b469863e30ce33634b, type: 3}
---- !u!1 &345663889
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 345663891}
-  - component: {fileID: 345663890}
-  m_Layer: 0
-  m_Name: Directional Light
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!108 &345663890
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 345663889}
-  m_Enabled: 1
-  serializedVersion: 8
-  m_Type: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
-  m_Range: 10
-  m_SpotAngle: 30
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 0
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
---- !u!4 &345663891
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 345663889}
-  m_LocalRotation: {x: 0.5245191, y: -0.091506325, z: -0.09150634, w: 0.84150636}
-  m_LocalPosition: {x: -6.9, y: -2.92, z: -9.58}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 60, y: -30, z: -30}
 --- !u!1001 &358135285
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2449,15 +2326,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &359587962
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2940,15 +2808,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &411795374
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3620,15 +3479,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &480398411
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3733,15 +3583,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &516908166
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4035,15 +3876,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &522425799
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4341,6 +4173,75 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 580040399}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &593486125
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 593486127}
+  - component: {fileID: 593486126}
+  m_Layer: 0
+  m_Name: Directional Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!108 &593486126
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 593486125}
+  m_Enabled: 1
+  serializedVersion: 8
+  m_Type: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 1
+  m_Range: 10
+  m_SpotAngle: 30
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+--- !u!4 &593486127
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 593486125}
+  m_LocalRotation: {x: 0.4619396, y: -0.19134188, z: -0.19134165, w: 0.84462327}
+  m_LocalPosition: {x: 4, y: 10, z: 4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: -225, y: 135, z: -225}
 --- !u!1001 &614439807
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4464,15 +4365,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &648802201
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4610,7 +4502,7 @@ Transform:
   m_Children:
   - {fileID: 1478897384}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &657389986
 PrefabInstance:
@@ -5427,15 +5319,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &748282274
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5603,15 +5486,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &760199543
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5905,15 +5779,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &784627260
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6765,7 +6630,7 @@ PrefabInstance:
     - target: {fileID: 5062899113851145361, guid: 634d0d1c7dfee5b4ca3e0355fac5187c,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5062899113851145361, guid: 634d0d1c7dfee5b4ca3e0355fac5187c,
         type: 3}
@@ -7226,15 +7091,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &965666732
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7717,15 +7573,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &998065162
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7893,15 +7740,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &1014786936
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8006,15 +7844,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &1014867573
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8182,15 +8011,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &1036216274
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8295,15 +8115,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &1037199000
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8597,15 +8408,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &1062643521
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8836,15 +8638,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &1084700541
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9075,15 +8868,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &1116207154
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9188,15 +8972,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &1128466733
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9742,15 +9517,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &1181173410
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10641,15 +10407,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &1296909990
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -11242,15 +10999,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &1399841952
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -11418,15 +11166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &1409131299
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -11846,15 +11585,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &1446580537
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -12259,15 +11989,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &1479243379
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -12876,15 +12597,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &1600975678
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -13591,7 +13303,7 @@ Transform:
   - {fileID: 1379600474}
   - {fileID: 1892121254}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1718067127
 PrefabInstance:
@@ -13748,7 +13460,7 @@ RectTransform:
   m_Children:
   - {fileID: 1263247023}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -14008,7 +13720,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1852213354
 PrefabInstance:
@@ -14879,15 +14591,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &2016275540
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15496,15 +15199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &2065967349
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15798,15 +15492,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &2099229196
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15911,15 +15596,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df5bb3d612109e4db2d3f15f2248f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_Name: 
-  selected: 0
-  mask: {fileID: 0}
-  <Type>k__BackingField: 0
-  <Position>k__BackingField:
-    x: 0
-    y: 0
-  <BuiltTower>k__BackingField: {fileID: 0}
 --- !u!23 &2099729566
 MeshRenderer:
   m_ObjectHideFlags: 0
