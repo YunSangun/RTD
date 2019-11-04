@@ -97,6 +97,7 @@ public class PathInfo
 
 }
 
+//보드에 대한 정보가 담긴 클래스
 public class GameBoard : MonoBehaviour
 {
     private static readonly CubeManager NONECUBE = new CubeManager();
@@ -125,6 +126,7 @@ public class GameBoard : MonoBehaviour
     //경로타일을 저장한다.
     private void PathInit()
     {
+        //전체 경로
         var mapPath = m_Path.ToList();
         //첫번째 경로큐브
         var type = TILE_TYPE.STRAIGHT;
@@ -139,24 +141,15 @@ public class GameBoard : MonoBehaviour
             var next = mapPath[i + 1];
             bool straightY = (next - prev).x == 0;
             bool straightX = (next - prev).y == 0;
-            bool fromX = (cur - prev).y == 0;
             type = straightX || straightY ? TILE_TYPE.STRAIGHT : TILE_TYPE.TURN;
-            if (straightX) rotate = 90f;
-            else if (straightY) rotate = 0f;
+            rotate = (type == TILE_TYPE.STRAIGHT) ?
+                     straightX ? 90f : 0f
+                   : GetTurnRotate(prev, cur, next);
+            var cm = m_Tiles[cur.x, cur.y];
+            if (cm.m_Type == TILE_TYPE.STRAIGHT)
+                cm.Init(TILE_TYPE.CROSS, cur);
             else
-            {
-                rotate = fromX ?
-                  (cur - prev).x < 0 ?
-                      (next - cur).y < 0 ? 0f : 270f
-                    : (next - cur).y < 0 ? 90f : 180f
-                : (cur - prev).y < 0 ?
-                      (next - cur).x < 0 ? 18f : 270f
-                    : (next - cur).x < 0 ? 90f : 0f;
-            }
-            if (m_Tiles[cur.x, cur.y].m_Type != TILE_TYPE.NONE)
-                m_Tiles[cur.x, cur.y].Init(TILE_TYPE.CROSS, cur);
-            else
-                m_Tiles[cur.x, cur.y].Init(type, cur, rotate);
+                cm.Init(type, cur, rotate);
         }
         //
         //마지막 경로 큐브
@@ -165,15 +158,27 @@ public class GameBoard : MonoBehaviour
         rotate = pos.x == mapPath[mapPath.Count - 2].x ? 0 : 90f;
         m_Tiles[pos.x, pos.y].Init(type, pos, rotate);
     }
+    //회전 타일의 각도를 반환한다.
+    private float GetTurnRotate(Vector2Int prev, Vector2Int cur, Vector2Int next)
+    {
+        var step1 = cur - prev;
+        var step2 = next - cur;
+        return step1.y == 0 ?
+               step1.x < 0 ?
+                   step2.y < 0 ? 0f : 270f
+                 : step2.y < 0 ? 90f : 180f
+             : step1.y < 0 ?
+                   step2.x < 0 ? 18f : 270f
+                 : step2.x < 0 ? 90f : 0f;
+    }
     //타일을 무작위로 재배치한다.
     public void ShuffleTile()
     {
-        var allpath = m_Path.ToList();
-        var pairs = from x in Enumerable.Range(1, 7)
-                    from y in Enumerable.Range(1, 7)
-                    where m_Tiles[x, y].m_Type == TILE_TYPE.NONE
-                    select new Vector2Int(x, y);
-        foreach (var p in pairs) m_Tiles[p.x, p.y].Init((TILE_TYPE)Random.Range(1, 6), p);
+        foreach (var p in from x in Enumerable.Range(1, 7)
+                          from y in Enumerable.Range(1, 7)
+                          where  m_Tiles[x, y].m_Type <  TILE_TYPE.WALL
+                          select new Vector2Int(x, y))
+            m_Tiles[p.x, p.y].Init((TILE_TYPE)Random.Range(1, 6), p);
 
     }
     //n(0<=n<8)번째 entry를 반환한다.
@@ -209,7 +214,7 @@ public class GameBoard : MonoBehaviour
         return path;
     }
     //m_SelectCube 수정
-    public void CubeSelect(CubeManager cube=null)
+    public void CubeSelect(CubeManager cube = null)
     {
         m_SelectCube = cube ?? NONECUBE;
     }

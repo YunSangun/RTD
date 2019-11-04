@@ -28,10 +28,7 @@ public class BoardManager : MonoBehaviour
     //마우스 클릭 이벤트
     private void OnMouseLeftClick()
     {
-        var selected = m_Board.m_SelectCube;
-        if (selected.m_Instance != null)  //선택된 큐브를 해제
-            CubeDeselect(selected);
-
+        var selected = CubeDeselect();
         RaycastHit hit;
         if (GetScreenHit(out hit))
         {
@@ -44,17 +41,16 @@ public class BoardManager : MonoBehaviour
             }
         }
     }
-    //클릭된 곳의 충돌 여부, 충돌 정보 반환
-    private bool GetScreenHit(out RaycastHit hit)
+    //cube mask제거 후 board에서 선택 취소후 선택된 타일 반환
+    public CubeManager CubeDeselect()
     {
-        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        return Physics.Raycast(ray.origin, ray.direction, out hit);
-    }
-    //cube mask제거 후 board에서 선택 취소
-    public void CubeDeselect(CubeManager selected)
-    {
-        selected.m_Instance.GetComponent<MeshRenderer>().material = null;
-        m_Board.CubeSelect();
+        var selected = m_Board.m_SelectCube;
+        if (selected.m_Instance != null)
+        {
+            selected.m_Instance.GetComponent<MeshRenderer>().material = null;
+            m_Board.CubeSelect();
+        }
+        return selected;
 
     }
     //cube mask생성 후 board에서 선택
@@ -64,10 +60,24 @@ public class BoardManager : MonoBehaviour
         m_Board.CubeSelect(cube);
 
     }
+    //클릭된 곳의 충돌 여부, 충돌 정보 반환
+    private bool GetScreenHit(out RaycastHit hit)
+    {
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        return Physics.Raycast(ray.origin, ray.direction, out hit);
+    }
     //보드 생성
     public void CreateBoard(GameBoard board)
     {
         m_Board = board;
+        InitObjectHolder();
+        InstanciatePathTile();
+        InstanciateWall();
+    }
+    //holder 객체 초기화
+    private void InitObjectHolder()
+    {
+
         var TileMap = new GameObject() { name = "Map" }.transform;
         TileMap.parent = transform;
         m_TileHolder = new GameObject() { name = "Tiles" }.transform;
@@ -79,6 +89,10 @@ public class BoardManager : MonoBehaviour
         m_TowerHolder = new GameObject() { name = "Towers" }.transform;
         m_MonsterHolder = new GameObject() { name = "Monsters" }.transform;
 
+    }
+    //path, tile 생성
+    private void InstanciatePathTile()
+    {
         foreach (var p in from x in Enumerable.Range(0, 9)
                           from y in Enumerable.Range(0, 9)
                           select new Vector2Int(x, y))
@@ -99,6 +113,10 @@ public class BoardManager : MonoBehaviour
                     break;
             }
         }
+    }
+    //wall 생성
+    private void InstanciateWall()
+    {
         foreach (var p in from x in Enumerable.Range(0, 9)
                           from y in Enumerable.Range(0, 9)
                           where x == 0 || y == 0 || x == 8 || y == 8
