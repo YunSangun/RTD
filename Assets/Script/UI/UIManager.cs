@@ -35,12 +35,7 @@ public class UIManager : MonoBehaviour
 
     public Sprite StartSpr;
     public Sprite StopSpr;
-
-    private TileController[,] Tiles = new TileController[9, 9];
-    private TileController SelectedTile = null;
-    private GameObject entry;
-    private GameObject exit;
-    private GameObject rangeMask;
+    
 
     private void Awake()
     {
@@ -50,7 +45,7 @@ public class UIManager : MonoBehaviour
     {
         //버튼 이벤트 할당
         StartStopButton.onClick.AddListener(GameManager.Inst.RoundStart);
-        AddTowerButton.onClick.AddListener(GameManager.Inst.BM.AddRandomTower);
+        //AddTowerButton.onClick.AddListener(GameManager.Inst.BM.AddRandomTower);
         OptionButton.onClick.AddListener(GameManager.Inst.SetPause);
         MenuButton.onClick.AddListener(ChangeMainScene);
     }
